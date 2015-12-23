@@ -2,20 +2,32 @@
 {
     using System;
 
+    using NAudio.Wave;
+
     using DtmfDetection.NAudio;
 
     public static class Program
     {
         public static void Main()
         {
-            //using (var log = new Log("waveFile.log"))
-            //{
-            //    foreach (var occurence in new WaveFile("dtmftest.wav").DtmfTones)
-            //    {
-            //        log.Add($"{occurence.Position.TotalSeconds:00.000} s: {occurence.DtmfTone.Key} key (duration: {occurence.Duration.TotalSeconds:00.000} s)");
-            //    }
-            //}
+            AnalyzeWaveFile();
+            CaptureAndAnalyzeAudioOut();
+        }
 
+        private static void AnalyzeWaveFile()
+        {
+            using (var log = new Log("waveFile.log"))
+            {
+                using (var waveFile = new WaveFileReader("dtmftest.wav"))
+                {
+                    foreach (var occurence in waveFile.FindDtmfTones())
+                        log.Add($"{occurence.Position.TotalSeconds:00.000} s: {occurence.DtmfTone.Key} key (duration: {occurence.Duration.TotalSeconds:00.000} s)");
+                }
+            }
+        }
+
+        private static void CaptureAndAnalyzeAudioOut()
+        {
             using (var log = new Log("audioOut.log"))
             {
                 var audioOut = new CurrentAudioOutput();

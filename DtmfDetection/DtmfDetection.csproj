@@ -34,10 +34,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DtmfAudio.cs" />
     <Compile Include="DtmfClassification.cs" />
     <Compile Include="DtmfDetector.cs" />
     <Compile Include="DtmfTone.cs" />
-    <Compile Include="FourierTransform.cs" />
+    <Compile Include="AmplitudeEstimator.cs" />
+    <Compile Include="ISampleSource.cs" />
+    <Compile Include="PureTones.cs" />
     <Compile Include="PhoneKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

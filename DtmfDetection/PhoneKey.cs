@@ -13,7 +13,7 @@
         Seven,
         Eight,
         Nine,
-        Asterisk,
+        Star,
         Hash,
         A,
         B,

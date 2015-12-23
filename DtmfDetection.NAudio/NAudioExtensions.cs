@@ -1,6 +1,5 @@
 ﻿namespace DtmfDetection.NAudio
 {
-    using System;
     using System.Threading;
 
     using global::NAudio.Wave;
@@ -27,12 +26,15 @@
             return new SampleBlockProvider(source, blockSize);
         }
 
-        public static void WaitForData(this BufferedWaveProvider source, TimeSpan requiredDuration)
+        public static void WaitForSample(this BufferedWaveProvider source)
         {
-            while (source.BufferedDuration < requiredDuration)
+            var bytesPerSample = source.WaveFormat.BitsPerSample / 8 * source.WaveFormat.Channels;
+
+            while (source.BufferedBytes < bytesPerSample)
             {
-                Thread.Sleep(requiredDuration - source.BufferedDuration);
+                Thread.Sleep(1);
             }
+
         }
     }
 }

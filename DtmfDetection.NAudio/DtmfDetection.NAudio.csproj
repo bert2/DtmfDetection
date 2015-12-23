@@ -39,16 +39,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StreamingDtmfAudio.cs" />
+    <Compile Include="StaticSampleSource.cs" />
     <Compile Include="SampleBlockProvider.cs" />
     <Compile Include="CurrentAudioOutput.cs" />
-    <Compile Include="DtmfAudio.cs" />
     <Compile Include="DtmfToneEnd.cs" />
     <Compile Include="DtmfOccurence.cs" />
     <Compile Include="DtmfToneStart.cs" />
     <Compile Include="NAudioExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WaveFile.cs" />
+    <Compile Include="StreamingSampleSource.cs" />
+    <Compile Include="WaveFileReaderExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

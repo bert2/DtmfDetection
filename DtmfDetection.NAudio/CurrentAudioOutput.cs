@@ -10,7 +10,7 @@
     {
         private readonly WasapiLoopbackCapture audioOutput;
 
-        private readonly StreamingDtmfAudio dtmfAudio;
+        private readonly DtmfAudio dtmfAudio;
 
         private Thread captureWorker;
 
@@ -21,7 +21,7 @@
         public CurrentAudioOutput()
         {
             audioOutput = new WasapiLoopbackCapture { ShareMode = AudioClientShareMode.Shared };
-            dtmfAudio = new StreamingDtmfAudio(Buffer(audioOutput));
+            dtmfAudio = new DtmfAudio(new StreamingSampleSource(Buffer(audioOutput)));
         }
 
         public void StartCapturing()
@@ -60,7 +60,7 @@
             source.DataAvailable += (sender, e) =>
                                     {
                                         sourceBuffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
-                                        Console.WriteLine($"Added {e.BytesRecorded}");
+                                        //Console.WriteLine($"Added {e.BytesRecorded}");
                                     };
             return sourceBuffer;
         }
