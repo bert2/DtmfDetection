@@ -32,9 +32,9 @@ namespace DtmfDetection
                 estimator.Add(sample);
         }
 
-        public int StrongestLowTone => StrongestOf(LowPureTones);
+        public int FindStrongestHighTone() => StrongestOf(HighPureTones);
 
-        public int StrongestHighTone => StrongestOf(HighPureTones);
+        public int FindStrongestLowTone() => StrongestOf(LowPureTones);
 
         private int StrongestOf(IEnumerable<int> pureTones)
         {
