@@ -1,25 +1,22 @@
-﻿using System.Collections.Generic;
-
-using NAudio.Wave;
-
-namespace DtmfDetection.NAudio
+﻿namespace DtmfDetection.NAudio
 {
+    using System.Collections.Generic;
+
+    using global::NAudio.Wave;
+
     public static class WaveFileReaderExtensions
     {
         public static IEnumerable<DtmfOccurence> FindDtmfTones(this WaveFileReader waveFile)
         {
             var dtmfAudio = new DtmfAudio(new StaticSampleSource(waveFile));
 
-            while (dtmfAudio.DataAvailable)
+            while (dtmfAudio.WaitForDtmfTone() != DtmfTone.None)
             {
-                dtmfAudio.WaitForDtmfTone();
                 var start = waveFile.CurrentTime;
-
-                dtmfAudio.WaitForEndOfDtmfTone();
+                dtmfAudio.WaitForEndOfLastDtmfTone();
                 var duration = waveFile.CurrentTime - start;
 
-                if (dtmfAudio.LastDtmfTone != DtmfTone.None)
-                    yield return new DtmfOccurence(dtmfAudio.LastDtmfTone, start, duration);
+                yield return new DtmfOccurence(dtmfAudio.LastDtmfTone, start, duration);
             }
         }
     }

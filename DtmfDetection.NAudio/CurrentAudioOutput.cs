@@ -42,26 +42,22 @@
         {
             while (true)
             {
-                dtmfAudio.WaitForDtmfTone();
+                var dtmfTone = dtmfAudio.WaitForDtmfTone();
 
                 var start = DateTime.Now;
-                DtmfToneStarting?.Invoke(new DtmfToneStart(dtmfAudio.LastDtmfTone, start));
+                DtmfToneStarting?.Invoke(new DtmfToneStart(dtmfTone, start));
 
-                dtmfAudio.WaitForEndOfDtmfTone();
+                dtmfAudio.WaitForEndOfLastDtmfTone();
 
                 var duration = DateTime.Now - start;
-                DtmfToneStopped?.Invoke(new DtmfToneEnd(dtmfAudio.LastDtmfTone, duration));
+                DtmfToneStopped?.Invoke(new DtmfToneEnd(dtmfTone, duration));
             }
         }
 
         private static BufferedWaveProvider Buffer(IWaveIn source)
         {
             var sourceBuffer = new BufferedWaveProvider(source.WaveFormat) { DiscardOnBufferOverflow = true };
-            source.DataAvailable += (sender, e) =>
-                                    {
-                                        sourceBuffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
-                                        //Console.WriteLine($"Added {e.BytesRecorded}");
-                                    };
+            source.DataAvailable += (sender, e) => sourceBuffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
             return sourceBuffer;
         }
     }
