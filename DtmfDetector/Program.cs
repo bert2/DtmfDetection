@@ -1,4 +1,6 @@
-﻿namespace DtmfDetector
+﻿using NAudio.CoreAudioApi;
+
+namespace DtmfDetector
 {
     using System;
 
@@ -30,31 +32,47 @@
         {
             using (var log = new Log("audioOut.log"))
             {
-                var audioOut = new CurrentAudioOutput();
-                audioOut.DtmfToneStarting += start => log.Add($"{start.DtmfTone.Key} key started on {start.Position.TimeOfDay}");
-                audioOut.DtmfToneStopped += end => log.Add($"{end.DtmfTone.Key} key stopped after {end.Duration.TotalSeconds:00.000} s");
+                LiveAudioAnalyzer audioSource = null;
 
                 while (true)
                 {
-                    Console.WriteLine("St[a]rt, St[o]p, [Q]uit");
+                    Console.WriteLine("====================================\n"
+                                      + "[O]   Capture current audio output\n"
+                                      + "[M]   Capture mic in\n"
+                                      + "[Esc] Stop capturing/quit");
                     var key = Console.ReadKey(true);
 
                     switch (key.Key)
                     {
-                        case ConsoleKey.A:
-                            audioOut.StartCapturing();
-                            break;
-
                         case ConsoleKey.O:
-                            audioOut.StopCapturing();
+                            audioSource?.StopCapturing();
+                            audioSource = InitLiveAudioAnalyzer(log, new WasapiLoopbackCapture { ShareMode = AudioClientShareMode.Shared });
+                            audioSource.StartCapturing();
                             break;
 
-                        case ConsoleKey.Q:
-                            audioOut.StopCapturing();
-                            return;
+                        case ConsoleKey.M:
+                            audioSource?.StopCapturing();
+                            audioSource = InitLiveAudioAnalyzer(log, new WaveInEvent { WaveFormat = new WaveFormat(8000, 32, 1) });
+                            audioSource.StartCapturing();
+                            break;
+
+                        case ConsoleKey.Escape:
+                            if (audioSource == null || !audioSource.IsCapturing)
+                                return;
+
+                            audioSource.StopCapturing();
+                            break;
                     }
                 }
             }
+        }
+
+        private static LiveAudioAnalyzer InitLiveAudioAnalyzer(Log log, IWaveIn waveIn)
+        {
+            var audioSource = new LiveAudioAnalyzer(waveIn);
+            audioSource.DtmfToneStarting += start => log.Add($"{start.DtmfTone.Key} key started on {start.Position.TimeOfDay}");
+            audioSource.DtmfToneStopped += end => log.Add($"{end.DtmfTone.Key} key stopped after {end.Duration.TotalSeconds:00.000} s");
+            return audioSource;
         }
     }
 }

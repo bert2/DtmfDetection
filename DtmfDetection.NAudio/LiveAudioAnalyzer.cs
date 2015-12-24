@@ -3,12 +3,11 @@
     using System;
     using System.Threading;
 
-    using global::NAudio.CoreAudioApi;
     using global::NAudio.Wave;
 
-    public class CurrentAudioOutput
+    public class LiveAudioAnalyzer
     {
-        private readonly WasapiLoopbackCapture audioOutput;
+        private readonly IWaveIn waveIn;
 
         private readonly DtmfAudio dtmfAudio;
 
@@ -18,22 +17,32 @@
 
         public event Action<DtmfToneEnd> DtmfToneStopped;
 
-        public CurrentAudioOutput()
+        public LiveAudioAnalyzer(IWaveIn waveIn)
         {
-            audioOutput = new WasapiLoopbackCapture { ShareMode = AudioClientShareMode.Shared };
-            dtmfAudio = new DtmfAudio(new StreamingSampleSource(Buffer(audioOutput)));
+            this.waveIn = waveIn;
+            dtmfAudio = new DtmfAudio(new StreamingSampleSource(Buffer(this.waveIn)));
         }
+
+        public bool IsCapturing { get; private set; }
 
         public void StartCapturing()
         {
-            audioOutput.StartRecording();
+            if (IsCapturing)
+                return;
+
+            IsCapturing = true;
+            waveIn.StartRecording();
             captureWorker = new Thread(Detect);
             captureWorker.Start();
         }
 
         public void StopCapturing()
         {
-            audioOutput.StopRecording();
+            if (!IsCapturing)
+                return;
+
+            IsCapturing = false;
+            waveIn.StopRecording();
             captureWorker.Abort();
             captureWorker.Join();
         }
