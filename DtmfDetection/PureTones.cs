@@ -5,9 +5,9 @@ namespace DtmfDetection
 
     public class PureTones
     {
-        private static readonly IEnumerable<int> HighPureTones = new[] { 1209, 1336, 1477, 1633 };
-
         private static readonly IEnumerable<int> LowPureTones = new[] { 697, 770, 852, 941 };
+
+        private static readonly IEnumerable<int> HighPureTones = new[] { 1209, 1336, 1477, 1633 };
 
         private readonly Dictionary<int, AmplitudeEstimator> estimators;
 
