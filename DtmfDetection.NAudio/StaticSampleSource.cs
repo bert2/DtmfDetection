@@ -18,7 +18,7 @@
                             .AsMono()
                             .SampleWith(DtmfDetector.SampleRate)
                             .Blockwise(DtmfDetector.SampleBlockSize);
-            // Optimistically assume that we are going to read at least BlockSize bytes
+            // Optimistically assume that we are going to read at least BlockSize bytes.
             numSamplesRead = samples.BlockSize;
         }
 
