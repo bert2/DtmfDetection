@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using global::NAudio.Wave;
 
@@ -9,14 +10,19 @@
     {
         private readonly SampleBlockProvider samples;
 
+        private int numSamplesRead;
+
         public StaticSampleSource(WaveFileReader source)
         {
-            samples = source.AsMono()
+            samples = source.ToSampleProvider()
+                            .AsMono()
                             .SampleWith(DtmfDetector.SampleRate)
                             .Blockwise(DtmfDetector.SampleBlockSize);
+            // Optimistically assume that we are going to read at least BlockSize bytes
+            numSamplesRead = samples.BlockSize;
         }
 
-        public bool HasSamples { get; private set; } = true;
+        public bool HasSamples => numSamplesRead >= samples.BlockSize;
 
         public IEnumerable<float> Samples
         {
@@ -25,8 +31,8 @@
                 if (!HasSamples)
                     throw new InvalidOperationException("No more data available");
 
-                HasSamples = samples.ReadNextBlock();
-                return samples.CurrentBlock;
+                numSamplesRead = samples.ReadNextBlock();
+                return samples.CurrentBlock.Take(numSamplesRead);
             }
         }
     }

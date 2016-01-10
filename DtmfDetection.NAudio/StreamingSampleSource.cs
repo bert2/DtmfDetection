@@ -13,7 +13,7 @@
         public StreamingSampleSource(BufferedWaveProvider source)
         {
             sourceBuffer = source;
-            samples = source.AsMono().SampleWith(DtmfDetector.SampleRate);
+            samples = source.ToSampleProvider().AsMono().SampleWith(DtmfDetector.SampleRate);
         }
 
         public bool HasSamples { get; } = true;
