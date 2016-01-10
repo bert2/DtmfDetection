@@ -6,7 +6,7 @@
 
     public static class WaveFileReaderExtensions
     {
-        public static IEnumerable<DtmfOccurence> FindDtmfTones(this WaveFileReader waveFile)
+        public static IEnumerable<DtmfOccurence> DtmfTones(this WaveFileReader waveFile)
         {
             var dtmfAudio = new DtmfAudio(new StaticSampleSource(waveFile));
 
