@@ -5,12 +5,7 @@
 
     public class Log : IDisposable
     {
-        private StreamWriter file;
-
-        public Log()
-            : this("log.log")
-        {
-        }
+        private readonly StreamWriter file;
 
         public Log(string fileName)
         {
