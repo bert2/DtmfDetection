@@ -20,7 +20,7 @@
         public LiveAudioAnalyzer(IWaveIn waveIn)
         {
             this.waveIn = waveIn;
-            dtmfAudio = new DtmfAudio(new StreamingSampleSource(Buffer(this.waveIn)));
+            dtmfAudio = new DtmfAudio(new StreamingSampleSource(Buffer(waveIn)));
         }
 
         public bool IsCapturing { get; private set; }
