@@ -4,9 +4,9 @@
 
     using global::NAudio.Wave;
 
-    public static class WaveFileReaderExtensions
+    public static class WaveStreamExtensions
     {
-        public static IEnumerable<DtmfOccurence> DtmfTones(this WaveFileReader waveFile)
+        public static IEnumerable<DtmfOccurence> DtmfTones(this WaveStream waveFile)
         {
             var dtmfAudio = new DtmfAudio(new StaticSampleSource(waveFile));
 
