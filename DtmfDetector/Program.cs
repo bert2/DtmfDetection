@@ -22,7 +22,9 @@
                 using (var waveFile = new WaveFileReader("dtmftest.wav"))
                 {
                     foreach (var occurence in waveFile.DtmfTones())
-                        log.Add($"{occurence.Position.TotalSeconds:00.000} s: {occurence.DtmfTone.Key} key (duration: {occurence.Duration.TotalSeconds:00.000} s)");
+                        log.Add($"{occurence.Position.TotalSeconds:00.000} s: "
+                              + $"{occurence.DtmfTone.Key} key "
+                              + $"(duration: {occurence.Duration.TotalSeconds:00.000} s)");
                 }
             }
         }
