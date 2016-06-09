@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtmfDetection.NAudio", "Dtm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtmfDetection", "DtmfDetection\DtmfDetection.csproj", "{56E96006-4E6B-4708-9228-270595DAEC0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtmfDetection.IntegrationTests", "DtmfDetection.IntegrationTests\DtmfDetection.IntegrationTests.csproj", "{DD5BB3E3-4AF4-4FDF-A620-4872D42090B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{56E96006-4E6B-4708-9228-270595DAEC0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56E96006-4E6B-4708-9228-270595DAEC0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56E96006-4E6B-4708-9228-270595DAEC0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD5BB3E3-4AF4-4FDF-A620-4872D42090B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD5BB3E3-4AF4-4FDF-A620-4872D42090B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD5BB3E3-4AF4-4FDF-A620-4872D42090B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD5BB3E3-4AF4-4FDF-A620-4872D42090B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
