@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</licenseUrl>
+    <projectUrl>https://github.com/bert2/DtmfDetection</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Extends NAudio with means to detect DTMF tones (aka touch tones) in live audio data and audio files.</summary>
+    <description>Extends NAudio with means to detect DTMF tones (aka touch tones) in live audio data and audio files.</description>
+    <releaseNotes>Added support for all WaveStream-based audio formats.</releaseNotes>
+    <copyright>Copyright © 2016</copyright>
+    <tags>Goertzel DTMF touch tone detection NAudio</tags>
+  </metadata>
+</package>

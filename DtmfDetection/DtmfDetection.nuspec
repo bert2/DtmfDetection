@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</licenseUrl>
+    <projectUrl>https://github.com/bert2/DtmfDetection</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Implementation of the Goertzel algorithm for the detection of DTMF tones (aka touch tones) in audio data.</summary>
+    <description>Implementation of the Goertzel algorithm for the detection of DTMF tones (aka touch tones) in audio data. Install the package "DtmfDetection.NAudio" for integration with NAudio.
+    </description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright © 2016</copyright>
+    <tags>Goertzel DTMF touch tone detection</tags>
+  </metadata>
+</package>
