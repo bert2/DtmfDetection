@@ -1,6 +1,8 @@
 ﻿namespace DtmfDetection
 {
-    public struct DtmfTone
+    using System;
+
+    public struct DtmfTone : IEquatable<DtmfTone>
     {
         private DtmfTone(int highTone, int lowTone, PhoneKey key)
         {
@@ -58,6 +60,24 @@
             return Key.ToString();
         }
 
+        #region Comparison implementations
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(obj, null))
+                return false;
+
+            if (obj is DtmfTone)
+                return Equals((DtmfTone)obj);
+
+            return false;
+        }
+
+        public bool Equals(DtmfTone other)
+        {
+            return Key == other.Key;
+        }
+
         public override int GetHashCode()
         {
             return Key.GetHashCode();
@@ -65,9 +85,6 @@
 
         public static bool operator ==(DtmfTone a, DtmfTone b)
         {
-            if (ReferenceEquals(a, null))
-                return ReferenceEquals(b, null);
-
             return a.Equals(b);
         }
 
@@ -75,5 +92,7 @@
         {
             return !(a == b);
         }
+
+        #endregion
     }
 }
