@@ -1,6 +1,6 @@
 ﻿namespace DtmfDetection
 {
-    public class DtmfTone
+    public struct DtmfTone
     {
         private DtmfTone(int highTone, int lowTone, PhoneKey key)
         {
@@ -56,6 +56,24 @@
         public override string ToString()
         {
             return Key.ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return Key.GetHashCode();
+        }
+
+        public static bool operator ==(DtmfTone a, DtmfTone b)
+        {
+            if (ReferenceEquals(a, null))
+                return ReferenceEquals(b, null);
+
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(DtmfTone a, DtmfTone b)
+        {
+            return !(a == b);
         }
     }
 }
