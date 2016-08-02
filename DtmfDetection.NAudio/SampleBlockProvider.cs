@@ -17,9 +17,6 @@
 
         public float[] CurrentBlock { get; }
 
-        public int ReadNextBlock()
-        {
-            return source.Read(CurrentBlock, 0, BlockSize);
-        }
+        public int ReadNextBlock() => source.Read(CurrentBlock, 0, BlockSize);
     }
 }

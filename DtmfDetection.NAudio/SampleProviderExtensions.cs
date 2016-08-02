@@ -20,8 +20,6 @@
         }
 
         public static SampleBlockProvider Blockwise(this ISampleProvider source, int blockSize)
-        {
-            return new SampleBlockProvider(source, blockSize);
-        }
+            => new SampleBlockProvider(source, blockSize);
     }
 }

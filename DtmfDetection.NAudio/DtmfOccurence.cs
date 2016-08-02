@@ -17,10 +17,7 @@
 
         public TimeSpan Duration { get; }
 
-        public override string ToString()
-        {
-            return DtmfTone.ToString();
-        }
+        public override string ToString() => DtmfTone.ToString();
 
         #region Comparison implementations
 
@@ -42,10 +39,7 @@
                 && Duration == other.Duration;
         }
 
-        public override int GetHashCode()
-        {
-            return new { DtmfTone, Position, Duration }.GetHashCode();
-        }
+        public override int GetHashCode() => new { DtmfTone, Position, Duration }.GetHashCode();
 
         public static bool operator ==(DtmfOccurence a, DtmfOccurence b)
         {
@@ -55,10 +49,7 @@
             return a.Equals(b);
         }
 
-        public static bool operator !=(DtmfOccurence a, DtmfOccurence b)
-        {
-            return !(a == b);
-        }
+        public static bool operator !=(DtmfOccurence a, DtmfOccurence b) => !(a == b);
 
         #endregion
     }

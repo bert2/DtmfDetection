@@ -55,10 +55,7 @@
 
         public int LowTone { get; }
 
-        public override string ToString()
-        {
-            return Key.ToString();
-        }
+        public override string ToString() => Key.ToString();
 
         #region Comparison implementations
 
@@ -73,25 +70,13 @@
             return false;
         }
 
-        public bool Equals(DtmfTone other)
-        {
-            return Key == other.Key;
-        }
+        public bool Equals(DtmfTone other) => Key == other.Key;
 
-        public override int GetHashCode()
-        {
-            return Key.GetHashCode();
-        }
+        public override int GetHashCode() => Key.GetHashCode();
 
-        public static bool operator ==(DtmfTone a, DtmfTone b)
-        {
-            return a.Equals(b);
-        }
+        public static bool operator ==(DtmfTone a, DtmfTone b) => a.Equals(b);
 
-        public static bool operator !=(DtmfTone a, DtmfTone b)
-        {
-            return !(a == b);
-        }
+        public static bool operator !=(DtmfTone a, DtmfTone b) => !(a == b);
 
         #endregion
     }
