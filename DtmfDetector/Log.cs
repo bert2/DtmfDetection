@@ -3,7 +3,7 @@
     using System;
     using System.IO;
 
-    public class Log : IDisposable
+    public sealed class Log : IDisposable
     {
         private readonly StreamWriter file;
 
@@ -20,9 +20,17 @@
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
             file.Flush();
             file.Close();
-            GC.SuppressFinalize(this);
         }
     }
 }
