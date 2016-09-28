@@ -1,5 +1,3 @@
-using System;
-
 namespace DtmfDetection
 {
     using System.Collections.Generic;
@@ -7,6 +5,11 @@ namespace DtmfDetection
 
     public class DtmfDetector
     {
+        public const int SampleRate = 8000;
+
+        // We assume DTMF tones with a length of at least 40 ms: 8000 Hz * 0.04 s = 320 (sample blocks).
+        public const int SampleBlockSize = SampleRate * 40 / 1000;
+
         private const double AmplitudeThreshold = 10.0;
 
         private readonly PureTones pureTones = new PureTones(SampleRate, SampleBlockSize);
@@ -20,11 +23,6 @@ namespace DtmfDetection
 
             return GetDtmfToneFromAmplitudes();
         }
-
-        public static int SampleRate { get; } = 8000;
-
-        // A DTMF Tone has to have a length of at least 40 ms: 8000 Hz * 0.04 s = 320
-        public static int SampleBlockSize { get; } = SampleRate * 40 / 1000;
 
         private DtmfTone GetDtmfToneFromAmplitudes()
         {
