@@ -12,7 +12,7 @@
 
         private int numSamplesRead;
 
-        public StaticSampleSource(WaveStream source)
+        public StaticSampleSource(IWaveProvider source)
         {
             samples = source.ToSampleProvider()
                             .AsMono()
