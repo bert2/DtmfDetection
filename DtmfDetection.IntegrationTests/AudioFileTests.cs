@@ -14,7 +14,7 @@
     public class AudioFileTests
     {
         [TestMethod]
-        public void ShouldDetectLongDtmfTonesCorrectly()
+        public void DetectsLongDtmfTonesCorrectly()
         {
             #region Expected tones
 
@@ -47,7 +47,7 @@
 
         /// <summary>Test data has been copied from https://en.wikipedia.org/wiki/File:DTMF_dialing.ogg (no license, public domain).</summary>
         [TestMethod]
-        public void ShouldDetectVeryShortDtmfTonesCorrectly()
+        public void DetectsVeryShortDtmfTonesCorrectly()
         {
             #region Expected tones
 
@@ -80,21 +80,12 @@
             }
         }
 
-        private void AssertEqual<T>(ICollection<T> expecteds, ICollection<T> actuals)
+        private static void AssertEqual<T>(IList<T> expecteds, IList<T> actuals)
         {
-            var index = 0;
+            for (var i = 0; i < Math.Min(expecteds.Count, actuals.Count); i++)
+                Assert.AreEqual(expecteds[i], actuals[i], $"Items at index {i} do not match");
 
-            expecteds
-                .Zip(
-                    actuals,
-                    (e, a) =>
-                        {
-                            Assert.AreEqual(e, a, $"Items at index {index} do not match");
-                            return index++;
-                        })
-                .ToList();
-
-            Assert.AreEqual(expecteds.Count, actuals.Count, "The collections are not of the same length.");
+            Assert.AreEqual(expecteds.Count, actuals.Count, "The lists are not of the same length.");
         }
     }
 }
