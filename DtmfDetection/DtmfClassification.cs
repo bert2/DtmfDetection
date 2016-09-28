@@ -21,7 +21,7 @@ namespace DtmfDetection
                        : DtmfTone.None;
         }
 
-        private static Tuple<int, int> KeyOf(DtmfTone t) => Tuple.Create(t.HighTone, t.LowTone);
+        private static Tuple<int, int> KeyOf(DtmfTone t) => KeyOf(t.HighTone, t.LowTone);
 
         private static Tuple<int, int> KeyOf(int highTone, int lowTone) => Tuple.Create(highTone, lowTone);
     }
