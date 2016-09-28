@@ -27,8 +27,10 @@
                 while (HasSamples)
                 {
                     sourceBuffer.WaitForSample();
-                    samples.Read(buffer, 0, 1);
-                    yield return buffer[0];
+                    var count = samples.Read(buffer, 0, 1);
+
+                    if (count > 0)
+                        yield return buffer[0];
                 }
             }
         }
