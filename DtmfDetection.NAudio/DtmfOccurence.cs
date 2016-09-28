@@ -17,7 +17,7 @@
 
         public TimeSpan Duration { get; }
 
-        public override string ToString() => DtmfTone.ToString();
+        public override string ToString() => $"{DtmfTone} @ {Position} for {Duration}";
 
         #region Comparison implementations
 
