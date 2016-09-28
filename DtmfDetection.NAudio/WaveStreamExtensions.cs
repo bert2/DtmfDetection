@@ -9,14 +9,16 @@
         public static IEnumerable<DtmfOccurence> DtmfTones(this WaveStream waveFile)
         {
             var dtmfAudio = new DtmfAudio(new StaticSampleSource(waveFile));
+            var next = DtmfTone.None;
 
-            while (dtmfAudio.WaitForDtmfTone() != DtmfTone.None)
+            while (next != DtmfTone.None || dtmfAudio.Wait() != DtmfTone.None)
             {
+                var current = dtmfAudio.CurrentDtmfTone;
                 var start = waveFile.CurrentTime;
-                dtmfAudio.WaitForEndOfLastDtmfTone();
+                next = dtmfAudio.Skip();
                 var duration = waveFile.CurrentTime - start;
 
-                yield return new DtmfOccurence(dtmfAudio.LastDtmfTone, start, duration);
+                yield return new DtmfOccurence(current, start, duration);
             }
         }
     }

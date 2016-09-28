@@ -49,17 +49,19 @@
 
         private void Detect()
         {
+            var next = DtmfTone.None;
+
             while (true)
             {
-                var dtmfTone = dtmfAudio.WaitForDtmfTone();
+                var current = next != DtmfTone.None ? next : dtmfAudio.Wait();
 
                 var start = DateTime.Now;
-                DtmfToneStarting?.Invoke(new DtmfToneStart(dtmfTone, start));
+                DtmfToneStarting?.Invoke(new DtmfToneStart(current, start));
 
-                dtmfAudio.WaitForEndOfLastDtmfTone();
+                next = dtmfAudio.Skip();
 
                 var duration = DateTime.Now - start;
-                DtmfToneStopped?.Invoke(new DtmfToneEnd(dtmfTone, duration));
+                DtmfToneStopped?.Invoke(new DtmfToneEnd(current, duration));
             }
         }
 

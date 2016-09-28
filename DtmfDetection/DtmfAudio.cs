@@ -11,30 +11,35 @@
             this.source = source;
         }
 
-        public DtmfTone LastDtmfTone { get; private set; } = DtmfTone.None;
+        public DtmfTone CurrentDtmfTone { get; private set; } = DtmfTone.None;
 
-        public DtmfTone WaitForDtmfTone()
+        public DtmfTone Wait()
         {
             while (source.HasSamples)
             {
-                LastDtmfTone = dtmfDetector.Analyze(source.Samples);
+                CurrentDtmfTone = dtmfDetector.Analyze(source.Samples);
 
-                if (LastDtmfTone != DtmfTone.None)
-                    return LastDtmfTone;
+                if (CurrentDtmfTone != DtmfTone.None)
+                    return CurrentDtmfTone;
             }
 
             return DtmfTone.None;
         }
 
-        public void WaitForEndOfLastDtmfTone()
+        public DtmfTone Skip()
         {
             while (source.HasSamples)
             {
                 var nextDtmfTone = dtmfDetector.Analyze(source.Samples);
 
-                if (nextDtmfTone != LastDtmfTone)
-                    return;
+                if (nextDtmfTone == CurrentDtmfTone)
+                    continue;
+
+                CurrentDtmfTone = nextDtmfTone;
+                return nextDtmfTone;
             }
+
+            return DtmfTone.None;
         }
     }
 }

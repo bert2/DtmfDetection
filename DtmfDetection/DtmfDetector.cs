@@ -7,29 +7,29 @@ namespace DtmfDetection
     {
         public const int SampleRate = 8000;
 
-        // We assume DTMF tones with a length of at least 40 ms: 8000 Hz * 0.04 s = 320 (sample blocks).
-        public const int SampleBlockSize = SampleRate * 40 / 1000;
+        // Using 205 samples minimizes error (distance of DTMF frequency to center of DFT bin).
+        public const int SampleBlockSize = 205;
 
-        private const double AmplitudeThreshold = 10.0;
+        private const double Threshold = 100.0;
 
-        private readonly PureTones pureTones = new PureTones(SampleRate, SampleBlockSize);
+        private readonly PureTones powers = new PureTones(SampleRate, SampleBlockSize);
 
         public DtmfTone Analyze(IEnumerable<float> samples)
         {
-            pureTones.ResetAmplitudes();
+            powers.ResetAmplitudes();
 
             foreach (var sample in samples.Take(SampleBlockSize))
-                pureTones.AddSample(sample);
+                powers.AddSample(sample);
 
-            return GetDtmfToneFromAmplitudes();
+            return GetDtmfToneFromPowers();
         }
 
-        private DtmfTone GetDtmfToneFromAmplitudes()
+        private DtmfTone GetDtmfToneFromPowers()
         {
-            var highTone = pureTones.FindStrongestHighTone();
-            var lowTone = pureTones.FindStrongestLowTone();
+            var highTone = powers.FindStrongestHighTone();
+            var lowTone = powers.FindStrongestLowTone();
 
-            if (pureTones[highTone] < AmplitudeThreshold || pureTones[lowTone] < AmplitudeThreshold)
+            if (powers[highTone] < Threshold || powers[lowTone] < Threshold)
                 return DtmfTone.None;
 
             return DtmfClassification.For(highTone, lowTone);

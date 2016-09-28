@@ -18,7 +18,7 @@ namespace DtmfDetection
                                                    tone => new AmplitudeEstimator(tone, sampleRate, sampleBlockSize));
         }
 
-        public double this[int tone] => estimators[tone].Amplitude;
+        public double this[int tone] => estimators[tone].AmplitudeSquared;
 
         public void ResetAmplitudes()
         {
@@ -41,9 +41,9 @@ namespace DtmfDetection
             return pureTones.Select(tone => new
                                             {
                                                 Tone = tone,
-                                                estimators[tone].Amplitude
+                                                Power = estimators[tone].AmplitudeSquared
                                             })
-                            .OrderBy(result => result.Amplitude)
+                            .OrderBy(result => result.Power)
                             .Select(result => result.Tone)
                             .Last();
         }

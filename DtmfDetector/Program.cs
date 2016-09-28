@@ -19,7 +19,7 @@
         {
             using (var log = new Log("waveFile.log"))
             {
-                using (var waveFile = new WaveFileReader("dtmftest.wav"))
+                using (var waveFile = new Mp3FileReader("dtmftest.mp3"))
                 {
                     foreach (var occurence in waveFile.DtmfTones())
                         log.Add($"{occurence.Position.TotalSeconds:00.000} s: "
