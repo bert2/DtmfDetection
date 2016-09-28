@@ -31,7 +31,7 @@
         public void Reset()
         {
             s1 = s2 = .0;
-            amplitude = new Lazy<double>(() => Math.Sqrt(s1*s1 + s2*s2 - s1 * s2 * c));
+            amplitude = new Lazy<double>(() => Math.Sqrt(s1*s1 + s2*s2 - s1*s2*c));
         }
     }
 }

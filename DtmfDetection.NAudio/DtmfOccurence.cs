@@ -21,13 +21,7 @@
 
         #region Comparison implementations
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(obj, null))
-                return false;
-
-            return Equals(obj as DtmfOccurence);
-        }
+        public override bool Equals(object obj) => !ReferenceEquals(obj, null) && Equals(obj as DtmfOccurence);
 
         public bool Equals(DtmfOccurence other)
         {
@@ -41,13 +35,7 @@
 
         public override int GetHashCode() => new { DtmfTone, Position, Duration }.GetHashCode();
 
-        public static bool operator ==(DtmfOccurence a, DtmfOccurence b)
-        {
-            if (ReferenceEquals(a, null))
-                return ReferenceEquals(b, null);
-
-            return a.Equals(b);
-        }
+        public static bool operator ==(DtmfOccurence a, DtmfOccurence b) => ReferenceEquals(a, null) ? ReferenceEquals(b, null) : a.Equals(b);
 
         public static bool operator !=(DtmfOccurence a, DtmfOccurence b) => !(a == b);
 
