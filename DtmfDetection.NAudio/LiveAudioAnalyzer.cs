@@ -50,14 +50,16 @@
 
         private void Detect()
         {
+            var next = DtmfTone.None;
+
             while (true)
             {
-                var current = dtmfAudio.Wait();
+                var current = next != DtmfTone.None ? next : dtmfAudio.Wait();
 
                 var start = DateTime.Now;
                 DtmfToneStarting?.Invoke(new DtmfToneStart(current, start));
 
-                dtmfAudio.Skip();
+                next = dtmfAudio.Skip();
 
                 var duration = DateTime.Now - start;
                 DtmfToneStopped?.Invoke(new DtmfToneEnd(current, duration));

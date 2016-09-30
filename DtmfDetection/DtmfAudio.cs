@@ -23,9 +23,6 @@
 
         public DtmfTone Wait()
         {
-            if (CurrentDtmfTone != DtmfTone.None)
-                return CurrentDtmfTone;
-
             while (source.HasSamples)
             {
                 CurrentDtmfTone = dtmfDetector.Analyze(source.Samples);
@@ -37,20 +34,20 @@
             return DtmfTone.None;
         }
 
-        public void Skip()
+        public DtmfTone Skip()
         {
             while (source.HasSamples)
             {
                 var nextDtmfTone = dtmfDetector.Analyze(source.Samples);
 
-                if (nextDtmfTone != CurrentDtmfTone)
-                {
-                    CurrentDtmfTone = nextDtmfTone;
-                    return;
-                }
+                if (nextDtmfTone == CurrentDtmfTone)
+                    continue;
+
+                CurrentDtmfTone = nextDtmfTone;
+                return nextDtmfTone;
             }
 
-            CurrentDtmfTone = DtmfTone.None;
+            return DtmfTone.None;
         }
     }
 }

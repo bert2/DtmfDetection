@@ -10,12 +10,13 @@
         {
             var config = new DetectorConfig();
             var dtmfAudio = DtmfAudio.CreateFrom(new StaticSampleSource(config, waveFile), config);
+            var next = DtmfTone.None;
 
-            while (dtmfAudio.Wait() != DtmfTone.None)
+            while (next != DtmfTone.None || dtmfAudio.Wait() != DtmfTone.None)
             {
                 var current = dtmfAudio.CurrentDtmfTone;
                 var start = waveFile.CurrentTime;
-                dtmfAudio.Skip();
+                next = dtmfAudio.Skip();
                 var duration = waveFile.CurrentTime - start;
 
                 yield return new DtmfOccurence(current, start, duration);
