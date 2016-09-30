@@ -10,13 +10,15 @@
 
         private readonly ISampleProvider samples;
 
-        public StreamingSampleSource(BufferedWaveProvider source)
+        public StreamingSampleSource(DetectorConfig config, BufferedWaveProvider source)
         {
             sourceBuffer = source;
-            samples = source.ToSampleProvider().AsMono().SampleWith(DtmfDetector.SampleRate);
+            samples = source.ToSampleProvider().AsMono().DownsampleTo(config.MaxSampleRate);
         }
 
         public bool HasSamples { get; } = true;
+
+        public int SampleRate => samples.WaveFormat.SampleRate;
 
         public IEnumerable<float> Samples
         {

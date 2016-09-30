@@ -6,6 +6,8 @@ namespace DtmfDetection
     {
         bool HasSamples { get; }
 
+        int SampleRate { get; }
+
         IEnumerable<float>  Samples { get; }
     }
 }

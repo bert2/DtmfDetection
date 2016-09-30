@@ -5,20 +5,21 @@ namespace DtmfDetection
 
     public class DtmfDetector
     {
-        public const int SampleRate = 8000;
+        private readonly DetectorConfig config;
 
-        // Using 205 samples minimizes error (distance of DTMF frequency to center of DFT bin).
-        public const int SampleBlockSize = 205;
+        private readonly PureTones powers;
 
-        private const double Threshold = 100.0;
-
-        private readonly PureTones powers = new PureTones(SampleRate, SampleBlockSize);
+        public DtmfDetector(DetectorConfig config, PureTones powers)
+        {
+            this.config = config;
+            this.powers = powers;
+        }
 
         public DtmfTone Analyze(IEnumerable<float> samples)
         {
             powers.ResetAmplitudes();
 
-            foreach (var sample in samples.Take(SampleBlockSize))
+            foreach (var sample in samples.Take(config.SampleBlockSize))
                 powers.AddSample(sample);
 
             return GetDtmfToneFromPowers();
@@ -29,7 +30,7 @@ namespace DtmfDetection
             var highTone = powers.FindStrongestHighTone();
             var lowTone = powers.FindStrongestLowTone();
 
-            if (powers[highTone] < Threshold || powers[lowTone] < Threshold)
+            if (powers[highTone] < config.PowerThreshold || powers[lowTone] < config.PowerThreshold)
                 return DtmfTone.None;
 
             return DtmfClassification.For(highTone, lowTone);

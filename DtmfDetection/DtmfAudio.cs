@@ -4,11 +4,19 @@
     {
         private readonly ISampleSource source;
 
-        private readonly DtmfDetector dtmfDetector = new DtmfDetector();
+        private readonly DtmfDetector dtmfDetector;
 
-        public DtmfAudio(ISampleSource source)
+        public DtmfAudio(DtmfDetector dtmfDetector, ISampleSource source)
         {
             this.source = source;
+            this.dtmfDetector = dtmfDetector;
+        }
+
+        public static DtmfAudio CreateFrom(ISampleSource source, DetectorConfig config)
+        {
+            return new DtmfAudio(
+                new DtmfDetector(config, new PureTones(new AmplitudeEstimatorFactory(source.SampleRate, config.SampleBlockSize))),
+                source);
         }
 
         public DtmfTone CurrentDtmfTone { get; private set; } = DtmfTone.None;

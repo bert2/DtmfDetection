@@ -11,11 +11,11 @@ namespace DtmfDetection
 
         private readonly Dictionary<int, AmplitudeEstimator> estimators;
 
-        public PureTones(int sampleRate, int sampleBlockSize)
+        public PureTones(AmplitudeEstimatorFactory estimatorFactory)
         {
-            estimators = LowPureTones.Concat(HighPureTones)
-                                     .ToDictionary(tone => tone,
-                                                   tone => new AmplitudeEstimator(tone, sampleRate, sampleBlockSize));
+            estimators = LowPureTones
+                .Concat(HighPureTones)
+                .ToDictionary(tone => tone, estimatorFactory.CreateFor);
         }
 
         public double this[int tone] => estimators[tone].AmplitudeSquared;

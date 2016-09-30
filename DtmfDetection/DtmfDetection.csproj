@@ -36,6 +36,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmplitudeEstimatorFactory.cs" />
+    <Compile Include="DetectorConfig.cs" />
     <Compile Include="DtmfAudio.cs" />
     <Compile Include="DtmfClassification.cs" />
     <Compile Include="DtmfDetector.cs" />

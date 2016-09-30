@@ -13,6 +13,8 @@
             CurrentBlock = new float[blockSize];
         }
 
+        public int SampleRate => source.WaveFormat.SampleRate;
+
         public int BlockSize { get; }
 
         public float[] CurrentBlock { get; }

@@ -5,10 +5,10 @@
 
     public static class SampleProviderExtensions
     {
-        public static ISampleProvider SampleWith(this ISampleProvider source, int sampleRate)
+        public static ISampleProvider DownsampleTo(this ISampleProvider source, int maxSampleRate)
         {
-            return source.WaveFormat.SampleRate != sampleRate
-                       ? new WdlResamplingSampleProvider(source, sampleRate)
+            return source.WaveFormat.SampleRate > maxSampleRate
+                       ? new WdlResamplingSampleProvider(source, maxSampleRate)
                        : source;
         }
 

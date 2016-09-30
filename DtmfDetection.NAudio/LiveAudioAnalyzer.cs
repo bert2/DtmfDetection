@@ -20,7 +20,8 @@
         public LiveAudioAnalyzer(IWaveIn waveIn)
         {
             this.waveIn = waveIn;
-            dtmfAudio = new DtmfAudio(new StreamingSampleSource(Buffer(waveIn)));
+            var config = new DetectorConfig();
+            dtmfAudio = DtmfAudio.CreateFrom(new StreamingSampleSource(config, Buffer(waveIn)), config);
         }
 
         public bool IsCapturing { get; private set; }

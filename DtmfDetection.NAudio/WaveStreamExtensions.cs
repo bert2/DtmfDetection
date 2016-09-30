@@ -8,7 +8,8 @@
     {
         public static IEnumerable<DtmfOccurence> DtmfTones(this WaveStream waveFile)
         {
-            var dtmfAudio = new DtmfAudio(new StaticSampleSource(waveFile));
+            var config = new DetectorConfig();
+            var dtmfAudio = DtmfAudio.CreateFrom(new StaticSampleSource(config, waveFile), config);
             var next = DtmfTone.None;
 
             while (next != DtmfTone.None || dtmfAudio.Wait() != DtmfTone.None)

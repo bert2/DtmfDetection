@@ -12,17 +12,16 @@
 
         private int numSamplesRead;
 
-        public StaticSampleSource(IWaveProvider source)
+        public StaticSampleSource(DetectorConfig config, IWaveProvider source)
         {
-            samples = source.ToSampleProvider()
-                            .AsMono()
-                            .SampleWith(DtmfDetector.SampleRate)
-                            .Blockwise(DtmfDetector.SampleBlockSize);
+            samples = source.ToSampleProvider().AsMono().DownsampleTo(config.MaxSampleRate).Blockwise(config.SampleBlockSize);
             // Optimistically assume that we are going to read at least BlockSize bytes.
             numSamplesRead = samples.BlockSize;
         }
 
         public bool HasSamples => numSamplesRead >= samples.BlockSize;
+
+        public int SampleRate => samples.SampleRate;
 
         public IEnumerable<float> Samples
         {
