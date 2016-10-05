@@ -19,26 +19,26 @@
                 source);
         }
 
-        public DtmfTone CurrentDtmfTone { get; private set; } = DtmfTone.None;
+        public DtmfOccurence CurrentDtmfTone { get; private set; } = new DtmfOccurence(DtmfTone.None, -1);
 
-        public DtmfTone Wait()
+        public DtmfOccurence Wait()
         {
             while (source.HasSamples)
             {
-                CurrentDtmfTone = dtmfDetector.Analyze(source.Samples);
+                CurrentDtmfTone = new DtmfOccurence(dtmfDetector.Analyze(source.Samples), 0);
 
-                if (CurrentDtmfTone != DtmfTone.None)
+                if (CurrentDtmfTone.Tone != DtmfTone.None)
                     return CurrentDtmfTone;
             }
 
-            return DtmfTone.None;
+            return new DtmfOccurence(DtmfTone.None, -1);
         }
 
-        public DtmfTone Skip()
+        public DtmfOccurence Skip()
         {
             while (source.HasSamples)
             {
-                var nextDtmfTone = dtmfDetector.Analyze(source.Samples);
+                var nextDtmfTone = new DtmfOccurence(dtmfDetector.Analyze(source.Samples), 0);
 
                 if (nextDtmfTone == CurrentDtmfTone)
                     continue;
@@ -47,7 +47,7 @@
                 return nextDtmfTone;
             }
 
-            return DtmfTone.None;
+            return new DtmfOccurence(DtmfTone.None, -1);
         }
     }
 }

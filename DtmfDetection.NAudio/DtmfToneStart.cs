@@ -4,13 +4,16 @@
 
     public class DtmfToneStart
     {
-        public DtmfToneStart(DtmfTone dtmfTone, DateTime position)
+        public DtmfToneStart(DtmfOccurence dtmfTone, DateTime position)
         {
-            DtmfTone = dtmfTone;
+            DtmfTone = dtmfTone.Tone;
+            Channel = dtmfTone.Channel;
             Position = position;
         }
 
         public DtmfTone DtmfTone { get; }
+
+        public int Channel { get; }
 
         public DateTime Position { get; }
     }

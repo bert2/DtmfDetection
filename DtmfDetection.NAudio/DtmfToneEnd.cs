@@ -4,13 +4,16 @@
 
     public class DtmfToneEnd
     {
-        public DtmfToneEnd(DtmfTone dtmfTone, TimeSpan duration)
+        public DtmfToneEnd(DtmfOccurence dtmfTone, TimeSpan duration)
         {
-            DtmfTone = dtmfTone;
+            DtmfTone = dtmfTone.Tone;
+            Channel = dtmfTone.Channel;
             Duration = duration;
         }
 
         public DtmfTone DtmfTone { get; }
+
+        public int Channel { get; private set; }
 
         public TimeSpan Duration { get; }
     }
