@@ -1,7 +1,11 @@
 ﻿namespace DtmfDetection
 {
+    using System;
+
     public class DtmfAudio
     {
+        private readonly DtmfChangeHandler dtmfChangeHandler = new DtmfChangeHandler();
+
         private readonly ISampleSource source;
 
         private readonly DtmfDetector dtmfDetector;
@@ -15,39 +19,21 @@
         public static DtmfAudio CreateFrom(ISampleSource source, DetectorConfig config)
         {
             return new DtmfAudio(
-                new DtmfDetector(config, new PureTones(new AmplitudeEstimatorFactory(source.SampleRate, config.SampleBlockSize))),
+                new DtmfDetector(
+                    config, 
+                    new PureTones(
+                        new AmplitudeEstimatorFactory(
+                            source.SampleRate, 
+                            config.SampleBlockSize))),
                 source);
         }
 
-        public DtmfOccurence CurrentDtmfTone { get; private set; } = new DtmfOccurence(DtmfTone.None, -1);
-
-        public DtmfOccurence Wait()
+        public bool Forward<TState>(Func<DtmfTone, TState> dtmfStarting, Action<TState, DtmfTone> dtmfStopping)
         {
-            while (source.HasSamples)
-            {
-                CurrentDtmfTone = new DtmfOccurence(dtmfDetector.Analyze(source.Samples), 0);
+            if (source.HasSamples)
+                dtmfChangeHandler.Handle(dtmfDetector.Analyze(source.Samples), dtmfStarting, dtmfStopping);
 
-                if (CurrentDtmfTone.Tone != DtmfTone.None)
-                    return CurrentDtmfTone;
-            }
-
-            return new DtmfOccurence(DtmfTone.None, -1);
-        }
-
-        public DtmfOccurence Skip()
-        {
-            while (source.HasSamples)
-            {
-                var nextDtmfTone = new DtmfOccurence(dtmfDetector.Analyze(source.Samples), 0);
-
-                if (nextDtmfTone == CurrentDtmfTone)
-                    continue;
-
-                CurrentDtmfTone = nextDtmfTone;
-                return nextDtmfTone;
-            }
-
-            return new DtmfOccurence(DtmfTone.None, -1);
+            return source.HasSamples;
         }
     }
 }

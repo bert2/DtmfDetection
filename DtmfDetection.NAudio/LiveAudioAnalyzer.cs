@@ -50,19 +50,15 @@
 
         private void Detect()
         {
-            var next = new DtmfOccurence(DtmfTone.None, 0);
-
-            while (true)
+            while (dtmfAudio.Forward(
+                tone =>
+                {
+                    var start = DateTime.Now;
+                    DtmfToneStarting?.Invoke(new DtmfToneStart(new DtmfOccurence(tone, 0), start));
+                    return start;
+                },
+                (start, tone) => DtmfToneStopped?.Invoke(new DtmfToneEnd(new DtmfOccurence(tone, 0), DateTime.Now - start))))
             {
-                var current = next.Tone != DtmfTone.None ? next : dtmfAudio.Wait();
-
-                var start = DateTime.Now;
-                DtmfToneStarting?.Invoke(new DtmfToneStart(current, start));
-
-                next = dtmfAudio.Skip();
-
-                var duration = DateTime.Now - start;
-                DtmfToneStopped?.Invoke(new DtmfToneEnd(current, duration));
             }
         }
 

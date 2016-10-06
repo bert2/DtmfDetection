@@ -42,6 +42,7 @@
     <Compile Include="DtmfClassification.cs" />
     <Compile Include="DtmfDetector.cs" />
     <Compile Include="DtmfOccurence.cs" />
+    <Compile Include="DtmfChangeHandler.cs" />
     <Compile Include="DtmfTone.cs" />
     <Compile Include="AmplitudeEstimator.cs" />
     <Compile Include="ISampleSource.cs" />

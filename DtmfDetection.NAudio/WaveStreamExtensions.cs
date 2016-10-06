@@ -1,6 +1,8 @@
 ﻿namespace DtmfDetection.NAudio
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using global::NAudio.Wave;
 
@@ -10,16 +12,15 @@
         {
             var config = new DetectorConfig();
             var dtmfAudio = DtmfAudio.CreateFrom(new StaticSampleSource(config, waveFile), config);
-            var next = new DtmfOccurence(DtmfTone.None, -1);
+            var detectedTones = new Queue<DtmfPosition>();
 
-            while (next.Tone != DtmfTone.None || dtmfAudio.Wait().Tone != DtmfTone.None)
+            while (detectedTones.Any() 
+                || dtmfAudio.Forward(
+                    tone => waveFile.CurrentTime, 
+                    (start, tone) => detectedTones.Enqueue(new DtmfPosition(new DtmfOccurence(tone, 0), start, waveFile.CurrentTime - start))))
             {
-                var current = dtmfAudio.CurrentDtmfTone;
-                var start = waveFile.CurrentTime;
-                next = dtmfAudio.Skip();
-                var duration = waveFile.CurrentTime - start;
-
-                yield return new DtmfPosition(current, start, duration);
+                if (detectedTones.Any())
+                    yield return detectedTones.Dequeue();
             }
         }
     }
