@@ -46,7 +46,7 @@
     <Compile Include="SampleBlockProvider.cs" />
     <Compile Include="LiveAudioAnalyzer.cs" />
     <Compile Include="DtmfToneEnd.cs" />
-    <Compile Include="DtmfPosition.cs" />
+    <Compile Include="DtmfOccurence.cs" />
     <Compile Include="DtmfToneStart.cs" />
     <Compile Include="SampleProviderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

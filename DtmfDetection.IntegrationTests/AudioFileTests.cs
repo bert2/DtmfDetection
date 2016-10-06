@@ -20,21 +20,21 @@
 
             var expectedTones = new[]
             {
-                new DtmfPosition(DtmfTone.One, 0, TimeSpan.FromSeconds(2.819), TimeSpan.FromSeconds(2.819)),
-                new DtmfPosition(DtmfTone.Two, 0, TimeSpan.FromSeconds(6.766), TimeSpan.FromSeconds(0.153)),
-                new DtmfPosition(DtmfTone.Three, 0, TimeSpan.FromSeconds(7.329), TimeSpan.FromSeconds(0.180)),
-                new DtmfPosition(DtmfTone.Four, 0, TimeSpan.FromSeconds(8.252), TimeSpan.FromSeconds(2.357)),
-                new DtmfPosition(DtmfTone.Five, 0, TimeSpan.FromSeconds(12.070), TimeSpan.FromSeconds(0.026)),
-                new DtmfPosition(DtmfTone.Five, 0, TimeSpan.FromSeconds(12.121), TimeSpan.FromSeconds(0.205)),
-                new DtmfPosition(DtmfTone.Six, 0, TimeSpan.FromSeconds(12.762), TimeSpan.FromSeconds(0.102)),
-                new DtmfPosition(DtmfTone.Seven, 0, TimeSpan.FromSeconds(14.556), TimeSpan.FromSeconds(0.025)),
-                new DtmfPosition(DtmfTone.Seven, 0, TimeSpan.FromSeconds(14.607), TimeSpan.FromSeconds(2.306)),
-                new DtmfPosition(DtmfTone.Eight, 0, TimeSpan.FromSeconds(17.733), TimeSpan.FromSeconds(0.103)),
-                new DtmfPosition(DtmfTone.Nine, 0, TimeSpan.FromSeconds(18.476), TimeSpan.FromSeconds(0.103)),
-                new DtmfPosition(DtmfTone.Hash, 0, TimeSpan.FromSeconds(19.168), TimeSpan.FromSeconds(0.256)),
-                new DtmfPosition(DtmfTone.Zero, 0, TimeSpan.FromSeconds(19.886), TimeSpan.FromSeconds(0.051)),
-                new DtmfPosition(DtmfTone.Star, 0, TimeSpan.FromSeconds(20.501), TimeSpan.FromSeconds(0.153)),
-                new DtmfPosition(DtmfTone.One, 0, TimeSpan.FromSeconds(22.064), TimeSpan.FromSeconds(1.768))
+                new DtmfOccurence(DtmfTone.One, 0, TimeSpan.FromSeconds(2.819), TimeSpan.FromSeconds(2.819)),
+                new DtmfOccurence(DtmfTone.Two, 0, TimeSpan.FromSeconds(6.766), TimeSpan.FromSeconds(0.153)),
+                new DtmfOccurence(DtmfTone.Three, 0, TimeSpan.FromSeconds(7.329), TimeSpan.FromSeconds(0.180)),
+                new DtmfOccurence(DtmfTone.Four, 0, TimeSpan.FromSeconds(8.252), TimeSpan.FromSeconds(2.357)),
+                new DtmfOccurence(DtmfTone.Five, 0, TimeSpan.FromSeconds(12.070), TimeSpan.FromSeconds(0.026)),
+                new DtmfOccurence(DtmfTone.Five, 0, TimeSpan.FromSeconds(12.121), TimeSpan.FromSeconds(0.205)),
+                new DtmfOccurence(DtmfTone.Six, 0, TimeSpan.FromSeconds(12.762), TimeSpan.FromSeconds(0.102)),
+                new DtmfOccurence(DtmfTone.Seven, 0, TimeSpan.FromSeconds(14.556), TimeSpan.FromSeconds(0.025)),
+                new DtmfOccurence(DtmfTone.Seven, 0, TimeSpan.FromSeconds(14.607), TimeSpan.FromSeconds(2.306)),
+                new DtmfOccurence(DtmfTone.Eight, 0, TimeSpan.FromSeconds(17.733), TimeSpan.FromSeconds(0.103)),
+                new DtmfOccurence(DtmfTone.Nine, 0, TimeSpan.FromSeconds(18.476), TimeSpan.FromSeconds(0.103)),
+                new DtmfOccurence(DtmfTone.Hash, 0, TimeSpan.FromSeconds(19.168), TimeSpan.FromSeconds(0.256)),
+                new DtmfOccurence(DtmfTone.Zero, 0, TimeSpan.FromSeconds(19.886), TimeSpan.FromSeconds(0.051)),
+                new DtmfOccurence(DtmfTone.Star, 0, TimeSpan.FromSeconds(20.501), TimeSpan.FromSeconds(0.153)),
+                new DtmfOccurence(DtmfTone.One, 0, TimeSpan.FromSeconds(22.064), TimeSpan.FromSeconds(1.768))
             };
 
             #endregion
