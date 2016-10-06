@@ -4,10 +4,10 @@
 
     public class DtmfPosition : IEquatable<DtmfPosition>
     {
-        public DtmfPosition(DtmfOccurence dtmfTone, TimeSpan position, TimeSpan duration)
+        public DtmfPosition(DtmfTone dtmfTone, int channel, TimeSpan position, TimeSpan duration)
         {
-            DtmfTone = dtmfTone.Tone;
-            Channel = dtmfTone.Channel;
+            DtmfTone = dtmfTone;
+            Channel = channel;
             Position = position;
             Duration = duration;
         }

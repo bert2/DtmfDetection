@@ -4,10 +4,10 @@
 
     public class DtmfToneEnd
     {
-        public DtmfToneEnd(DtmfOccurence dtmfTone, TimeSpan duration)
+        public DtmfToneEnd(DtmfTone dtmfTone, int channel, TimeSpan duration)
         {
-            DtmfTone = dtmfTone.Tone;
-            Channel = dtmfTone.Channel;
+            DtmfTone = dtmfTone;
+            Channel = channel;
             Duration = duration;
         }
 

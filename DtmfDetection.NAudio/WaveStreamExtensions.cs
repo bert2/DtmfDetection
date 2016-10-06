@@ -1,6 +1,5 @@
 ﻿namespace DtmfDetection.NAudio
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -17,7 +16,7 @@
             while (detectedTones.Any() 
                 || dtmfAudio.Forward(
                     tone => waveFile.CurrentTime, 
-                    (start, tone) => detectedTones.Enqueue(new DtmfPosition(new DtmfOccurence(tone, 0), start, waveFile.CurrentTime - start))))
+                    (start, tone) => detectedTones.Enqueue(new DtmfPosition(tone, 0, start, waveFile.CurrentTime - start))))
             {
                 if (detectedTones.Any())
                     yield return detectedTones.Dequeue();

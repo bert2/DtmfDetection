@@ -54,10 +54,10 @@
                 tone =>
                 {
                     var start = DateTime.Now;
-                    DtmfToneStarting?.Invoke(new DtmfToneStart(new DtmfOccurence(tone, 0), start));
+                    DtmfToneStarting?.Invoke(new DtmfToneStart(tone, 0, start));
                     return start;
                 },
-                (start, tone) => DtmfToneStopped?.Invoke(new DtmfToneEnd(new DtmfOccurence(tone, 0), DateTime.Now - start))))
+                (start, tone) => DtmfToneStopped?.Invoke(new DtmfToneEnd(tone, 0, DateTime.Now - start))))
             {
             }
         }
