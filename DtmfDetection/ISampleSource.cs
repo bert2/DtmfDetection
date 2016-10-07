@@ -8,6 +8,8 @@ namespace DtmfDetection
 
         int SampleRate { get; }
 
+        int Channels { get; }
+
         IEnumerable<float>  Samples { get; }
     }
 }

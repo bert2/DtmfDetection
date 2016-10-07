@@ -17,6 +17,8 @@
 
         public int BlockSize { get; }
 
+        public int Channels => source.WaveFormat.Channels;
+
         public float[] CurrentBlock { get; }
 
         public int ReadNextBlock() => source.Read(CurrentBlock, 0, BlockSize);

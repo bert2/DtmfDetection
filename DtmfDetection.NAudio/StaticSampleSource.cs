@@ -23,6 +23,8 @@
 
         public int SampleRate => samples.SampleRate;
 
+        public int Channels => samples.Channels;
+
         public IEnumerable<float> Samples
         {
             get

@@ -20,6 +20,8 @@
 
         public int SampleRate => samples.WaveFormat.SampleRate;
 
+        public int Channels => samples.WaveFormat.Channels;
+
         public IEnumerable<float> Samples
         {
             get
