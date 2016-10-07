@@ -19,9 +19,9 @@
         {
             using (var log = new Log("waveFile.log"))
             {
-                using (var waveFile = new Mp3FileReader("dtmftest.mp3"))
+                using (var audioFile = new Mp3FileReader("dtmftest.mp3"))
                 {
-                    foreach (var occurence in waveFile.DtmfTones())
+                    foreach (var occurence in audioFile.DtmfTones())
                         log.Add(
                             $"{occurence.Position.TotalSeconds:00.000} s "
                             + $"({occurence.Channel}): "
