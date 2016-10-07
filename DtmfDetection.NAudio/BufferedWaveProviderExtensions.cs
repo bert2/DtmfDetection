@@ -11,9 +11,7 @@
             var bytesPerSample = source.WaveFormat.BitsPerSample / 8 * source.WaveFormat.Channels;
 
             while (source.BufferedBytes < bytesPerSample)
-            {
                 Thread.Sleep(1);
-            }
         }
     }
 }

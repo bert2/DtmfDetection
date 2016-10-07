@@ -9,8 +9,8 @@
         public SampleBlockProvider(ISampleProvider source, int blockSize)
         {
             this.source = source;
-            BlockSize = blockSize;
-            CurrentBlock = new float[blockSize];
+            BlockSize = blockSize * Channels;
+            CurrentBlock = new float[BlockSize];
         }
 
         public int SampleRate => source.WaveFormat.SampleRate;

@@ -22,9 +22,11 @@
                 using (var waveFile = new Mp3FileReader("dtmftest.mp3"))
                 {
                     foreach (var occurence in waveFile.DtmfTones())
-                        log.Add($"{occurence.Position.TotalSeconds:00.000} s: "
-                              + $"{occurence.DtmfTone.Key} key "
-                              + $"(duration: {occurence.Duration.TotalSeconds:00.000} s)");
+                        log.Add(
+                            $"{occurence.Position.TotalSeconds:00.000} s "
+                            + $"({occurence.Channel}): "
+                            + $"{occurence.DtmfTone.Key} key "
+                            + $"(duration: {occurence.Duration.TotalSeconds:00.000} s)");
                 }
             }
         }
@@ -82,8 +84,8 @@
         private static LiveAudioAnalyzer InitLiveAudioAnalyzer(Log log, IWaveIn waveIn)
         {
             var audioSource = new LiveAudioAnalyzer(waveIn);
-            audioSource.DtmfToneStarting += start => log.Add($"{start.DtmfTone.Key} key started on {start.Position.TimeOfDay}");
-            audioSource.DtmfToneStopped += end => log.Add($"{end.DtmfTone.Key} key stopped after {end.Duration.TotalSeconds} s");
+            audioSource.DtmfToneStarting += start => log.Add($"{start.DtmfTone.Key} key started on {start.Position.TimeOfDay} (channel {start.Channel})");
+            audioSource.DtmfToneStopped += end => log.Add($"{end.DtmfTone.Key} key stopped after {end.Duration.TotalSeconds} s (channel {end.Channel})");
             return audioSource;
         }
     }

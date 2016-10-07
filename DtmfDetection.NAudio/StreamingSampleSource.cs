@@ -10,10 +10,16 @@
 
         private readonly ISampleProvider samples;
 
-        public StreamingSampleSource(DetectorConfig config, BufferedWaveProvider source)
+        public StreamingSampleSource(DetectorConfig config, BufferedWaveProvider source, bool forceMono = true)
         {
             sourceBuffer = source;
-            samples = source.ToSampleProvider().AsMono().DownsampleTo(config.MaxSampleRate);
+
+            var sampleProvider = source.ToSampleProvider();
+
+            if (forceMono)
+                sampleProvider = sampleProvider.AsMono();
+
+            samples = sampleProvider.DownsampleTo(config.MaxSampleRate);
         }
 
         public bool HasSamples { get; } = true;
@@ -26,15 +32,18 @@
         {
             get
             {
-                var buffer = new float[1];
+                var buffer = new float[Channels];
 
                 while (HasSamples)
                 {
                     sourceBuffer.WaitForSample();
-                    var count = samples.Read(buffer, 0, 1);
+                    var count = samples.Read(buffer, 0, Channels);
 
-                    if (count > 0)
-                        yield return buffer[0];
+                    if (count <= 0)
+                        continue;
+
+                    for (var channel = 0; channel < Channels; channel++)
+                        yield return buffer[channel];
                 }
             }
         }

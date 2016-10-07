@@ -32,11 +32,12 @@
                 return false;
 
             return DtmfTone == other.DtmfTone
+                && Channel == other.Channel
                 && Position == other.Position
                 && Duration == other.Duration;
         }
 
-        public override int GetHashCode() => new { DtmfTone, Position, Duration }.GetHashCode();
+        public override int GetHashCode() => new { DtmfTone, Channel, Position, Duration }.GetHashCode();
 
         public static bool operator ==(DtmfOccurence a, DtmfOccurence b) => ReferenceEquals(a, null) ? ReferenceEquals(b, null) : a.Equals(b);
 

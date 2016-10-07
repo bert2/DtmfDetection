@@ -17,11 +17,11 @@
 
         public event Action<DtmfToneEnd> DtmfToneStopped;
 
-        public LiveAudioAnalyzer(IWaveIn waveIn)
+        public LiveAudioAnalyzer(IWaveIn waveIn, bool forceMono = true)
         {
             this.waveIn = waveIn;
             var config = new DetectorConfig();
-            dtmfAudio = DtmfAudio.CreateFrom(new StreamingSampleSource(config, Buffer(waveIn)), config);
+            dtmfAudio = DtmfAudio.CreateFrom(new StreamingSampleSource(config, Buffer(waveIn), forceMono), config);
         }
 
         public bool IsCapturing { get; private set; }
@@ -51,13 +51,13 @@
         private void Detect()
         {
             while (dtmfAudio.Forward(
-                tone =>
+                (channel, tone) =>
                 {
                     var start = DateTime.Now;
-                    DtmfToneStarting?.Invoke(new DtmfToneStart(tone, 0, start));
+                    DtmfToneStarting?.Invoke(new DtmfToneStart(tone, channel, start));
                     return start;
                 },
-                (start, tone) => DtmfToneStopped?.Invoke(new DtmfToneEnd(tone, 0, DateTime.Now - start))))
+                (channel, start, tone) => DtmfToneStopped?.Invoke(new DtmfToneEnd(tone, channel, DateTime.Now - start))))
             {
             }
         }

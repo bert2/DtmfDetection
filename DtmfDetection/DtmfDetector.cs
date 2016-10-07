@@ -7,30 +7,40 @@ namespace DtmfDetection
     {
         private readonly DetectorConfig config;
 
-        private readonly PureTones powers;
+        private readonly PureTones[] powers;
 
-        public DtmfDetector(DetectorConfig config, PureTones powers)
+        private readonly int numChannels;
+
+        public DtmfDetector(DetectorConfig config, PureTones[] powers)
         {
             this.config = config;
             this.powers = powers;
+            numChannels = powers.Length;
         }
 
-        public DtmfTone Analyze(IEnumerable<float> samples)
+        public DtmfTone[] Analyze(IEnumerable<float> samples)
         {
-            powers.ResetAmplitudes();
+            foreach (var p in powers)
+                p.ResetAmplitudes();
 
-            foreach (var sample in samples.Take(config.SampleBlockSize))
-                powers.AddSample(sample);
+            var channel = 0;
+            foreach (var sample in samples.Take(config.SampleBlockSize * numChannels))
+            {
+                powers[channel].AddSample(sample);
+                channel = (channel + 1) % numChannels;
+            }
 
-            return GetDtmfToneFromPowers();
+            return powers
+                .Select(p => GetDtmfToneFromPowers(p, config.PowerThreshold))
+                .ToArray();
         }
 
-        private DtmfTone GetDtmfToneFromPowers()
+        private static DtmfTone GetDtmfToneFromPowers(PureTones powers, double threshold)
         {
             var highTone = powers.FindStrongestHighTone();
             var lowTone = powers.FindStrongestLowTone();
 
-            if (powers[highTone] < config.PowerThreshold || powers[lowTone] < config.PowerThreshold)
+            if (powers[highTone] < threshold || powers[lowTone] < threshold)
                 return DtmfTone.None;
 
             return DtmfClassification.For(highTone, lowTone);

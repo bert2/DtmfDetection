@@ -12,9 +12,15 @@
 
         private int numSamplesRead;
 
-        public StaticSampleSource(DetectorConfig config, IWaveProvider source)
+        public StaticSampleSource(DetectorConfig config, IWaveProvider source, bool forceMono = true)
         {
-            samples = source.ToSampleProvider().AsMono().DownsampleTo(config.MaxSampleRate).Blockwise(config.SampleBlockSize);
+            var sampleProvider = source.ToSampleProvider();
+
+            if (forceMono)
+                sampleProvider = sampleProvider.AsMono();
+
+            samples = sampleProvider.DownsampleTo(config.MaxSampleRate).Blockwise(config.SampleBlockSize);
+
             // Optimistically assume that we are going to read at least BlockSize bytes.
             numSamplesRead = samples.BlockSize;
         }
