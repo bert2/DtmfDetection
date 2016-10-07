@@ -38,23 +38,29 @@
 
         public bool Forward<TState>(Func<int, DtmfTone, TState> dtmfStarting, Action<int, TState, DtmfTone> dtmfStopping)
         {
-            if (source.HasSamples)
-            {
-                var dtmfTones = dtmfDetector.Analyze(source.Samples);
+            var canAnalyze = source.HasSamples;
 
-                for (var channel = 0; channel < numChannels; channel++)
-                    dtmfChangeHandlers[channel].Handle(
-                        dtmfTones[channel], 
-                        Apply(dtmfStarting, channel), 
-                        Apply(dtmfStopping, channel));
+            var dtmfTones = canAnalyze
+                ? dtmfDetector.Analyze(source.Samples)
+                // Reached end of data: generate DtmfTone.None's and flush the state machines to handle cut-off tones.
+                : Enumerable.Repeat(DtmfTone.None, numChannels).ToArray();
+
+            for (var channel = 0; channel < numChannels; channel++)
+            {
+                dtmfChangeHandlers[channel].Handle(
+                    dtmfTones[channel], 
+                    Apply(dtmfStarting, channel), 
+                    Apply(dtmfStopping, channel));
             }
 
-            return source.HasSamples;
+            return canAnalyze;
         }
 
+        // Helper function for partial application on Func lambdas.
         private static Func<T2, TResult> Apply<T1, T2, TResult>(Func<T1, T2, TResult> func, T1 arg1) => 
             arg2 => func(arg1, arg2);
 
+        // Helper function for partial application on Action lambdas.
         private static Action<T2, T3> Apply<T1, T2, T3>(Action<T1, T2, T3> action, T1 arg1) =>
             (arg2, arg3) => action(arg1, arg2, arg3);
     }
