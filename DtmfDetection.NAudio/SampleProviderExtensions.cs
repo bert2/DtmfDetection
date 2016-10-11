@@ -14,9 +14,9 @@
 
         public static ISampleProvider AsMono(this ISampleProvider source)
         {
-            return source.WaveFormat.Channels != 1
-                       ? new MultiplexingSampleProvider(new[] { source }, 1)
-                       : source;
+            return source.WaveFormat.Channels > 1
+                ? new MonoSampleProvider(source)
+                : source;
         }
 
         public static SampleBlockProvider Blockwise(this ISampleProvider source, int blockSize)

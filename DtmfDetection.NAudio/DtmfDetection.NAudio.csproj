@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BufferedWaveProviderExtensions.cs" />
+    <Compile Include="MonoSampleProvider.cs" />
     <Compile Include="StaticSampleSource.cs" />
     <Compile Include="SampleBlockProvider.cs" />
     <Compile Include="LiveAudioAnalyzer.cs" />
