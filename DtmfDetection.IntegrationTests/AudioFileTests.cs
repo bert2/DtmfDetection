@@ -48,7 +48,7 @@
         }
 
         [TestMethod]
-        public void DetectsStereoDtmfTonesCorrectly()
+        public void DetectsDtmfTonesInStereoAudioCorrectly()
         {
             #region Expected tones
             
@@ -89,6 +89,35 @@
             #endregion
 
             using (var waveFile = new Mp3FileReader("TestData/long_dtmf_tones.mp3"))
+            {
+                var actualTones = waveFile.DtmfTones(false).ToArray();
+
+                AssertEqual(expectedTones, actualTones);
+            }
+        }
+
+        [TestMethod]
+        public void DetectsStereoDtmfTonesCorrectly()
+        {
+            #region Expected tones
+
+            var expectedTones = new[]
+            {
+                new DtmfOccurence(DtmfTone.One, 0, TimeSpan.FromSeconds(0.026), TimeSpan.FromSeconds(0.999)),
+                new DtmfOccurence(DtmfTone.Two, 1, TimeSpan.FromSeconds(2.024), TimeSpan.FromSeconds(1.0)),
+                new DtmfOccurence(DtmfTone.Three, 0, TimeSpan.FromSeconds(4.023), TimeSpan.FromSeconds(1.999)),
+                new DtmfOccurence(DtmfTone.Four, 1, TimeSpan.FromSeconds(5.023), TimeSpan.FromSeconds(1.998)),
+                new DtmfOccurence(DtmfTone.Five, 0, TimeSpan.FromSeconds(8.021), TimeSpan.FromSeconds(0.999)),
+                new DtmfOccurence(DtmfTone.Six, 1, TimeSpan.FromSeconds(8.021), TimeSpan.FromSeconds(0.999)),
+                new DtmfOccurence(DtmfTone.Eight, 1, TimeSpan.FromSeconds(11.019), TimeSpan.FromSeconds(0.999)),
+                new DtmfOccurence(DtmfTone.Seven, 0, TimeSpan.FromSeconds(10.019), TimeSpan.FromSeconds(2.999)),
+                new DtmfOccurence(DtmfTone.Nine, 0, TimeSpan.FromSeconds(14.017), TimeSpan.FromSeconds(0.999)),
+                new DtmfOccurence(DtmfTone.Zero, 0, TimeSpan.FromSeconds(15.016), TimeSpan.FromSeconds(0.984))
+            };
+
+            #endregion
+
+            using (var waveFile = new WaveFileReader("TestData/stereo_dtmf_tones.wav"))
             {
                 var actualTones = waveFile.DtmfTones(false).ToArray();
 
