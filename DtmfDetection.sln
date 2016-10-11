@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtmfDetector", "DtmfDetector\DtmfDetector.csproj", "{5234E0FC-3AB7-4A61-A9BC-F822009BFA26}"
 EndProject
@@ -10,6 +10,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtmfDetection", "DtmfDetection\DtmfDetection.csproj", "{56E96006-4E6B-4708-9228-270595DAEC0E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtmfDetection.IntegrationTests", "DtmfDetection.IntegrationTests\DtmfDetection.IntegrationTests.csproj", "{DD5BB3E3-4AF4-4FDF-A620-4872D42090B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07C0EB4B-0F64-46BB-BC2D-801C075BC71C}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
