@@ -38,6 +38,7 @@
 
         public bool Forward<TState>(Func<int, DtmfTone, TState> dtmfStarting, Action<int, TState, DtmfTone> dtmfStopping)
         {
+            // Save value of HasSamples, because it might be different after analyzing (i.e. reading).
             var canAnalyze = source.HasSamples;
 
             var dtmfTones = canAnalyze
