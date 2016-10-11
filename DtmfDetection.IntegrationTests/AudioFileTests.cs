@@ -5,11 +5,12 @@
     using System.Linq;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using NAudio;
 
     using global::NAudio.Wave;
     using global::NAudio.Vorbis;
-    
+
     [TestClass]
     public class AudioFileTests
     {
@@ -51,7 +52,7 @@
         public void DetectsDtmfTonesInStereoAudioCorrectly()
         {
             #region Expected tones
-            
+
             var expectedTones = new[]
             {
                 new DtmfOccurence(DtmfTone.One, 0, TimeSpan.FromSeconds(2.819), TimeSpan.FromSeconds(2.819)),
@@ -125,6 +126,28 @@
             }
         }
 
+        [TestMethod]
+        public void DetectsAllStereoDtmfTonesWhenMonoIsForced()
+        {
+            #region Expected tones
+
+            var expectedTones = new[]
+            {
+                new DtmfOccurence(DtmfTone.One, 0, TimeSpan.FromSeconds(0.026), TimeSpan.FromSeconds(0.999)),
+                new DtmfOccurence(DtmfTone.Two, 0, TimeSpan.FromSeconds(2.024), TimeSpan.FromSeconds(1.0)),
+                new DtmfOccurence(DtmfTone.Three, 0, TimeSpan.FromSeconds(4.023), TimeSpan.FromSeconds(0.977))
+            };
+
+            #endregion
+
+            using (var waveFile = new WaveFileReader("TestData/stereo_dtmf_tones_no_overlap.wav"))
+            {
+                var actualTones = waveFile.DtmfTones(forceMono: true).ToArray();
+
+                AssertEqual(expectedTones, actualTones);
+            }
+        }
+
         /// <summary>Test data has been taken from https://en.wikipedia.org/wiki/File:DTMF_dialing.ogg (no license, public domain). 
         /// Mark/space of the DTMF sequences is about 60/40.</summary>
         [TestMethod]
@@ -134,21 +157,93 @@
 
             var expectedTones = new[]
             {
-                DtmfTone.Zero, DtmfTone.Six, DtmfTone.Nine, DtmfTone.Six, DtmfTone.Six, DtmfTone.Seven, DtmfTone.Five, DtmfTone.Three, DtmfTone.Five, DtmfTone.Six,
+                DtmfTone.Zero,
+                DtmfTone.Six,
+                DtmfTone.Nine,
+                DtmfTone.Six,
+                DtmfTone.Six,
+                DtmfTone.Seven,
+                DtmfTone.Five,
+                DtmfTone.Three,
+                DtmfTone.Five,
+                DtmfTone.Six,
 
-                DtmfTone.Four, DtmfTone.Six, DtmfTone.Four, DtmfTone.Six, DtmfTone.Four, DtmfTone.One, DtmfTone.Five, DtmfTone.One, DtmfTone.Eight, DtmfTone.Zero,
+                DtmfTone.Four,
+                DtmfTone.Six,
+                DtmfTone.Four,
+                DtmfTone.Six,
+                DtmfTone.Four,
+                DtmfTone.One,
+                DtmfTone.Five,
+                DtmfTone.One,
+                DtmfTone.Eight,
+                DtmfTone.Zero,
 
-                DtmfTone.Two, DtmfTone.Three, DtmfTone.Three, DtmfTone.Six, DtmfTone.Seven, DtmfTone.Three, DtmfTone.One, DtmfTone.Four, DtmfTone.One, DtmfTone.Six,
+                DtmfTone.Two,
+                DtmfTone.Three,
+                DtmfTone.Three,
+                DtmfTone.Six,
+                DtmfTone.Seven,
+                DtmfTone.Three,
+                DtmfTone.One,
+                DtmfTone.Four,
+                DtmfTone.One,
+                DtmfTone.Six,
 
-                DtmfTone.Three, DtmfTone.Six, DtmfTone.Zero, DtmfTone.Eight, DtmfTone.Three, DtmfTone.Three, DtmfTone.Eight, DtmfTone.One, DtmfTone.Six, DtmfTone.Zero,
+                DtmfTone.Three,
+                DtmfTone.Six,
+                DtmfTone.Zero,
+                DtmfTone.Eight,
+                DtmfTone.Three,
+                DtmfTone.Three,
+                DtmfTone.Eight,
+                DtmfTone.One,
+                DtmfTone.Six,
+                DtmfTone.Zero,
 
-                DtmfTone.Four, DtmfTone.Four, DtmfTone.Zero, DtmfTone.Zero, DtmfTone.Eight, DtmfTone.Two, DtmfTone.Six, DtmfTone.One, DtmfTone.Four, DtmfTone.Six,
+                DtmfTone.Four,
+                DtmfTone.Four,
+                DtmfTone.Zero,
+                DtmfTone.Zero,
+                DtmfTone.Eight,
+                DtmfTone.Two,
+                DtmfTone.Six,
+                DtmfTone.One,
+                DtmfTone.Four,
+                DtmfTone.Six,
 
-                DtmfTone.Six, DtmfTone.Two, DtmfTone.Five, DtmfTone.Three, DtmfTone.Six, DtmfTone.Eight, DtmfTone.Nine, DtmfTone.Six, DtmfTone.Three, DtmfTone.Eight,
+                DtmfTone.Six,
+                DtmfTone.Two,
+                DtmfTone.Five,
+                DtmfTone.Three,
+                DtmfTone.Six,
+                DtmfTone.Eight,
+                DtmfTone.Nine,
+                DtmfTone.Six,
+                DtmfTone.Three,
+                DtmfTone.Eight,
 
-                DtmfTone.Eight, DtmfTone.Four, DtmfTone.Eight, DtmfTone.Two, DtmfTone.One, DtmfTone.Three, DtmfTone.Eight, DtmfTone.One, DtmfTone.Seven, DtmfTone.Eight,
+                DtmfTone.Eight,
+                DtmfTone.Four,
+                DtmfTone.Eight,
+                DtmfTone.Two,
+                DtmfTone.One,
+                DtmfTone.Three,
+                DtmfTone.Eight,
+                DtmfTone.One,
+                DtmfTone.Seven,
+                DtmfTone.Eight,
 
-                DtmfTone.Five, DtmfTone.Zero, DtmfTone.Seven, DtmfTone.Three, DtmfTone.Six, DtmfTone.Four, DtmfTone.Three, DtmfTone.Three, DtmfTone.Nine, DtmfTone.Nine
+                DtmfTone.Five,
+                DtmfTone.Zero,
+                DtmfTone.Seven,
+                DtmfTone.Three,
+                DtmfTone.Six,
+                DtmfTone.Four,
+                DtmfTone.Three,
+                DtmfTone.Three,
+                DtmfTone.Nine,
+                DtmfTone.Nine
             };
 
             #endregion
@@ -163,10 +258,32 @@
 
         private static void AssertEqual<T>(IList<T> expecteds, IList<T> actuals)
         {
-            Assert.AreEqual(expecteds.Count, actuals.Count, "The lists are not of the same length.");
+            Assert.AreEqual(
+                expecteds.Count,
+                actuals.Count,
+                "The lists are not of the same length.\nFirst mismatch: " + GetFirstMismatch(expecteds, actuals));
 
+            AssertEqualElements(expecteds, actuals);
+        }
+
+        private static void AssertEqualElements<T>(IList<T> expecteds, IList<T> actuals)
+        {
             for (var i = 0; i < Math.Min(expecteds.Count, actuals.Count); i++)
                 Assert.AreEqual(expecteds[i], actuals[i], $"Items at index {i} do not match");
+        }
+
+        private static string GetFirstMismatch<T>(IList<T> expecteds, IList<T> actuals)
+        {
+            try
+            {
+                AssertEqualElements(expecteds, actuals);
+            }
+            catch (AssertFailedException e)
+            {
+                return e.Message;
+            }
+
+            return string.Empty;
         }
     }
 }
