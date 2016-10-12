@@ -27,6 +27,9 @@
         /// calculated by 205 / f_s Hz * 1000 ms  (e.g. for a  sample rate f_s of 8000 Hz it is 25.625 ms).</remarks>
         public DateTime Position { get; }
 
+        /// <inheritdoc />
+        public override string ToString() =>  $"{DtmfTone} started @ {Position} ({Channel})";
+
         #region Equality implementations
 
         /// <inheritdoc />

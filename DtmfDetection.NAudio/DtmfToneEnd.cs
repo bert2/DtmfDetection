@@ -27,6 +27,9 @@
         /// calculated by 205 / f_s Hz * 1000 ms  (e.g. for a  sample rate f_s of 8000 Hz it is 25.625 ms).</remarks>
         public TimeSpan Duration { get; }
 
+        /// <inheritdoc />
+        public override string ToString() => $"{DtmfTone} stopped after {Duration.TotalMilliseconds} ms ({Channel})";
+
         #region Equality implementations
 
         /// <inheritdoc />
