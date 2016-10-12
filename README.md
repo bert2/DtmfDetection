@@ -47,7 +47,7 @@ using (var mp3File = new Mp3FileReader("dtmftest.mp3"))
 How to detect DTMF tones in the current audio output:
 
 ``` C#
-public static void Main2()
+public static void Main()
 {
     using (var loopback = new WasapiLoopbackCapture { ShareMode = AudioClientShareMode.Shared })
     {
@@ -67,7 +67,7 @@ public static void Main2()
 How to detect DTMF tones through mic in, but with each audio channel analyzed separately:
 
 ``` C#
-public static void Main3()
+public static void Main()
 {
     using (var micIn = new WaveInEvent { WaveFormat = new WaveFormat(8000, 32, 1) })
     {
