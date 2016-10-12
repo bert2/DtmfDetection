@@ -57,7 +57,7 @@
 
         public override string ToString() => Key.ToString();
 
-        #region Comparison implementations
+        #region Equality implementations
 
         public override bool Equals(object obj)
         {
