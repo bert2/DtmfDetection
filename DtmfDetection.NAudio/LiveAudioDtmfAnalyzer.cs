@@ -5,6 +5,13 @@
 
     using global::NAudio.Wave;
 
+    /// <summary>Implements means to detect DTMF tones in audio data provided as NAudio's IWaveIn.
+    /// The detection runs in a background thread and can be controlled with the methods
+    /// Start/StopCapturing(). Hook up to the DtmfToneStarted/Stopped events to receive the beginnings
+    /// and ends of DTMF tones.</summary>
+    /// <remarks>By default a LiveAudioDtmfAnalyzer forces a mono conversion by averaging all audio 
+    /// channels first. Turn it off with the constructor's forceMono flag in order to analyze each 
+    /// channel separately.</remarks>
     public class LiveAudioDtmfAnalyzer
     {
         private readonly IWaveIn waveIn;
@@ -13,10 +20,16 @@
 
         private Thread captureWorker;
 
+        /// <summary>Raised when a DTMF tone has been detected.</summary>
         public event Action<DtmfToneStart> DtmfToneStarted;
 
+        /// <summary>Raised when the end of a DTMF tone has been detected.</summary>
         public event Action<DtmfToneEnd> DtmfToneStopped;
 
+        /// <summary>Creates a new instance of LiveAudioDtmfAnalyzer.</summary>
+        /// <param name="waveIn">The audio data source.</param>
+        /// <param name="forceMono">Indicates whether the audio data should be converted to mono 
+        /// first. Default is true.</param>
         public LiveAudioDtmfAnalyzer(IWaveIn waveIn, bool forceMono = true)
         {
             this.waveIn = waveIn;
@@ -24,8 +37,11 @@
             dtmfAudio = DtmfAudio.CreateFrom(new StreamingSampleSource(config, Buffer(waveIn), forceMono), config);
         }
 
+        /// <summary>Indicates whether the background thread is running or not.</summary>
         public bool IsCapturing { get; private set; }
 
+        /// <summary>Starts analyzing the audio data in a background thread. Does nothing if the
+        /// analyzer is already running.</summary>
         public void StartCapturing()
         {
             if (IsCapturing)
@@ -37,6 +53,8 @@
             captureWorker.Start();
         }
 
+        /// <summary>Stops analyzing the audio data and the background thread. Does nothing if the
+        /// analyzer is not running.</summary>
         public void StopCapturing()
         {
             if (!IsCapturing)

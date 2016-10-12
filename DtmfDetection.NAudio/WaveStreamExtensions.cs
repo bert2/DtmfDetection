@@ -10,7 +10,7 @@
     public static class WaveStreamExtensions
     {
         /// <summary>Reads a WaveStream and enumerates all present DTMF tones.</summary>
-        /// <remarks>By default this method does a mono conversion by averaging all audio channels first. Turn it off with the
+        /// <remarks>By default this method forces a mono conversion by averaging all audio channels first. Turn it off with the
         ///  forceMono flag in order to analyze each channel separately.</remarks>
         /// <param name="waveFile">The audio data to analyze.</param>
         /// <param name="forceMono">Indicates whether the audio data should be converted to mono first. Default is true.</param>
