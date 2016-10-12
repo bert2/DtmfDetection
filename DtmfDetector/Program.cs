@@ -37,7 +37,7 @@
         {
             using (var log = new Log("audioOut.log"))
             {
-                LiveAudioAnalyzer analyzer = null;
+                LiveAudioDtmfAnalyzer analyzer = null;
                 IWaveIn audioSource = null;
 
                 while (true)
@@ -83,10 +83,10 @@
             }
         }
 
-        private static LiveAudioAnalyzer InitLiveAudioAnalyzer(Log log, IWaveIn waveIn)
+        private static LiveAudioDtmfAnalyzer InitLiveAudioAnalyzer(Log log, IWaveIn waveIn)
         {
-            var analyzer = new LiveAudioAnalyzer(waveIn);
-            analyzer.DtmfToneStarting += start => log.Add($"{start.DtmfTone.Key} key started on {start.Position.TimeOfDay} (channel {start.Channel})");
+            var analyzer = new LiveAudioDtmfAnalyzer(waveIn);
+            analyzer.DtmfToneStarted += start => log.Add($"{start.DtmfTone.Key} key started on {start.Position.TimeOfDay} (channel {start.Channel})");
             analyzer.DtmfToneStopped += end => log.Add($"{end.DtmfTone.Key} key stopped after {end.Duration.TotalSeconds} s (channel {end.Channel})");
             return analyzer;
         }

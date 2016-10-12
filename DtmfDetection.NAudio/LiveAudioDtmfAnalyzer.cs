@@ -5,7 +5,7 @@
 
     using global::NAudio.Wave;
 
-    public class LiveAudioAnalyzer
+    public class LiveAudioDtmfAnalyzer
     {
         private readonly IWaveIn waveIn;
 
@@ -13,11 +13,11 @@
 
         private Thread captureWorker;
 
-        public event Action<DtmfToneStart> DtmfToneStarting;
+        public event Action<DtmfToneStart> DtmfToneStarted;
 
         public event Action<DtmfToneEnd> DtmfToneStopped;
 
-        public LiveAudioAnalyzer(IWaveIn waveIn, bool forceMono = true)
+        public LiveAudioDtmfAnalyzer(IWaveIn waveIn, bool forceMono = true)
         {
             this.waveIn = waveIn;
             var config = new DetectorConfig();
@@ -54,7 +54,7 @@
                 (channel, tone) =>
                 {
                     var start = DateTime.Now;
-                    DtmfToneStarting?.Invoke(new DtmfToneStart(tone, channel, start));
+                    DtmfToneStarted?.Invoke(new DtmfToneStart(tone, channel, start));
                     return start;
                 },
                 (channel, start, tone) => DtmfToneStopped?.Invoke(new DtmfToneEnd(tone, channel, DateTime.Now - start))))
