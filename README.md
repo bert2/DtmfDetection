@@ -51,8 +51,8 @@ public static void Main()
 {
     using (var loopback = new WasapiLoopbackCapture { ShareMode = AudioClientShareMode.Shared })
     {
-        var analyzer = new LiveAudioAnalyzer(loopback);
-        analyzer.DtmfToneStarting += start => Console.WriteLine(
+        var analyzer = new LiveAudioDtmfAnalyzer(loopback);
+        analyzer.DtmfToneStarted += start => Console.WriteLine(
             $"{start.DtmfTone.Key} key started on {start.Position.TimeOfDay}");
         analyzer.DtmfToneStopped += end => Console.WriteLine(
             $"{end.DtmfTone.Key} key stopped after {end.Duration.TotalSeconds} s");
@@ -71,8 +71,8 @@ public static void Main()
 {
     using (var micIn = new WaveInEvent { WaveFormat = new WaveFormat(8000, 32, 1) })
     {
-        var analyzer = new LiveAudioAnalyzer(micIn, forceMono: false);
-        analyzer.DtmfToneStarting += start => Console.WriteLine(
+        var analyzer = new LiveAudioDtmfAnalyzer(micIn, forceMono: false);
+        analyzer.DtmfToneStarted += start => Console.WriteLine(
             $"{start.DtmfTone.Key} key started on {start.Position.TimeOfDay} (channel {start.Channel})");
         analyzer.DtmfToneStopped += end => Console.WriteLine(
             $"{end.DtmfTone.Key} key stopped after {end.Duration.TotalSeconds} s (channel {end.Channel})");
