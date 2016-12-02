@@ -9,17 +9,29 @@
 
     public static class Program
     {
-        public static void Main()
+        public static int Main(string[] args)
         {
-            AnalyzeWaveFile();
-            CaptureAndAnalyzeLiveAudio();
+            try
+            {
+                if (args.Length > 0)
+                    AnalyzeWaveFile(args[0]);
+                else
+                    CaptureAndAnalyzeLiveAudio();
+
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return 1;
+            }
         }
 
-        private static void AnalyzeWaveFile()
+        private static void AnalyzeWaveFile(string path)
         {
             using (var log = new Log("waveFile.log"))
             {
-                using (var audioFile = new Mp3FileReader("dtmftest.mp3"))
+                using (var audioFile = new AudioFileReader(path))
                 {
                     foreach (var occurence in audioFile.DtmfTones())
                     {
