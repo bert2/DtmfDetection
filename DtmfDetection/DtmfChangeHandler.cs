@@ -14,29 +14,29 @@
 
         private DtmfTone lastTone = DtmfTone.None;
 
-        private object state;
+        private object clientData;
 
-        public void Handle<TState>(DtmfTone tone, Func<DtmfTone, TState> handleStart, Action<TState, DtmfTone> handleEnd)
+        public void Handle<T>(DtmfTone tone, Func<DtmfTone, T> handleStart, Action<T, DtmfTone> handleEnd)
         {
             switch (currentState)
             {
                 case State.NoDtmf:
                     if (tone != DtmfTone.None)
                     {
-                        state = handleStart(tone);
+                        clientData = handleStart(tone);
                         currentState = State.Dtmf;
                     }
                     break;
                 case State.Dtmf:
                     if (tone == DtmfTone.None)
                     {
-                        handleEnd((TState)state, lastTone);
+                        handleEnd((T)clientData, lastTone);
                         currentState = State.NoDtmf;
                     }
                     else if (tone != lastTone)
                     {
-                        handleEnd((TState)state, lastTone);
-                        state = handleStart(tone);
+                        handleEnd((T)clientData, lastTone);
+                        clientData = handleStart(tone);
                     }
                     break;
                 default:
