@@ -25,9 +25,6 @@
             s1 = s0;
         }
 
-        public void Reset()
-        {
-            s1 = s2 = .0;
-        }
+        public void Reset() => s1 = s2 = .0;
     }
 }
