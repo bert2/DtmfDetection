@@ -256,6 +256,40 @@
             }
         }
 
+        [TestMethod]
+        public void ShouldDownsample48KHzCorrectly()
+        {
+            #region Expected tones
+
+            var expectedTones = new[]
+            {
+                new DtmfOccurence(DtmfTone.One, 0, TimeSpan.FromSeconds(2.793), TimeSpan.FromSeconds(2.819)),
+                new DtmfOccurence(DtmfTone.Two, 0, TimeSpan.FromSeconds(6.739), TimeSpan.FromSeconds(0.154)),
+                new DtmfOccurence(DtmfTone.Three, 0, TimeSpan.FromSeconds(7.303), TimeSpan.FromSeconds(0.180)),
+                new DtmfOccurence(DtmfTone.Four, 0, TimeSpan.FromSeconds(8.226), TimeSpan.FromSeconds(2.357)),
+                new DtmfOccurence(DtmfTone.Five, 0, TimeSpan.FromSeconds(12.044), TimeSpan.FromSeconds(0.025)),
+                new DtmfOccurence(DtmfTone.Five, 0, TimeSpan.FromSeconds(12.095), TimeSpan.FromSeconds(0.205)),
+                new DtmfOccurence(DtmfTone.Six, 0, TimeSpan.FromSeconds(12.736), TimeSpan.FromSeconds(0.102)),
+                new DtmfOccurence(DtmfTone.Seven, 0, TimeSpan.FromSeconds(14.529), TimeSpan.FromSeconds(0.026)),
+                new DtmfOccurence(DtmfTone.Seven, 0, TimeSpan.FromSeconds(14.581), TimeSpan.FromSeconds(2.306)),
+                new DtmfOccurence(DtmfTone.Eight, 0, TimeSpan.FromSeconds(17.707), TimeSpan.FromSeconds(0.102)),
+                new DtmfOccurence(DtmfTone.Nine, 0, TimeSpan.FromSeconds(18.450), TimeSpan.FromSeconds(0.103)),
+                new DtmfOccurence(DtmfTone.Hash, 0, TimeSpan.FromSeconds(19.142), TimeSpan.FromSeconds(0.256)),
+                new DtmfOccurence(DtmfTone.Zero, 0, TimeSpan.FromSeconds(19.859), TimeSpan.FromSeconds(0.052)),
+                new DtmfOccurence(DtmfTone.Star, 0, TimeSpan.FromSeconds(20.474), TimeSpan.FromSeconds(0.154)),
+                new DtmfOccurence(DtmfTone.One, 0, TimeSpan.FromSeconds(22.038), TimeSpan.FromSeconds(1.768))
+            };
+
+            #endregion
+
+            using (var waveFile = new WaveFileReader("TestData/long_dtmf_tones_48khz.wav"))
+            {
+                var actualTones = waveFile.DtmfTones().ToArray();
+
+                AssertEqual(expectedTones, actualTones);
+            }
+        }
+
         private static void AssertEqual<T>(IList<T> expecteds, IList<T> actuals)
         {
             Assert.AreEqual(
