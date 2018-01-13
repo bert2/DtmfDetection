@@ -38,14 +38,15 @@ namespace DtmfDetection
 
         private int StrongestOf(IEnumerable<int> pureTones)
         {
-            return pureTones.Select(tone => new
-                                            {
-                                                Tone = tone,
-                                                Power = estimators[tone].AmplitudeSquared
-                                            })
-                            .OrderBy(result => result.Power)
-                            .Select(result => result.Tone)
-                            .Last();
+            return pureTones
+                .Select(
+                    tone => new {
+                        Tone = tone,
+                        Power = estimators[tone].AmplitudeSquared
+                    })
+                .OrderBy(result => result.Power)
+                .Select(result => result.Tone)
+                .Last();
         }
     }
 }
