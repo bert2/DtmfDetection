@@ -12,8 +12,8 @@
     <summary>Implementation of the Goertzel algorithm for the detection of DTMF tones (aka touch tones) in audio data.</summary>
     <description>Implementation of the Goertzel algorithm for the detection of DTMF tones (aka touch tones) in audio data. Install the package "DtmfDetection.NAudio" for integration with NAudio.
     </description>
-    <releaseNotes></releaseNotes>
-    <copyright>Copyright © 2016</copyright>
+    <releaseNotes>* No change -- new package was only pushed to keep version in sync with DtmfDetection.NAudio</releaseNotes>
+    <copyright>Copyright © 2018</copyright>
     <tags>Goertzel DTMF touch tone detection</tags>
   </metadata>
 </package>

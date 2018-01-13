@@ -11,8 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>Extends NAudio with means to detect DTMF tones (aka touch tones) in live audio data and audio files.</summary>
     <description>Extends NAudio with means to detect DTMF tones (aka touch tones) in live audio data and audio files.</description>
-    <releaseNotes>Added support for all WaveStream-based audio formats.</releaseNotes>
-    <copyright>Copyright © 2016</copyright>
+    <releaseNotes>* Update NAudio reference to v1.8.4.0</releaseNotes>
+    <copyright>Copyright © 2018</copyright>
     <tags>Goertzel DTMF touch tone detection NAudio</tags>
   </metadata>
 </package>
