@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DtmfDetection.IntegrationTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{07C0EB4B-0F64-46BB-BC2D-801C075BC71C}"
 	ProjectSection(SolutionItems) = preProject
+		ISSUE_TEMPLATE.md = ISSUE_TEMPLATE.md
+		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
