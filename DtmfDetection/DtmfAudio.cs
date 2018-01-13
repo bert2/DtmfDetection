@@ -49,20 +49,12 @@
             for (var channel = 0; channel < numChannels; channel++)
             {
                 dtmfChangeHandlers[channel].Handle(
-                    dtmfTones[channel], 
-                    Apply(dtmfStarting, channel), 
-                    Apply(dtmfStopping, channel));
+                    dtmfTones[channel],
+                    dtmfStarting.Apply(channel),
+                    dtmfStopping.Apply(channel));
             }
 
             return canAnalyze;
         }
-
-        // Helper function for partial application on Func lambdas.
-        private static Func<T2, TResult> Apply<T1, T2, TResult>(Func<T1, T2, TResult> func, T1 arg1) => 
-            arg2 => func(arg1, arg2);
-
-        // Helper function for partial application on Action lambdas.
-        private static Action<T2, T3> Apply<T1, T2, T3>(Action<T1, T2, T3> action, T1 arg1) =>
-            (arg2, arg3) => action(arg1, arg2, arg3);
     }
 }

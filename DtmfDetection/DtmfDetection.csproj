@@ -46,6 +46,7 @@
     <Compile Include="DtmfTone.cs" />
     <Compile Include="AmplitudeEstimator.cs" />
     <Compile Include="ISampleSource.cs" />
+    <Compile Include="PartialApplication.cs" />
     <Compile Include="PureTones.cs" />
     <Compile Include="PhoneKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
