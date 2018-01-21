@@ -3,6 +3,8 @@ DtmfDetection
 
 Simple C# implementation of the Goertzel algorithm for DTMF tone (a.k.a. Touch-Tone) detection and localization in audio data. Includes wrappers and extensions for NAudio.
 
+[![Build status](https://ci.appveyor.com/api/projects/status/yxidl32tv632lagv/branch/master?svg=true)](https://ci.appveyor.com/project/bert2/dtmfdetection/branch/master)
+
 NuGet Packages
 --------------
 
