@@ -26,15 +26,15 @@ public static class Program
 {
     public static void Main()
     {
-		using (var waveFile = new WaveFileReader("dtmftest.wav"))
-		{
-			foreach (var occurence in waveFile.DtmfTones())
-			{
-				Console.WriteLine(
-					$"{occurence.Position.TotalSeconds:00.000} s: "
-					+ $"{occurence.DtmfTone.Key} key "
-					+ $"(duration: {occurence.Duration.TotalSeconds:00.000} s)");
-			}
+        using (var waveFile = new WaveFileReader("dtmftest.wav"))
+        {
+	        foreach (var occurence in waveFile.DtmfTones())
+            {
+                Console.WriteLine(
+                    $"{occurence.Position.TotalSeconds:00.000} s: "
+		            + $"{occurence.DtmfTone.Key} key "
+		            + $"(duration: {occurence.Duration.TotalSeconds:00.000} s)");
+            }
 		}
 	}
 }
