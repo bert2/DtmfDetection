@@ -6,18 +6,14 @@
     public class Detector {
         private static readonly IReadOnlyList<int> lowTones = new[] { 697, 770, 852, 941 };
         private static readonly IReadOnlyList<int> highTones = new[] { 1209, 1336, 1477, 1633 };
-        private readonly int sampleRate;
-        private readonly int numSamples;
         private readonly double threshold;
         private readonly int numChannels;
         private readonly IReadOnlyList<Goertzel> initLoGoertz;
         private readonly IReadOnlyList<Goertzel> initHiGoertz;
 
-        public Detector(int numChannels = 1) {
-            sampleRate = 8000;
-            numSamples = 205;
-            threshold = 35.0;
+        public Detector(int numChannels = 1, double threshold = 35.0, int sampleRate = 8000, int numSamples = 205) {
             this.numChannels = numChannels;
+            this.threshold = threshold;
             initLoGoertz = lowTones.Select(f => Goertzel.Init(f, sampleRate, numSamples)).ToArray();
             initHiGoertz = highTones.Select(f => Goertzel.Init(f, sampleRate, numSamples)).ToArray();
         }
