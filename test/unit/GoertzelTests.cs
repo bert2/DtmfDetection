@@ -69,6 +69,12 @@ namespace Unit {
             .GoertzelResponseShouldBeGreaterThan(Threshold));
 
         [Fact]
+        public void CanDetectFrequencyThatStartsLate() =>
+            Constant(.0f).Take(102).Concat(Sine(1336))
+            .MeasureFrequency(1336)
+            .GoertzelResponseShouldBeGreaterThan(Threshold);
+
+        [Fact]
         public void CanBeResetted() =>
             Sine(1336).MeasureFrequency(1336).Reset()
             .Response
@@ -79,12 +85,6 @@ namespace Unit {
             Sine(1336).MeasureFrequency(1336).Reset()
             .NormResponse
             .ShouldBe(double.NaN);
-
-        [Fact]
-        public void CanDetectToneThatStartsLate() =>
-            Constant(.0f).Take(102).Concat(Sine(1336))
-            .MeasureFrequency(1336)
-            .GoertzelResponseShouldBeGreaterThan(Threshold);
 
         private static void Repeat(Action test, int count = 1000) {
             for (var i = 1; i <= count; i++) {

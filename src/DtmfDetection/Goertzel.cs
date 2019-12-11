@@ -1,5 +1,6 @@
 ﻿namespace DtmfDetection {
     using System;
+    using System.Globalization;
 
     public readonly struct Goertzel : IEquatable<Goertzel> {
         private readonly double C, S1, S2, E;
@@ -24,6 +25,8 @@
 
         public Goertzel Reset() => new Goertzel(c: C, s1: 0, s2: 0, e: 0);
 
+        public override string ToString() => NormResponse.ToString(CultureInfo.InvariantCulture);
+
         #region Equality implementations
 
         public bool Equals(Goertzel other) => C == other.C && S1 == other.S1 && S2 == other.S2 && E == other.E;
@@ -34,15 +37,7 @@
 
         public static bool operator !=(Goertzel left, Goertzel right) => !(left == right);
 
-        public override int GetHashCode() {
-            unchecked {
-                return (((394169491
-                    * -1521134295 + C.GetHashCode())
-                    * -1521134295 + S1.GetHashCode())
-                    * -1521134295 + S2.GetHashCode())
-                    * -1521134295 + E.GetHashCode();
-            }
-        }
+        public override int GetHashCode() => HashCode.Combine(C, S1, S2, E);
 
         #endregion Equality implementations
     }

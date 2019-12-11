@@ -18,7 +18,7 @@
             initHiGoertz = highTones.Select(f => Goertzel.Init(f, sampleRate, numSamples)).ToArray();
         }
 
-        public PhoneKey[] Analyze(in ReadOnlySpan<float> sampleBlock) {
+        public IReadOnlyList<PhoneKey> Analyze(in ReadOnlySpan<float> sampleBlock) {
             var loGoertz = CreateGoertzels(initLoGoertz, numChannels);
             var hiGoertz = CreateGoertzels(initHiGoertz, numChannels);
             AddSamples(sampleBlock, numChannels, loGoertz, hiGoertz);
@@ -33,6 +33,22 @@
             }
 
             return goertz;
+        }
+
+        private static void AddSamples(in ReadOnlySpan<float> sampleBlock, int numChannels, Goertzel[][] loGoertz, Goertzel[][] hiGoertz) {
+            for (var i = 0; i < sampleBlock.Length; i++) {
+                var c = i % numChannels;
+
+                loGoertz[c][0] = loGoertz[c][0].AddSample(sampleBlock[i]);
+                loGoertz[c][1] = loGoertz[c][1].AddSample(sampleBlock[i]);
+                loGoertz[c][2] = loGoertz[c][2].AddSample(sampleBlock[i]);
+                loGoertz[c][3] = loGoertz[c][3].AddSample(sampleBlock[i]);
+
+                hiGoertz[c][0] = hiGoertz[c][0].AddSample(sampleBlock[i]);
+                hiGoertz[c][1] = hiGoertz[c][1].AddSample(sampleBlock[i]);
+                hiGoertz[c][2] = hiGoertz[c][2].AddSample(sampleBlock[i]);
+                hiGoertz[c][3] = hiGoertz[c][3].AddSample(sampleBlock[i]);
+            }
         }
 
         private static PhoneKey[] Detect(
@@ -59,24 +75,9 @@
             return fstLoVal < threshold || fstHiVal < threshold
                 || fstLoVal > threshold && sndLoVal > threshold
                 || fstHiVal > threshold && sndHiVal > threshold
+                || double.IsNaN(fstLoVal) || double.IsNaN(fstHiVal)
                 ? PhoneKey.None
                 : (highTones[fstHiIdx], lowTones[fstLoIdx]).ToPhoneKey();
-        }
-
-        private static void AddSamples(in ReadOnlySpan<float> sampleBlock, int numChannels, Goertzel[][] loGoertz, Goertzel[][] hiGoertz) {
-            for (var i = 0; i < sampleBlock.Length; i++) {
-                var c = i % numChannels;
-
-                loGoertz[c][0] = loGoertz[c][0].AddSample(sampleBlock[i]);
-                loGoertz[c][1] = loGoertz[c][1].AddSample(sampleBlock[i]);
-                loGoertz[c][2] = loGoertz[c][2].AddSample(sampleBlock[i]);
-                loGoertz[c][3] = loGoertz[c][3].AddSample(sampleBlock[i]);
-
-                hiGoertz[c][0] = hiGoertz[c][0].AddSample(sampleBlock[i]);
-                hiGoertz[c][1] = hiGoertz[c][1].AddSample(sampleBlock[i]);
-                hiGoertz[c][2] = hiGoertz[c][2].AddSample(sampleBlock[i]);
-                hiGoertz[c][3] = hiGoertz[c][3].AddSample(sampleBlock[i]);
-            }
         }
 
         private static (int fstIdx, int sndIdx) FindMaxTwo(IReadOnlyList<Goertzel> goertz) {

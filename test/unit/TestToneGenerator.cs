@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using DtmfDetection;
+    using MoreLinq;
 
     public static class TestToneGenerator {
         public const int DefaultSampleRate = 8000;
@@ -37,8 +38,8 @@
 
         public static float[] DtmfToneBlock(PhoneKey k) => DtmfTone(k).FirstBlock();
 
-        public static float[] FirstBlock(this IEnumerable<float> samples, int numChannels = 1)
-            => samples.Take(205 * numChannels).ToArray();
+        public static float[] FirstBlock(this IEnumerable<float> samples, int numChannels = 1, int blockSize = 205)
+            => samples.Take(blockSize * numChannels).ToArray();
 
         public static IEnumerable<float> Add(
             this IEnumerable<float> left,
@@ -53,5 +54,20 @@
 
         public static IEnumerable<float> Norm(this IEnumerable<float> source, float maxAmplitude)
             => source.Select(x => x / maxAmplitude);
+
+        public static ISamples AsSamples(this IEnumerable<float> source) => new Samples(source);
+    }
+
+    public class Samples : ISamples {
+        private readonly float[] samples;
+        private int position;
+        public Samples(IEnumerable<float> samples) => this.samples = samples.ToArray();
+
+        public int Read(float[] buffer, int count) {
+            var safeCount = Math.Min(count, samples.Length - position);
+            Array.Copy(samples, position, buffer, 0, safeCount);
+            position += safeCount;
+            return safeCount;
+        }
     }
 }

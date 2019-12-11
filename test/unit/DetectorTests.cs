@@ -35,7 +35,7 @@
     }
 
     public static class DetectorTestsExt {
-        public static PhoneKey[] Analyze(this float[] samples, int numChannels = 1) => new Detector(numChannels).Analyze(samples);
+        public static object Analyze(this float[] samples, int numChannels = 1) => new Detector(numChannels).Analyze(samples);
 
         public static T With<T>(this T x, Action<T> action) { action?.Invoke(x); return x; }
     }
