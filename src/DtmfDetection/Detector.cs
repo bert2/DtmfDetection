@@ -18,7 +18,7 @@
             initHiGoertz = highTones.Select(f => Goertzel.Init(f, sampleRate, numSamples)).ToArray();
         }
 
-        public IReadOnlyList<PhoneKey> Analyze(in ReadOnlySpan<float> sampleBlock) {
+        public IReadOnlyList<PhoneKey> Detect(in ReadOnlySpan<float> sampleBlock) {
             var loGoertz = CreateGoertzels(initLoGoertz, numChannels);
             var hiGoertz = CreateGoertzels(initHiGoertz, numChannels);
             AddSamples(sampleBlock, numChannels, loGoertz, hiGoertz);

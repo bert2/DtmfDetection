@@ -16,7 +16,7 @@
         private readonly float[] sampleBlock = DtmfToneBlock(PhoneKey.One);
 
         [Benchmark(Baseline = true)]
-        public object CurrentDetector() => currentDetector.Analyze(sampleBlock);
+        public object CurrentDetector() => currentDetector.Detect(sampleBlock);
 
         public PhoneKey StatefulDetector() => statefulDetector.Analyze(sampleBlock);
 

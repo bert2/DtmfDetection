@@ -60,19 +60,10 @@
         public static IEnumerable<float> Norm(this IEnumerable<float> source, float maxAmplitude)
             => source.Select(x => x / maxAmplitude);
 
-        public static ISamples AsSamples(this IEnumerable<float> source) => new Samples(source);
-    }
-
-    public class Samples : ISamples {
-        private readonly float[] samples;
-        private int position;
-        public Samples(IEnumerable<float> samples) => this.samples = samples.ToArray();
-
-        public int Read(float[] buffer, int count) {
-            var safeCount = Math.Min(count, samples.Length - position);
-            Array.Copy(samples, position, buffer, 0, safeCount);
-            position += safeCount;
-            return safeCount;
-        }
+        public static ISamples AsSamples(
+            this IEnumerable<float> source,
+            int numChannels = 1,
+            int sampleRate = DefaultSampleRate)
+            => new ArraySamples(source.ToArray(), numChannels, sampleRate);
     }
 }

@@ -17,8 +17,8 @@
 
         [Fact]
         public void CanBeReused() =>
-            new Detector().With(d => _ = d.Analyze(DtmfToneBlock(PhoneKey.Three)))
-            .Analyze(DtmfToneBlock(PhoneKey.C))
+            new Detector().With(d => _ = d.Detect(DtmfToneBlock(PhoneKey.Three)))
+            .Detect(DtmfToneBlock(PhoneKey.C))
             .ShouldBe(new[] { PhoneKey.C });
 
         [Fact]
@@ -35,7 +35,7 @@
     }
 
     public static class DetectorTestsExt {
-        public static object Analyze(this float[] samples, int numChannels = 1) => new Detector(numChannels).Analyze(samples);
+        public static object Analyze(this float[] samples, int numChannels = 1) => new Detector(numChannels).Detect(samples);
 
         public static T With<T>(this T x, Action<T> action) { action?.Invoke(x); return x; }
     }

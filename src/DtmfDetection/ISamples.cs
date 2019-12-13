@@ -1,5 +1,13 @@
 ﻿namespace DtmfDetection {
+    using System;
+
     public interface ISamples {
-        int Read(float[] buffer, int count);
+        int Channels { get; }
+
+        int SampleRate { get; }
+
+        TimeSpan Position { get; }
+
+        int ReadNextBlock(float[] buffer, int count);
     }
 }

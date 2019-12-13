@@ -23,6 +23,6 @@
         public DtmfDetection.LastRelease.DtmfTone[] LastRelease() => lastRelease.Analyze(sampleBlock);
 
         [Benchmark]
-        public object Current() => current.Analyze(sampleBlock);
+        public object Current() => current.Detect(sampleBlock);
     }
 }
