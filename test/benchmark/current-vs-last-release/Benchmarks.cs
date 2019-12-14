@@ -15,7 +15,7 @@
                     new DtmfDetection.LastRelease.DetectorConfig().SampleBlockSize))
             });
 
-        private readonly Detector current = new Detector();
+        private readonly Detector current = new Detector(numChannels: 1, Config.Default);
 
         private readonly float[] sampleBlock = DtmfToneBlock(PhoneKey.One);
 

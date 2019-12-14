@@ -7,7 +7,7 @@
 
     [MemoryDiagnoser, NativeMemoryProfiler]
     public class Benchmarks {
-        private readonly Detector currentDetector = new Detector();
+        private readonly Detector currentDetector = new Detector(numChannels: 1, Config.Default);
         private readonly StatefulDetector statefulDetector = new StatefulDetector();
         private readonly LessStatefulDetector lessStatefulDetector = new LessStatefulDetector();
         private readonly MuchLessStatefulDetector muchLessStatefulDetector = new MuchLessStatefulDetector();

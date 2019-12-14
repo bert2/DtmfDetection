@@ -5,9 +5,7 @@
     using DtmfDetection;
 
     public static class TestToneGenerator {
-        public const int DefaultSampleRate = 8000;
-
-        public static IEnumerable<float> Sine(int freq, float amplitude = 1.0f, int sampleRate = DefaultSampleRate) {
+        public static IEnumerable<float> Sine(int freq, float amplitude = 1.0f, int sampleRate = 8000) {
             var t = 0.0;
             var dt = 1.0 / sampleRate;
 
@@ -34,7 +32,7 @@
 
         public static IEnumerable<float> Mark(PhoneKey k, int ms = 40) => DtmfTone(k).Take(ms.AsNumSamples());
 
-        public static int AsNumSamples(this int milliSeconds) => (int)Math.Round(milliSeconds / (1.0 / DefaultSampleRate * 1000));
+        public static int AsNumSamples(this int milliSeconds) => (int)Math.Round(milliSeconds / (1.0 / 8000 * 1000));
 
         public static IEnumerable<float> ToDual(in this (int f1, int f2) tones)
             => Sine(tones.f1).Add(Sine(tones.f2)).Norm(2);
@@ -63,7 +61,7 @@
         public static ISamples AsSamples(
             this IEnumerable<float> source,
             int numChannels = 1,
-            int sampleRate = DefaultSampleRate)
+            int sampleRate = 8000)
             => new ArraySamples(source.ToArray(), numChannels, sampleRate);
     }
 }

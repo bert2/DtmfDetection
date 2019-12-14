@@ -31,7 +31,7 @@
 
         public bool Equals(Goertzel other) => C == other.C && S1 == other.S1 && S2 == other.S2 && E == other.E;
 
-        public override bool Equals(object? obj) => obj is Goertzel g && Equals(g);
+        public override bool Equals(object? obj) => obj is Goertzel other && Equals(other);
 
         public static bool operator ==(Goertzel left, Goertzel right) => left.Equals(right);
 

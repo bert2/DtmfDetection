@@ -28,7 +28,7 @@
             && Channel == other.Channel
             && IsStart == other.IsStart;
 
-        public override bool Equals(object? obj) => obj is DtmfChange dc && Equals(dc);
+        public override bool Equals(object? obj) => obj is DtmfChange other && Equals(other);
 
         public static bool operator ==(DtmfChange left, DtmfChange right) => left.Equals(right);
 

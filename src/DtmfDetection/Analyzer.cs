@@ -10,11 +10,15 @@
         private readonly Detector detector;
         private IReadOnlyList<PhoneKey> prevKeys;
 
-        public Analyzer(ISamples samples, int blockSize = 205) {
+        public Analyzer(ISamples samples, Detector detector) {
+            if (samples is null) throw new ArgumentNullException(nameof(samples));
+            if (detector is null) throw new ArgumentNullException(nameof(detector));
+            if (samples.SampleRate != detector.Config.SampleRate) throw new InvalidOperationException("'ISamples.SampleRate' does not match 'Detector.Config.SampleRate'");
+
             this.samples = samples;
-            this.blockSize = blockSize * samples.Channels;
-            buffer = new float[this.blockSize];
-            detector = new Detector(samples.Channels);
+            blockSize = detector.Config.SampleBlockSize * samples.Channels;
+            buffer = new float[blockSize];
+            this.detector = detector;
             prevKeys = Enumerable.Repeat(PhoneKey.None, samples.Channels).ToArray();
         }
 

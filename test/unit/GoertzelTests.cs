@@ -9,9 +9,6 @@ namespace Unit {
     using static TestToneGenerator;
 
     public class GoertzelTests {
-        public const int NumSamples = 205;
-        private const double Threshold = 35.0;
-
         [Theory]
         [InlineData(697)]
         [InlineData(770)]
@@ -20,7 +17,7 @@ namespace Unit {
         public void CanDetectAllLowTones(int freq) =>
             Sine(freq)
             .MeasureFrequency(freq)
-            .GoertzelResponseShouldBeGreaterThan(Threshold);
+            .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold);
 
         [Theory]
         [InlineData(1209)]
@@ -30,49 +27,49 @@ namespace Unit {
         public void CanDetectAllHighTones(int freq) =>
             Sine(freq)
             .MeasureFrequency(freq)
-            .GoertzelResponseShouldBeGreaterThan(Threshold);
+            .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold);
 
         [Fact]
         public void DoesNotDetectFrequencyInConstantSignal() =>
             Constant(.3f)
             .MeasureFrequency(1209)
-            .GoertzelResponseShouldBeLessThan(Threshold);
+            .GoertzelResponseShouldBeLessThan(Config.Default.Threshold);
 
         [Fact]
         public void CanDetectWeakFrequency() =>
             Sine(1209, amplitude: .1f)
             .MeasureFrequency(1209)
-            .GoertzelResponseShouldBeGreaterThan(Threshold);
+            .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold);
 
         [Fact]
         public void CanDetectFrequencyInNoisySignal() => Repeat(() =>
             Sine(1336).Add(Noise(.1f)).Norm(1.1f)
             .MeasureFrequency(1336)
-            .GoertzelResponseShouldBeGreaterThan(Threshold));
+            .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold));
 
         [Fact]
         public void CanDetectFrequencyInVeryNoisySignal() => Repeat(() =>
             Sine(941).Add(Noise(.5f)).Norm(1.5f)
             .MeasureFrequency(941)
-            .GoertzelResponseShouldBeGreaterThan(Threshold));
+            .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold));
 
         [Fact]
         public void CanDetectFrequencyInOverlappingFrequency() =>
             Sine(697).Add(Sine(1633)).Norm(2)
             .MeasureFrequency(697)
-            .GoertzelResponseShouldBeGreaterThan(Threshold);
+            .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold);
 
         [Fact]
         public void CanDetectWeakFrequencyInOverlappingFrequencyAndNoisySignal() => Repeat(() =>
             Sine(1477, .4f).Add(Sine(852, .4f)).Add(Noise(.1f))
             .MeasureFrequency(1477)
-            .GoertzelResponseShouldBeGreaterThan(Threshold));
+            .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold));
 
         [Fact]
         public void CanDetectFrequencyThatStartsLate() =>
             Constant(.0f).Take(102).Concat(Sine(1336))
             .MeasureFrequency(1336)
-            .GoertzelResponseShouldBeGreaterThan(Threshold);
+            .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold);
 
         [Fact]
         public void CanBeResetted() =>
@@ -99,9 +96,9 @@ namespace Unit {
 
     public static class GoertzelTestsExt {
         public static Goertzel MeasureFrequency(this IEnumerable<float> samples, int targetFreq) => samples
-            .Take(GoertzelTests.NumSamples)
+            .Take(Config.Default.SampleBlockSize)
             .Aggregate(
-                Goertzel.Init(targetFreq, DefaultSampleRate, GoertzelTests.NumSamples),
+                Goertzel.Init(targetFreq, Config.Default.SampleRate, Config.Default.SampleBlockSize),
                 (g, s) => g.AddSample(s));
 
         public static void GoertzelResponseShouldBeGreaterThan(this in Goertzel g, double threshold)
