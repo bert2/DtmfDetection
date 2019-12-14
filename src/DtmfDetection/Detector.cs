@@ -6,13 +6,13 @@
     public class Detector {
         private static readonly IReadOnlyList<int> lowTones = new[] { 697, 770, 852, 941 };
         private static readonly IReadOnlyList<int> highTones = new[] { 1209, 1336, 1477, 1633 };
-        private readonly int numChannels;
         private readonly IReadOnlyList<Goertzel> initLoGoertz;
         private readonly IReadOnlyList<Goertzel> initHiGoertz;
+        public readonly int Channels;
         public readonly Config Config;
 
         public Detector(int numChannels, in Config cfg) {
-            this.numChannels = numChannels;
+            Channels = numChannels;
             Config = cfg;
 
             var sampleRate = cfg.SampleRate;
@@ -22,10 +22,10 @@
         }
 
         public IReadOnlyList<PhoneKey> Detect(in ReadOnlySpan<float> sampleBlock) {
-            var loGoertz = CreateGoertzels(initLoGoertz, numChannels);
-            var hiGoertz = CreateGoertzels(initHiGoertz, numChannels);
-            AddSamples(sampleBlock, numChannels, loGoertz, hiGoertz);
-            return Detect(loGoertz, hiGoertz, Config.Threshold, numChannels);
+            var loGoertz = CreateGoertzels(initLoGoertz, Channels);
+            var hiGoertz = CreateGoertzels(initHiGoertz, Channels);
+            AddSamples(sampleBlock, Channels, loGoertz, hiGoertz);
+            return Detect(loGoertz, hiGoertz, Config.Threshold, Channels);
         }
 
         private static Goertzel[][] CreateGoertzels(IReadOnlyList<Goertzel> initGoertz, int numChannels) {

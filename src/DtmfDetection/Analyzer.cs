@@ -13,6 +13,7 @@
         public Analyzer(ISamples samples, Detector detector) {
             if (samples is null) throw new ArgumentNullException(nameof(samples));
             if (detector is null) throw new ArgumentNullException(nameof(detector));
+            if (samples.Channels != detector.Channels) throw new InvalidOperationException("'ISamples.Channels' does not match 'Detector.Channels'");
             if (samples.SampleRate != detector.Config.SampleRate) throw new InvalidOperationException("'ISamples.SampleRate' does not match 'Detector.Config.SampleRate'");
 
             this.samples = samples;
@@ -20,6 +21,13 @@
             buffer = new float[blockSize];
             this.detector = detector;
             prevKeys = Enumerable.Repeat(PhoneKey.None, samples.Channels).ToArray();
+        }
+
+        public static Analyzer Create(ISamples samples, in Config config) {
+            if (samples is null) throw new ArgumentNullException(nameof(samples));
+            if (samples.SampleRate != config.SampleRate) throw new InvalidOperationException("'ISamples.SampleRate' does not match 'Config.SampleRate'");
+
+            return new Analyzer(samples, new Detector(samples.Channels, config));
         }
 
         public bool CanAnalyze { get; private set; } = true;

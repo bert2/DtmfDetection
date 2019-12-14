@@ -19,7 +19,7 @@
 
         [Fact]
         public void SignalsThatNoMoreDataIsAvailable() {
-            var analyzer = Analyzer(DtmfToneBlock(PhoneKey.Zero));
+            var analyzer = Analyzer.Create(DtmfToneBlock(PhoneKey.Zero).AsSamples(), Config.Default);
             _ = analyzer.AnalyzeNextBlock();
 
             _ = analyzer.AnalyzeNextBlock();
@@ -60,11 +60,8 @@
     }
 
     public static class AnalyzerTestsExt {
-        public static Analyzer Analyzer(IEnumerable<float> samples, int numChannels = 1)
-            => new Analyzer(samples.AsSamples(numChannels), new Detector(numChannels, Config.Default));
-
         public static List<DtmfChange> Process(this IEnumerable<float> samples, int numChannels = 1) {
-            var analyzer = Analyzer(samples, numChannels);
+            var analyzer = Analyzer.Create(samples.AsSamples(numChannels), Config.Default);
 
             var dtmfs = new List<DtmfChange>();
             while (analyzer.CanAnalyze) dtmfs.AddRange(analyzer.AnalyzeNextBlock());
