@@ -11,12 +11,12 @@
         public readonly int Channels;
         public readonly Config Config;
 
-        public Detector(int numChannels, in Config cfg) {
+        public Detector(int numChannels, in Config config) {
             Channels = numChannels;
-            Config = cfg;
+            Config = config;
 
-            var sampleRate = cfg.SampleRate;
-            var numSamples = cfg.SampleBlockSize;
+            var sampleRate = config.SampleRate;
+            var numSamples = config.SampleBlockSize;
             initLoGoertz = lowTones.Select(f => Goertzel.Init(f, sampleRate, numSamples)).ToArray();
             initHiGoertz = highTones.Select(f => Goertzel.Init(f, sampleRate, numSamples)).ToArray();
         }

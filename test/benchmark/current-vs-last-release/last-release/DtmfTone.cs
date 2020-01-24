@@ -2,10 +2,10 @@
 
 namespace DtmfDetection.LastRelease {
     using System;
+    using System.Diagnostics.CodeAnalysis;
 
-#pragma warning disable EPS01 // A struct can be made readonly
+    [SuppressMessage("Performance", "EPS01:A struct can be made readonly")]
     public struct DtmfTone : IEquatable<DtmfTone>
-#pragma warning restore EPS01 // A struct can be made readonly
     {
         private DtmfTone(int highTone, int lowTone, PhoneKey key)
         {

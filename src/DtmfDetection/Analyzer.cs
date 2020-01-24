@@ -23,6 +23,8 @@
             prevKeys = Enumerable.Repeat(PhoneKey.None, samples.Channels).ToArray();
         }
 
+        public static Analyzer Create(ISamples samples, Detector detector) => new Analyzer(samples, detector);
+
         public static Analyzer Create(ISamples samples, in Config config) {
             if (samples is null) throw new ArgumentNullException(nameof(samples));
             if (samples.SampleRate != config.SampleRate) throw new InvalidOperationException("'ISamples.SampleRate' does not match 'Config.SampleRate'");
@@ -30,17 +32,17 @@
             return new Analyzer(samples, new Detector(samples.Channels, config));
         }
 
-        public bool CanAnalyze { get; private set; } = true;
+        public bool MoreSamplesAvailable { get; private set; } = true;
 
         public List<DtmfChange> AnalyzeNextBlock() {
             var currPos = samples.Position;
             var n = samples.ReadNextBlock(buffer, blockSize);
 
-            CanAnalyze = n >= blockSize;
+            MoreSamplesAvailable = n >= blockSize;
 
             var currKeys = detector.Detect(buffer.AsSpan().Slice(0, n));
             var changes = FindDtmfChanges(currKeys, prevKeys, currPos, samples.Channels);
-            if (!CanAnalyze) changes.AddRange(FindCutOff(currKeys, samples.Position, samples.Channels));
+            if (!MoreSamplesAvailable) changes.AddRange(FindCutOff(currKeys, samples.Position, samples.Channels));
 
             prevKeys = currKeys;
 

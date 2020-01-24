@@ -1,28 +1,23 @@
 ﻿namespace Benchmark.CurrentVsLastRelease {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Diagnostics.Windows.Configs;
     using DtmfDetection;
-
-    using static Unit.TestToneGenerator;
+    using DtmfDetection.NAudio;
+    using DtmfDetection.NAudio.LastRelease;
+    using NAudio.Wave;
 
     [MemoryDiagnoser, NativeMemoryProfiler]
+    [SuppressMessage("Design", "CA1001:Types that own disposable fields should be disposable")]
     public class Benchmarks {
-        private readonly DtmfDetection.LastRelease.DtmfDetector lastRelease = new DtmfDetection.LastRelease.DtmfDetector(
-            new DtmfDetection.LastRelease.DetectorConfig(),
-            new[] {
-                new DtmfDetection.LastRelease.PureTones(new DtmfDetection.LastRelease.AmplitudeEstimatorFactory(
-                    new DtmfDetection.LastRelease.DetectorConfig().MaxSampleRate,
-                    new DtmfDetection.LastRelease.DetectorConfig().SampleBlockSize))
-            });
-
-        private readonly Detector current = new Detector(numChannels: 1, Config.Default);
-
-        private readonly float[] sampleBlock = DtmfToneBlock(PhoneKey.One);
+        private readonly AudioFileReader audioFile = new AudioFileReader("./current-vs-last-release/test.mp3");
 
         [Benchmark(Baseline = true)]
-        public DtmfDetection.LastRelease.DtmfTone[] LastRelease() => lastRelease.Analyze(sampleBlock);
+        public List<DtmfOccurence> LastRelease() => audioFile.DtmfTones().ToList();
 
         [Benchmark]
-        public object Current() => current.Detect(sampleBlock);
+        public List<DtmfChange> CurrentRelease() => audioFile.DtmfChanges();
     }
 }

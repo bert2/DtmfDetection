@@ -24,7 +24,7 @@
 
             _ = analyzer.AnalyzeNextBlock();
 
-            analyzer.CanAnalyze.ShouldBeFalse();
+            analyzer.MoreSamplesAvailable.ShouldBeFalse();
         }
 
         [Fact]
@@ -64,7 +64,7 @@
             var analyzer = Analyzer.Create(samples.AsSamples(numChannels), Config.Default);
 
             var dtmfs = new List<DtmfChange>();
-            while (analyzer.CanAnalyze) dtmfs.AddRange(analyzer.AnalyzeNextBlock());
+            while (analyzer.MoreSamplesAvailable) dtmfs.AddRange(analyzer.AnalyzeNextBlock());
 
             return dtmfs;
         }

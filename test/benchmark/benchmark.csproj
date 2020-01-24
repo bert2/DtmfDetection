@@ -28,8 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\DtmfDetection.NAudio\DtmfDetection.NAudio.csproj" />
     <ProjectReference Include="..\..\src\DtmfDetection\DtmfDetection.csproj" />
     <ProjectReference Include="..\unit\unit.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="current-vs-last-release\test.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

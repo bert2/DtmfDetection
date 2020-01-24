@@ -1,5 +1,6 @@
 namespace DtmfDetection.LastRelease {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     public class DtmfDetector
@@ -10,13 +11,12 @@ namespace DtmfDetection.LastRelease {
 
         private readonly int numChannels;
 
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
         public DtmfDetector(DetectorConfig config, PureTones[] powers)
         {
             this.config = config;
             this.powers = powers;
-#pragma warning disable CA1062 // Validate arguments of public methods
             numChannels = powers.Length;
-#pragma warning restore CA1062 // Validate arguments of public methods
         }
 
         public DtmfTone[] Analyze(IEnumerable<float> samples)

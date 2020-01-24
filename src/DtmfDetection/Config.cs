@@ -2,12 +2,12 @@
     using System;
 
     public readonly struct Config : IEquatable<Config> {
-        public static readonly Config Default = new Config(35.0, 205, 8000);
+        public static readonly Config Default = new Config(threshold: 35.0, sampleBlockSize: 205, sampleRate: 8000);
         public readonly double Threshold;
         public readonly int SampleBlockSize;
         public readonly int SampleRate;
 
-        public Config(double threshold = 35.0, int sampleBlockSize = 205, int sampleRate = 8000)
+        public Config(double threshold, int sampleBlockSize, int sampleRate)
             => (Threshold, SampleBlockSize, SampleRate) = (threshold, sampleBlockSize, sampleRate);
 
         public Config WithThreshold(double threshold) => new Config(threshold, SampleBlockSize, SampleRate);

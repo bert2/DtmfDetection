@@ -1,5 +1,6 @@
 namespace DtmfDetection.LastRelease {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
     public class PureTones
@@ -10,11 +11,10 @@ namespace DtmfDetection.LastRelease {
 
         private readonly Dictionary<int, AmplitudeEstimator> estimators;
 
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods")]
         public PureTones(AmplitudeEstimatorFactory estimatorFactory) => estimators = LowPureTones
             .Concat(HighPureTones)
-#pragma warning disable CA1062 // Validate arguments of public methods
             .ToDictionary(tone => tone, estimatorFactory.CreateFor);
-#pragma warning restore CA1062 // Validate arguments of public methods
 
         public double this[int tone] => estimators[tone].AmplitudeSquared;
 
