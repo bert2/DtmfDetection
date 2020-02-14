@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <Optimize>true</Optimize>
     <RootNamespace>Benchmark</RootNamespace>
-    <AssemblyName>test.benchmark</AssemblyName>
+    <AssemblyName>benchmark</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
