@@ -12,13 +12,14 @@
 
         public TimeSpan Position => source.CurrentTime;
 
-        public AudioFile(WaveStream source, int maxSampleRate, bool forceMono = true) {
+        public AudioFile(WaveStream source, int targetSampleRate, bool forceMono = true) {
             this.source = source;
             Channels = forceMono ? 1 : source.WaveFormat.Channels;
-            SampleRate = Math.Min(source.WaveFormat.SampleRate, maxSampleRate);
 
             var samples = forceMono ? source.ToSampleProvider().AsMono() : source.ToSampleProvider();
-            this.samples = samples.Downsample(maxSampleRate);
+            this.samples = samples.Resample(targetSampleRate);
+
+            SampleRate = this.samples.WaveFormat.SampleRate;
         }
 
         public int ReadNextBlock(float[] buffer, int count) => samples.Read(buffer, 0, count);
