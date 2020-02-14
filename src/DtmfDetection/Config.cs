@@ -2,7 +2,7 @@
     using System;
 
     public readonly struct Config : IEquatable<Config> {
-        public static readonly Config Default = new Config(threshold: 35.0, sampleBlockSize: 205, sampleRate: 8000);
+        public static readonly Config Default = new Config(threshold: 30.0, sampleBlockSize: 205, sampleRate: 8000);
         public readonly double Threshold;
         public readonly int SampleBlockSize;
         public readonly int SampleRate;

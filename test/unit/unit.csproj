@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <RootNamespace>Unit</RootNamespace>
+    <AssemblyName>test.unit</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

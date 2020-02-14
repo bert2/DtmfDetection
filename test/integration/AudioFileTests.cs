@@ -1,4 +1,4 @@
-namespace integration {
+namespace Integration {
     using DtmfDetection.NAudio;
     using NAudio.Wave;
     using Xunit;

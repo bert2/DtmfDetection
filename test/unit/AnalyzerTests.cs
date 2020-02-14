@@ -47,14 +47,15 @@
         [Fact]
         public void ReturnsStartAndStopOfMultipleOverlappingStereoTones() =>
             Stereo(
-                left:  Concat(Mark(PhoneKey.A, ms: 80), Space(ms: 40), Mark(PhoneKey.C, ms: 80), Space(ms: 40)),
-                right: Concat(Space(ms: 40), Mark(PhoneKey.B, ms: 80), Space(ms: 40), Mark(PhoneKey.D, ms: 80)))
+                left:  Concat(Mark(PhoneKey.A, ms: 80), Space(ms: 40), Mark(PhoneKey.C, ms: 80), Space(ms: 60)),
+                right: Concat(Space(ms: 60), Mark(PhoneKey.B, ms: 80), Space(ms: 40), Mark(PhoneKey.D, ms: 80)))
             .Process(numChannels: 2).AndIgnorePositions()
             .ShouldBe(new[] {
                 // left channel         // right channel
                 Start(PhoneKey.A, 0),   Start(PhoneKey.B, 1),
-                Stop(PhoneKey.A, 0),    Stop(PhoneKey.B, 1),
-                Start(PhoneKey.C, 0),   Start(PhoneKey.D, 1),
+                Stop(PhoneKey.A, 0),
+                Start(PhoneKey.C, 0),   Stop(PhoneKey.B, 1),
+                                        Start(PhoneKey.D, 1),
                 Stop(PhoneKey.C, 0),    Stop(PhoneKey.D, 1)
             });
     }
