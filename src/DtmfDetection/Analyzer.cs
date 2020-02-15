@@ -4,7 +4,7 @@
     using System.Linq;
     using DtmfDetection.Interfaces;
 
-    public class Analyzer {
+    public class Analyzer : IAnalyzer {
         private readonly float[] buffer;
         private readonly ISamples samples;
         private readonly int blockSize;
@@ -35,9 +35,9 @@
 
         public bool MoreSamplesAvailable { get; private set; } = true;
 
-        public List<DtmfChange> AnalyzeNextBlock() {
+        public IList<DtmfChange> AnalyzeNextBlock() {
             var currPos = samples.Position;
-            var n = samples.ReadNextBlock(buffer, blockSize);
+            var n = samples.Read(buffer, blockSize);
 
             MoreSamplesAvailable = n >= blockSize;
 

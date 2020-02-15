@@ -9,7 +9,9 @@
         private static readonly IReadOnlyList<int> highTones = new[] { 1209, 1336, 1477, 1633 };
         private readonly IReadOnlyList<Goertzel> initLoGoertz;
         private readonly IReadOnlyList<Goertzel> initHiGoertz;
+
         public int Channels { get; }
+
         public Config Config { get; }
 
         public Detector(int numChannels, in Config config) {

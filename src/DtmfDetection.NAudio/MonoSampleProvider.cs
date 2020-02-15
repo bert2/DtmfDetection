@@ -9,7 +9,7 @@
 
         private readonly int sourceChannels;
 
-        private float[] sourceBuffer;
+        private float[] sourceBuffer = Array.Empty<float>();
 
         public MonoSampleProvider(ISampleProvider sourceProvider) {
             this.sourceProvider = sourceProvider;

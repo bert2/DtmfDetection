@@ -63,6 +63,6 @@
             this IEnumerable<float> source,
             int numChannels = 1,
             int sampleRate = 8000)
-            => new ArraySamples(source.ToArray(), numChannels, sampleRate);
+            => new AudioData(source.ToArray(), numChannels, sampleRate);
     }
 }

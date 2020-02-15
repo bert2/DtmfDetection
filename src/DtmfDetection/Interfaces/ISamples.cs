@@ -8,6 +8,6 @@
 
         TimeSpan Position { get; }
 
-        int ReadNextBlock(float[] buffer, int count);
+        int Read(float[] buffer, int count);
     }
 }
