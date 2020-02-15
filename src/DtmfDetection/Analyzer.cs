@@ -2,15 +2,16 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using DtmfDetection.Interfaces;
 
     public class Analyzer {
         private readonly float[] buffer;
         private readonly ISamples samples;
         private readonly int blockSize;
-        private readonly Detector detector;
+        private readonly IDetector detector;
         private IReadOnlyList<PhoneKey> prevKeys;
 
-        public Analyzer(ISamples samples, Detector detector) {
+        public Analyzer(ISamples samples, IDetector detector) {
             if (samples is null) throw new ArgumentNullException(nameof(samples));
             if (detector is null) throw new ArgumentNullException(nameof(detector));
             if (samples.Channels != detector.Channels) throw new InvalidOperationException("'ISamples.Channels' does not match 'Detector.Channels'");
@@ -23,7 +24,7 @@
             prevKeys = Enumerable.Repeat(PhoneKey.None, samples.Channels).ToArray();
         }
 
-        public static Analyzer Create(ISamples samples, Detector detector) => new Analyzer(samples, detector);
+        public static Analyzer Create(ISamples samples, IDetector detector) => new Analyzer(samples, detector);
 
         public static Analyzer Create(ISamples samples, in Config config) {
             if (samples is null) throw new ArgumentNullException(nameof(samples));

@@ -1,5 +1,6 @@
 ﻿namespace DtmfDetection {
     using System;
+    using DtmfDetection.Interfaces;
 
     public class ArraySamples : ISamples {
         private readonly float[] samples;

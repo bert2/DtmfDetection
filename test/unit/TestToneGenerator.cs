@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using DtmfDetection;
+    using DtmfDetection.Interfaces;
 
     public static class TestToneGenerator {
         public static IEnumerable<float> Sine(int freq, float amplitude = 1.0f, int sampleRate = 8000) {

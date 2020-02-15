@@ -2,14 +2,15 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using DtmfDetection.Interfaces;
 
-    public class Detector {
+    public class Detector : IDetector {
         private static readonly IReadOnlyList<int> lowTones = new[] { 697, 770, 852, 941 };
         private static readonly IReadOnlyList<int> highTones = new[] { 1209, 1336, 1477, 1633 };
         private readonly IReadOnlyList<Goertzel> initLoGoertz;
         private readonly IReadOnlyList<Goertzel> initHiGoertz;
-        public readonly int Channels;
-        public readonly Config Config;
+        public int Channels { get; }
+        public Config Config { get; }
 
         public Detector(int numChannels, in Config config) {
             Channels = numChannels;

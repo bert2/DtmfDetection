@@ -1,5 +1,6 @@
 ﻿namespace DtmfDetection.NAudio {
     using System;
+    using DtmfDetection.Interfaces;
     using global::NAudio.Wave;
 
     public class AudioFile : ISamples {

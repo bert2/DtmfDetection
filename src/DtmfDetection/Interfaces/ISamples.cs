@@ -1,4 +1,4 @@
-﻿namespace DtmfDetection {
+﻿namespace DtmfDetection.Interfaces {
     using System;
 
     public interface ISamples {
