@@ -2,7 +2,7 @@
     using global::NAudio.Wave;
     using global::NAudio.Wave.SampleProviders;
 
-    public static class SampleProviderExtensions {
+    public static class SampleProviderExt {
         public static ISampleProvider Resample(this ISampleProvider source, int targetSampleRate)
             => source.WaveFormat.SampleRate != targetSampleRate
                 ? new WdlResamplingSampleProvider(source, targetSampleRate)

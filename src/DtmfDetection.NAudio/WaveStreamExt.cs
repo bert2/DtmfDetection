@@ -2,7 +2,7 @@
     using System.Collections.Generic;
     using global::NAudio.Wave;
 
-    public static class WaveStreamExtensions {
+    public static class WaveStreamExt {
         public static List<DtmfChange> DtmfChanges(this WaveStream waveStream, bool forceMono = true, in Config? config = null) {
             var cfg = config ?? Config.Default;
             var analyzer = Analyzer.Create(
