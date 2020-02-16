@@ -19,13 +19,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DtmfDetection.NAudio", "src\DtmfDetection.NAudio\DtmfDetection.NAudio.csproj", "{D5E2192E-B326-45D0-877D-7ACB67242DBF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "integration", "test\integration\integration.csproj", "{B03A2C7A-4115-4548-9024-D722E96D1286}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dtmf-detector", "example\dtmf-detector\dtmf-detector.csproj", "{A550BCB4-879D-406A-AE14-0DCE55FB6F26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dtmf-detector", "example\dtmf-detector\dtmf-detector.csproj", "{A550BCB4-879D-406A-AE14-0DCE55FB6F26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
