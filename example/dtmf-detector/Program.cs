@@ -12,7 +12,7 @@
     public static class Program {
         public static int Main(string[] args) {
             try {
-                PrintVersion();
+                PrintHeader();
 
                 if (args.Length == 0)
                     MenuLoop();
@@ -24,30 +24,43 @@
                     AnalyzeFile(path: args[0]);
 
                 return 0;
-            } catch (COMException e) when (e.ErrorCode == unchecked((int)0xC00D36C4)) {
-                Console.WriteLine(new InvalidOperationException("Unsupported media type", e));
-                return 1;
             } catch (Exception e) {
                 Console.WriteLine(e);
                 return 1;
             }
         }
 
-        private static void PrintVersion() {
+        private static void PrintHeader() {
             var assembly = Assembly.GetExecutingAssembly();
             var version = FileVersionInfo
                 .GetVersionInfo(assembly.Location)
                 .FileVersion;
-            Console.WriteLine($"dtmf-detector v{version}\n");
+            Console.WriteLine($"dtmf-detector v{version} (https://github.com/bert2/DtmfDetection)\n");
         }
 
         private static void PrintHelp() {
-            Console.WriteLine("usage:");
+            Console.WriteLine("USAGE:");
+            Console.WriteLine();
+            Console.WriteLine("    dtmf-detector.exe <filepath>    Run DTMF detection on the specified file and");
+            Console.WriteLine("                                    print all detected DTMF tones.");
+            Console.WriteLine();
+            Console.WriteLine("    dtmf-detector.exe               Run interactive mode to detect DMTF tones in");
+            Console.WriteLine("                                    audio ouput or microphone input.");
+            Console.WriteLine();
+            Console.WriteLine("    dtmf-detector.exe --version     Print version.");
+            Console.WriteLine();
+            Console.WriteLine("    dtmf-detector.exe --help        Show this usage information.");
         }
 
         private static void AnalyzeFile(string path) {
-            // supports .mp3, .wav, aiff, and Windows Media Foundation formats
-            using var audioFile = new AudioFileReader(path);
+            AudioFileReader audioFile;
+            try {
+                // supports .mp3, .wav, aiff, and Windows Media Foundation formats
+                audioFile = new AudioFileReader(path);
+            } catch (COMException e) when (e.ErrorCode == unchecked((int)0xC00D36C4)) {
+                throw new InvalidOperationException("Unsupported media type", e);
+            }
+
             Console.WriteLine($"DTMF tones found in file '{audioFile.FileName}':\n");
             foreach (var dtmf in audioFile.DtmfChanges().ToDtmfTones())
                 Console.WriteLine(dtmf);
