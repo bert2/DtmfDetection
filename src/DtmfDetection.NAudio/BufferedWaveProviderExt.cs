@@ -4,7 +4,7 @@
     using global::NAudio.Wave;
 
     public static class BufferedWaveProviderExt {
-        public static void WaitForSamples(this BufferedWaveProvider source, int count) {
+        public static bool WaitForSamples(this BufferedWaveProvider source, int count) {
             var bytesPerSample = source.WaveFormat.BitsPerSample / 8 * source.WaveFormat.Channels;
             var bytesPerSampleBlock = bytesPerSample * count;
             var missingBytes = bytesPerSampleBlock - source.BufferedBytes;
@@ -14,6 +14,8 @@
                 var waitTime = (int)Math.Round(missingSamples / source.WaveFormat.SampleRate * 1000);
                 Thread.Sleep(Math.Max(waitTime, 1));
             }
+
+            return source.BufferedBytes < missingBytes;
         }
     }
 }

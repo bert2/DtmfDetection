@@ -4,43 +4,38 @@
     using DtmfDetection.Interfaces;
     using global::NAudio.Wave;
 
-    public class BackgroundAnalyzer {
+    public class BackgroundAnalyzer : IDisposable {
         private readonly IWaveIn source;
+        private readonly AudioStream samples;
         private readonly IAnalyzer analyzer;
         private Thread? captureWorker;
-        private volatile bool stopRequested = false;
 
         public event Action<DtmfChange>? OnDtmfDetected;
-
-        public bool IsCapturing { get; private set; }
 
         public BackgroundAnalyzer(IWaveIn source, bool forceMono = true, in Config? config = null, IAnalyzer? analyzer = null) {
             this.source = source;
             var cfg = config ?? Config.Default;
-            var samples = new AudioStream(source, cfg.SampleRate, forceMono);
+            samples = new AudioStream(source, cfg.SampleRate, forceMono);
             this.analyzer = analyzer ?? Analyzer.Create(samples, cfg);
+            StartCapturing();
         }
 
-        public void StartCapturing() {
-            if (IsCapturing) return;
+        public void Dispose() => StopCapturing();
 
-            IsCapturing = true;
+        private void StartCapturing() {
             source.StartRecording();
             captureWorker = new Thread(Analyze);
             captureWorker.Start();
         }
 
-        public void StopCapturing() {
-            if (!IsCapturing) return;
-
-            IsCapturing = false;
+        private void StopCapturing() {
             source.StopRecording();
-            stopRequested = true;
+            samples.StopWaiting();
             captureWorker?.Join();
         }
 
         private void Analyze() {
-            while (!stopRequested && analyzer.MoreSamplesAvailable) {
+            while (analyzer.MoreSamplesAvailable) {
                 foreach (var dtmf in analyzer.AnalyzeNextBlock())
                     OnDtmfDetected?.Invoke(dtmf);
             }

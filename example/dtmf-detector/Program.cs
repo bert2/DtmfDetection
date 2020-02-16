@@ -54,46 +54,42 @@
         }
 
         private static void MenuLoop() {
-            var state = MenuState.NotAnalyzing;
-            BackgroundAnalyzer? analyzer = null;
+            var state = State.NotAnalyzing;
             IWaveIn? audioSource = null;
+            BackgroundAnalyzer? analyzer = null;
 
             while (true) {
                 PrintMenu(state);
                 var key = Console.ReadKey(intercept: true);
                 switch (key.Key, state) {
-                    case (ConsoleKey.Escape, MenuState.NotAnalyzing):
+                    case (ConsoleKey.Escape, State.NotAnalyzing):
                         return;
-                    case (ConsoleKey.Escape, MenuState.AnalyzingMicIn):
-                    case (ConsoleKey.Escape, MenuState.AnalyzingOutput):
-                        state = MenuState.NotAnalyzing;
-                        analyzer?.StopCapturing();
+                    case (ConsoleKey.Escape, State.AnalyzingMicIn):
+                    case (ConsoleKey.Escape, State.AnalyzingOutput):
+                        state = State.NotAnalyzing;
+                        analyzer?.Dispose();
                         audioSource?.Dispose();
-                        analyzer = null;
-                        audioSource = null;
                         break;
-                    case (ConsoleKey.M, MenuState.NotAnalyzing):
-                        state = MenuState.AnalyzingMicIn;
+                    case (ConsoleKey.M, State.NotAnalyzing):
+                        state = State.AnalyzingMicIn;
                         audioSource = new WaveInEvent { WaveFormat = new WaveFormat(Config.Default.SampleRate, bits: 32, channels: 1) };
                         analyzer = new BackgroundAnalyzer(audioSource, config: Config.Default.WithThreshold(10));
                         analyzer.OnDtmfDetected += dtmf => Console.WriteLine(dtmf);
-                        analyzer.StartCapturing();
                         break;
-                    case (ConsoleKey.O, MenuState.NotAnalyzing):
-                        state = MenuState.AnalyzingOutput;
+                    case (ConsoleKey.O, State.NotAnalyzing):
+                        state = State.AnalyzingOutput;
                         audioSource = new WasapiLoopbackCapture { ShareMode = AudioClientShareMode.Shared };
                         analyzer = new BackgroundAnalyzer(audioSource);
                         analyzer.OnDtmfDetected += dtmf => Console.WriteLine(dtmf);
-                        analyzer.StartCapturing();
                         break;
                 }
             }
         }
 
-        private static void PrintMenu(MenuState state) {
+        private static void PrintMenu(State state) {
             Console.WriteLine("----------------------------------");
 
-            if (state != MenuState.NotAnalyzing) Console.ForegroundColor = ConsoleColor.Red;
+            if (state != State.NotAnalyzing) Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(" ■ ");
             Console.ResetColor();
             Console.WriteLine($"{state.ToPrettyString()}");
@@ -101,23 +97,23 @@
             Console.WriteLine("----------------------------------");
 
             Console.WriteLine(state switch {
-                MenuState.NotAnalyzing => "[M]   analyze microphone input\n"
-                                        + "[O]   analyze current audio output\n"
-                                        + "[Esc] quit",
-                _                      => "[Esc] stop analyzing"
+                State.NotAnalyzing => "[M]   analyze microphone input\n"
+                                    + "[O]   analyze current audio output\n"
+                                    + "[Esc] quit",
+                _                  => "[Esc] stop analyzing"
             });
 
             Console.WriteLine();
         }
 
-        private static string ToPrettyString(this MenuState state) => state switch {
-            MenuState.NotAnalyzing => "not analyzing",
-            MenuState.AnalyzingMicIn => "analyzing microphone input",
-            MenuState.AnalyzingOutput => "analyzing current audio output",
-            _ => throw new InvalidEnumArgumentException(nameof(state), (int)state, typeof(MenuState))
+        private static string ToPrettyString(this State state) => state switch {
+            State.NotAnalyzing => "not analyzing",
+            State.AnalyzingMicIn => "analyzing microphone input",
+            State.AnalyzingOutput => "analyzing current audio output",
+            _ => throw new InvalidEnumArgumentException(nameof(state), (int)state, typeof(State))
         };
 
-        private enum MenuState {
+        private enum State {
             NotAnalyzing,
             AnalyzingMicIn,
             AnalyzingOutput

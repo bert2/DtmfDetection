@@ -6,6 +6,7 @@
     public class AudioStream : ISamples {
         private readonly BufferedWaveProvider source;
         private readonly ISampleProvider samples;
+        private volatile bool stopRequested;
 
         public int Channels => samples.WaveFormat.Channels;
 
@@ -20,8 +21,13 @@
         }
 
         public int Read(float[] buffer, int count) {
-            source.WaitForSamples(count);
+            while (source.WaitForSamples(count)) {
+                if (stopRequested) return 0;
+            }
+
             return samples.Read(buffer, 0, count);
         }
+
+        public void StopWaiting() => stopRequested = true;
     }
 }
