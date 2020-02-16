@@ -3,9 +3,9 @@
     using System.Globalization;
 
     public readonly struct Goertzel : IEquatable<Goertzel> {
-        private readonly double C, S1, S2, E;
+        public readonly double C, S1, S2, E;
 
-        private Goertzel(double c, double s1, double s2, double e) => (C, S1, S2, E) = (c, s1, s2, e);
+        public Goertzel(double c, double s1, double s2, double e) => (C, S1, S2, E) = (c, s1, s2, e);
 
         public static Goertzel Init(int targetFreq, int sampleRate, int numSamples) {
             var k = Math.Round((double)targetFreq / sampleRate * numSamples);
