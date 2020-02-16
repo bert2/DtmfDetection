@@ -1,6 +1,7 @@
 ﻿namespace DtmfDetection {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
 
     public static class Utils {
@@ -47,6 +48,28 @@
             PhoneKey.C => (1633, 852),
             PhoneKey.D => (1633, 941),
             PhoneKey.None => (-1, -1),
+            _ => throw new ArgumentOutOfRangeException(nameof(key), key, $"Unhandled {nameof(PhoneKey)}")
+        };
+
+        public static char ToSymbol(this PhoneKey key) => key switch
+        {
+            PhoneKey.Zero => '0',
+            PhoneKey.One => '1',
+            PhoneKey.Two => '2',
+            PhoneKey.Three => '3',
+            PhoneKey.Four => '4',
+            PhoneKey.Five => '5',
+            PhoneKey.Six => '6',
+            PhoneKey.Seven => '7',
+            PhoneKey.Eight => '8',
+            PhoneKey.Nine => '9',
+            PhoneKey.Star => '*',
+            PhoneKey.Hash => '#',
+            PhoneKey.A => 'A',
+            PhoneKey.B => 'B',
+            PhoneKey.C => 'C',
+            PhoneKey.D => 'D',
+            PhoneKey.None => ' ',
             _ => throw new ArgumentOutOfRangeException(nameof(key), key, $"Unhandled {nameof(PhoneKey)}")
         };
     }

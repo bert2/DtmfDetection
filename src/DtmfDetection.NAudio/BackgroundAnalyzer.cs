@@ -8,6 +8,7 @@
         private readonly IWaveIn source;
         private readonly IAnalyzer analyzer;
         private Thread? captureWorker;
+        private volatile bool stopRequested = false;
 
         public event Action<DtmfChange>? OnDtmfDetected;
 
@@ -34,12 +35,12 @@
 
             IsCapturing = false;
             source.StopRecording();
-            captureWorker?.Abort();
+            stopRequested = true;
             captureWorker?.Join();
         }
 
         private void Analyze() {
-            while (analyzer.MoreSamplesAvailable) {
+            while (!stopRequested && analyzer.MoreSamplesAvailable) {
                 foreach (var dtmf in analyzer.AnalyzeNextBlock())
                     OnDtmfDetected?.Invoke(dtmf);
             }

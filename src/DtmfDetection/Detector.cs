@@ -78,6 +78,8 @@
             var (fstHiIdx, sndHiIdx) = FindMaxTwo(hiGoertz);
             var (fstHiVal, sndHiVal) = (hiGoertz[fstHiIdx].NormResponse, hiGoertz[sndHiIdx].NormResponse);
 
+            //Console.WriteLine($"lo: {fstLoIdx}: {fstLoVal,8:N3}, {sndLoIdx}: {sndLoVal,8:N3}  |  hi: {fstHiIdx}: {fstHiVal,8:N3}, {sndHiIdx}: {sndHiVal,8:N3}");
+
             return fstLoVal < threshold || fstHiVal < threshold
                 || fstLoVal > threshold && sndLoVal > threshold
                 || fstHiVal > threshold && sndHiVal > threshold

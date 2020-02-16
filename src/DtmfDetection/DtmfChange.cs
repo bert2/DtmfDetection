@@ -18,7 +18,7 @@
         public static DtmfChange Stop(PhoneKey key, TimeSpan position, int channel)
             => new DtmfChange(key, position, channel, isStart: false);
 
-        public override string ToString() => $"{Key} {(IsStart ? "started" : "stopped")} @ {Position} (ch: {Channel})";
+        public override string ToString() => $"{Key.ToSymbol()} {(IsStart ? "started" : "stopped")} @ {Position} (ch: {Channel})";
 
         #region Equality implementations
 

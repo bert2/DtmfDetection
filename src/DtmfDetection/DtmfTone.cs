@@ -16,7 +16,7 @@
             stop.Position - start.Position,
             start.Channel);
 
-        public override string ToString() => $"{Key} @ {Position} (len: {Duration}, ch: {Channel})";
+        public override string ToString() => $"{Key.ToSymbol()} @ {Position} (len: {Duration}, ch: {Channel})";
 
         #region Equality implementations
 
