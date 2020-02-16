@@ -73,10 +73,10 @@
 
         private PhoneKey Detect(IReadOnlyList<Goertzel> loGoertz, IReadOnlyList<Goertzel> hiGoertz, double threshold) {
             var (fstLoIdx, sndLoIdx) = FindMaxTwo(loGoertz);
-            var (fstLoVal, sndLoVal) = (GetResp(loGoertz[fstLoIdx]), GetResp(loGoertz[sndLoIdx]));
+            var (fstLoVal, sndLoVal) = (Response(loGoertz[fstLoIdx]), Response(loGoertz[sndLoIdx]));
 
             var (fstHiIdx, sndHiIdx) = FindMaxTwo(hiGoertz);
-            var (fstHiVal, sndHiVal) = (GetResp(hiGoertz[fstHiIdx]), GetResp(hiGoertz[sndHiIdx]));
+            var (fstHiVal, sndHiVal) = (Response(hiGoertz[fstHiIdx]), Response(hiGoertz[sndHiIdx]));
 
             //Console.WriteLine($"lo: {fstLoIdx}: {fstLoVal,8:N3}, {sndLoIdx}: {sndLoVal,8:N3}  |  hi: {fstHiIdx}: {fstHiVal,8:N3}, {sndHiIdx}: {sndHiVal,8:N3}");
 
@@ -91,28 +91,28 @@
         private (int fstIdx, int sndIdx) FindMaxTwo(IReadOnlyList<Goertzel> goertz) {
             int fst = 0, snd = 1;
 
-            if (GetResp(goertz[1]) > GetResp(goertz[0])) {
+            if (Response(goertz[1]) > Response(goertz[0])) {
                 snd = 0;
                 fst = 1;
             }
 
-            if (GetResp(goertz[2]) > GetResp(goertz[fst])) {
+            if (Response(goertz[2]) > Response(goertz[fst])) {
                 snd = fst;
                 fst = 2;
-            } else if (GetResp(goertz[2]) > GetResp(goertz[snd])) {
+            } else if (Response(goertz[2]) > Response(goertz[snd])) {
                 snd = 2;
             }
 
-            if (GetResp(goertz[3]) > GetResp(goertz[fst])) {
+            if (Response(goertz[3]) > Response(goertz[fst])) {
                 snd = fst;
                 fst = 3;
-            } else if (GetResp(goertz[3]) > GetResp(goertz[snd])) {
+            } else if (Response(goertz[3]) > Response(goertz[snd])) {
                 snd = 3;
             }
 
             return (fst, snd);
         }
 
-        private double GetResp(in Goertzel g) => Config.NormalizeResponse ? g.NormResponse : g.Response;
+        private double Response(in Goertzel g) => Config.NormalizeResponse ? g.NormResponse : g.Response;
     }
 }
