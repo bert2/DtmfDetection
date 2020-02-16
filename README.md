@@ -20,7 +20,7 @@ How to detect and print multi-channel DTMF tones in microphone input:
 
 How to detect and print DTMF tones in an array of [PCM](https://en.wikipedia.org/wiki/Pulse-code_modulation) samples:
 
-### Pre-build example tool
+### Pre-built example tool
 
 ## Configure the detector
 
