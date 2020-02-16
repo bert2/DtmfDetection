@@ -57,7 +57,7 @@
             }
         }
 
-        private static PhoneKey[] Detect(
+        private PhoneKey[] Detect(
             IReadOnlyList<IReadOnlyList<Goertzel>> loGoertz,
             IReadOnlyList<IReadOnlyList<Goertzel>> hiGoertz,
             double threshold,
@@ -71,12 +71,12 @@
             return phoneKeys;
         }
 
-        private static PhoneKey Detect(IReadOnlyList<Goertzel> loGoertz, IReadOnlyList<Goertzel> hiGoertz, double threshold) {
+        private PhoneKey Detect(IReadOnlyList<Goertzel> loGoertz, IReadOnlyList<Goertzel> hiGoertz, double threshold) {
             var (fstLoIdx, sndLoIdx) = FindMaxTwo(loGoertz);
-            var (fstLoVal, sndLoVal) = (loGoertz[fstLoIdx].NormResponse, loGoertz[sndLoIdx].NormResponse);
+            var (fstLoVal, sndLoVal) = (GetResp(loGoertz[fstLoIdx]), GetResp(loGoertz[sndLoIdx]));
 
             var (fstHiIdx, sndHiIdx) = FindMaxTwo(hiGoertz);
-            var (fstHiVal, sndHiVal) = (hiGoertz[fstHiIdx].NormResponse, hiGoertz[sndHiIdx].NormResponse);
+            var (fstHiVal, sndHiVal) = (GetResp(hiGoertz[fstHiIdx]), GetResp(hiGoertz[sndHiIdx]));
 
             //Console.WriteLine($"lo: {fstLoIdx}: {fstLoVal,8:N3}, {sndLoIdx}: {sndLoVal,8:N3}  |  hi: {fstHiIdx}: {fstHiVal,8:N3}, {sndHiIdx}: {sndHiVal,8:N3}");
 
@@ -88,29 +88,31 @@
                 : (highTones[fstHiIdx], lowTones[fstLoIdx]).ToPhoneKey();
         }
 
-        private static (int fstIdx, int sndIdx) FindMaxTwo(IReadOnlyList<Goertzel> goertz) {
+        private (int fstIdx, int sndIdx) FindMaxTwo(IReadOnlyList<Goertzel> goertz) {
             int fst = 0, snd = 1;
 
-            if (goertz[1].NormResponse > goertz[0].NormResponse) {
+            if (GetResp(goertz[1]) > GetResp(goertz[0])) {
                 snd = 0;
                 fst = 1;
             }
 
-            if (goertz[2].NormResponse > goertz[fst].NormResponse) {
+            if (GetResp(goertz[2]) > GetResp(goertz[fst])) {
                 snd = fst;
                 fst = 2;
-            } else if (goertz[2].NormResponse > goertz[snd].NormResponse) {
+            } else if (GetResp(goertz[2]) > GetResp(goertz[snd])) {
                 snd = 2;
             }
 
-            if (goertz[3].NormResponse > goertz[fst].NormResponse) {
+            if (GetResp(goertz[3]) > GetResp(goertz[fst])) {
                 snd = fst;
                 fst = 3;
-            } else if (goertz[3].NormResponse > goertz[snd].NormResponse) {
+            } else if (GetResp(goertz[3]) > GetResp(goertz[snd])) {
                 snd = 3;
             }
 
             return (fst, snd);
         }
+
+        private double GetResp(in Goertzel g) => Config.NormalizeResponse ? g.NormResponse : g.Response;
     }
 }
