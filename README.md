@@ -159,6 +159,10 @@ How to detect and print DTMF tones in an array of [PCM](https://en.wikipedia.org
 
 ## Changelog
 
+### 1.0.1
+
+- remove unwanted dependencies from package DtmfDetection
+
 ### 1.0.0
 
 - complete rewrite of previous implementation
@@ -166,6 +170,7 @@ How to detect and print DTMF tones in an array of [PCM](https://en.wikipedia.org
 - make implementation much more configurable
 - normalize Goertzel response with total signal energy for loudness invariance
 - improve performance by ~25%
+- correctly calculate wait time until enough samples have been read when analyzing audio provided by a `NAudio.Wave.BufferedWaveProvider` stream
 
 ### 0.9.2
 
