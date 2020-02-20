@@ -161,15 +161,22 @@ How to detect and print DTMF tones in an array of [PCM](https://en.wikipedia.org
 
 ### 1.0.1
 
-- remove unwanted dependencies from package DtmfDetection
+DtmfDetection:
+
+- remove unwanted dependencies from nuget package
 
 ### 1.0.0
 
-- complete rewrite of previous implementation
 - upgrade to netstandard2.1
 - make implementation much more configurable
+- improve runtime performance by ~25%
+
+DtmfDetection:
+
 - normalize Goertzel response with total signal energy for loudness invariance
-- improve performance by ~25%
+
+DtmfDetection.NAudio:
+
 - correctly calculate wait time until enough samples have been read when analyzing audio provided by a `NAudio.Wave.BufferedWaveProvider` stream
 
 ### 0.9.2
@@ -208,7 +215,7 @@ DtmfDetection.NAudio:
 ## TODO
 
 - test with .net framework
-- add XML documentation
+- finish README
 - add XML documentation
 - implement continuous deployment of CLI tool to choco via AppVeyor
 - add config options to CLI tool
