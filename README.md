@@ -81,7 +81,6 @@ DtmfDetection.NAudio:
 
 - finish readme
 - test with .net framework
-- implement continuous deployment to NuGet via AppVeyor
 - implement continuous deployment of CLI tool to choco via AppVeyor
 - add XML documentation
 - add config options to CLI tool

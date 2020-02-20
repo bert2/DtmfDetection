@@ -28,6 +28,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "integration", "test\integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dtmf-detector", "example\dtmf-detector\dtmf-detector.csproj", "{A550BCB4-879D-406A-AE14-0DCE55FB6F26}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8093EB61-64CA-42E8-BE9C-52ABCB3F862C}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+		build\build.cake = build\build.cake
+		build.ps1 = build.ps1
+		build\format-rel-notes.cake = build\format-rel-notes.cake
+		GitVersion.yml = GitVersion.yml
+		build\prompt.cake = build\prompt.cake
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +79,7 @@ Global
 		{D5E2192E-B326-45D0-877D-7ACB67242DBF} = {B6FAA2B4-AE11-4048-882A-62B8DCBF9B53}
 		{B03A2C7A-4115-4548-9024-D722E96D1286} = {FAD6B8C4-3518-460A-A6B5-706C9F2B64F8}
 		{A550BCB4-879D-406A-AE14-0DCE55FB6F26} = {756D4506-5AC2-47CF-8A9E-2BD532046C69}
+		{8093EB61-64CA-42E8-BE9C-52ABCB3F862C} = {C165C447-5F2D-4612-AA4E-2E82FB575DB4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E6726D07-1D7A-4961-8843-79BD7A83E97F}
