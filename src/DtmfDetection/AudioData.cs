@@ -12,8 +12,8 @@
 
         public TimeSpan Position => new TimeSpan((long)Math.Round(position / Channels * 1000.0 / SampleRate));
 
-        public AudioData(float[] samples, int numChannels, int sampleRate)
-            => (this.samples, Channels, SampleRate) = (samples, numChannels, sampleRate);
+        public AudioData(float[] samples, int channels, int sampleRate)
+            => (this.samples, Channels, SampleRate) = (samples, channels, sampleRate);
 
         public int Read(float[] buffer, int count) {
             var safeCount = (int)Math.Min(count, samples.LongLength - position);

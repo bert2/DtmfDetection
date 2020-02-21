@@ -1,12 +1,15 @@
 ﻿namespace Unit {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using DtmfDetection;
     using MoreLinq;
     using Shouldly;
     using Xunit;
 
+    using static DtmfDetection.DtmfGenerator;
     using static DtmfDetection.Utils;
-    using static TestToneGenerator;
+    using static DetectorTestsExt;
 
     public class DetectorTests {
         [Fact]
@@ -23,21 +26,26 @@
 
         [Fact]
         public void SupportsStereo() =>
-            DtmfTone(PhoneKey.One).Interleave(DtmfTone(PhoneKey.Two)).FirstBlock(numChannels: 2)
-            .Analyze(numChannels: 2)
+            Generate(PhoneKey.One).Interleave(Generate(PhoneKey.Two)).FirstBlock(channels: 2)
+            .Analyze(channels: 2)
             .ShouldBe(new[] { PhoneKey.One, PhoneKey.Two });
 
         [Fact]
         public void SupportsQuadChannel() =>
-            DtmfTone(PhoneKey.One).Interleave(DtmfTone(PhoneKey.Two), DtmfTone(PhoneKey.Three), DtmfTone(PhoneKey.Four)).FirstBlock(numChannels: 4)
-            .Analyze(numChannels: 4)
+            Generate(PhoneKey.One).Interleave(Generate(PhoneKey.Two), Generate(PhoneKey.Three), Generate(PhoneKey.Four)).FirstBlock(channels: 4)
+            .Analyze(channels: 4)
             .ShouldBe(new[] { PhoneKey.One, PhoneKey.Two, PhoneKey.Three, PhoneKey.Four });
     }
 
     public static class DetectorTestsExt {
-        public static object Analyze(this float[] samples, int numChannels = 1)
-            => new Detector(numChannels, Config.Default).Detect(samples);
+        public static object Analyze(this float[] samples, int channels = 1)
+            => new Detector(channels, Config.Default).Detect(samples);
 
         public static T With<T>(this T x, Action<T> action) { action?.Invoke(x); return x; }
+
+        public static float[] DtmfToneBlock(PhoneKey k) => Generate(k).FirstBlock();
+
+        public static float[] FirstBlock(this IEnumerable<float> samples, int channels = 1, int blockSize = Config.DefaultSampleBlockSize)
+            => samples.Take(blockSize * channels).ToArray();
     }
 }

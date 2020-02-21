@@ -143,6 +143,41 @@ class Program {
 
 How to detect and print DTMF tones in an array of [PCM](https://en.wikipedia.org/wiki/Pulse-code_modulation) samples:
 
+```csharp
+using System;
+using System.Linq;
+using DtmfDetection;
+
+using static DtmfDetection.DtmfGenerator;
+
+class Program {
+    static void Main() {
+        var samples = GenerateStereoSamples();
+        foreach (var dtmf in samples.DtmfChanges(channels: 2))
+            Console.WriteLine(dtmf);
+    }
+
+    // `DtmfDetection.DtmfGenerator` has helpers for generating DTMF tones.
+    static float[] GenerateStereoSamples() =>
+        Stereo(
+            left: Generate(PhoneKey.Star),
+            right: Concat(Mark(PhoneKey.One, ms: 40), Space(ms: 20), Mark(PhoneKey.Two, ms: 40)))
+        .Take(NumSamples(milliSeconds: 40 + 20 + 40, channels: 2))
+        .ToArray();
+}
+```
+
+<details><summary>Output</summary>
+
+> \* started @ 00:00:00 (ch: 0)\
+1 started @ 00:00:00 (ch: 1)\
+1 stopped @ 00:00:00.0000026 (ch: 1)\
+2 started @ 00:00:00.0000051 (ch: 1)\
+\* stopped @ 00:00:00.0000100 (ch: 0)\
+2 stopped @ 00:00:00.0000100 (ch: 1)
+
+</details>
+
 ### Pre-built example tool
 
 ## Configure the detector
@@ -177,28 +212,25 @@ DtmfDetection:
 
 DtmfDetection.NAudio:
 
-- correctly calculate wait time until enough samples have been read when analyzing audio provided by a `NAudio.Wave.BufferedWaveProvider` stream
+- update NAudio reference to 1.10.0
+- correctly calculate wait time until enough samples can be read when analyzing audio provided by a `NAudio.Wave.BufferedWaveProvider` stream
 
 ### 0.9.2
 
-DtmfDetection:
-
-- sync version with DtmfDetection.NAudio
-
 DtmfDetection.NAudio:
 
-- update NAudio reference to v1.8.4.0
+- update NAudio reference to 1.8.4.0
 
 ### 0.9.1
 
 DtmfDetection:
 
-- update to .NET framework version 4.7
+- update to .NET framework 4.7
 - reduce memory footprint a little bit
 
 DtmfDetection.NAudio:
 
-- update to .NET framework version 4.7
+- update to .NET framework 4.7
 
 ### 0.9.0
 
@@ -214,7 +246,6 @@ DtmfDetection.NAudio:
 
 ## TODO
 
-- test with .net framework
 - finish README
 - add XML documentation
 - implement continuous deployment of CLI tool to choco via AppVeyor

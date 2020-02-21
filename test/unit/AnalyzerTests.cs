@@ -3,11 +3,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using DtmfDetection;
-    using MoreLinq;
     using Shouldly;
     using Xunit;
 
-    using static TestToneGenerator;
+    using static DtmfDetection.DtmfGenerator;
     using static AnalyzerTestsExt;
 
     public class AnalyzerTests {
@@ -19,7 +18,9 @@
 
         [Fact]
         public void SignalsThatNoMoreDataIsAvailable() {
-            var analyzer = Analyzer.Create(DtmfToneBlock(PhoneKey.Zero).AsSamples(), Config.Default);
+            var analyzer = Analyzer.Create(
+                Generate(PhoneKey.Zero).Take(Config.DefaultSampleBlockSize).AsSamples(),
+                Config.Default);
             _ = analyzer.AnalyzeNextBlock();
 
             _ = analyzer.AnalyzeNextBlock();
@@ -49,7 +50,7 @@
             Stereo(
                 left:  Concat(Mark(PhoneKey.A, ms: 80), Space(ms: 40), Mark(PhoneKey.C, ms: 80), Space(ms: 60)),
                 right: Concat(Space(ms: 60), Mark(PhoneKey.B, ms: 80), Space(ms: 40), Mark(PhoneKey.D, ms: 80)))
-            .Process(numChannels: 2).AndIgnorePositions()
+            .Process(channels: 2).AndIgnorePositions()
             .ShouldBe(new[] {
                 // left channel         // right channel
                 Start(PhoneKey.A, 0),   Start(PhoneKey.B, 1),
@@ -61,8 +62,8 @@
     }
 
     public static class AnalyzerTestsExt {
-        public static List<DtmfChange> Process(this IEnumerable<float> samples, int numChannels = 1) {
-            var analyzer = Analyzer.Create(samples.AsSamples(numChannels), Config.Default);
+        public static List<DtmfChange> Process(this IEnumerable<float> samples, int channels = 1) {
+            var analyzer = Analyzer.Create(samples.AsSamples(channels), Config.Default);
 
             var dtmfs = new List<DtmfChange>();
             while (analyzer.MoreSamplesAvailable) dtmfs.AddRange(analyzer.AnalyzeNextBlock());
@@ -76,11 +77,5 @@
         public static DtmfChange Start(PhoneKey k, int channel = 0) => DtmfChange.Start(k, new TimeSpan(), channel);
 
         public static DtmfChange Stop(PhoneKey k, int channel = 0) => DtmfChange.Stop(k, new TimeSpan(), channel);
-
-        public static TimeSpan MS(int milliSeconds) => TimeSpan.FromMilliseconds(milliSeconds);
-
-        public static IEnumerable<T> Concat<T>(params IEnumerable<T>[] xs) => xs.SelectMany(x => x);
-
-        public static IEnumerable<T> Stereo<T>(IEnumerable<T> left, IEnumerable<T> right) => left.Interleave(right);
     }
 }

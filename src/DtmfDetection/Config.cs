@@ -2,7 +2,12 @@
     using System;
 
     public readonly struct Config : IEquatable<Config> {
-        public static readonly Config Default = new Config(threshold: 30.0, sampleBlockSize: 205, sampleRate: 8000, normalizeResponse: true);
+        public const double DefaultThreshold = 30;
+        public const int DefaultSampleBlockSize = 205;
+        public const int DefaultSampleRate = 8000;
+
+        public static readonly Config Default = new Config(DefaultThreshold, DefaultSampleBlockSize, DefaultSampleRate, normalizeResponse: true);
+
         public readonly double Threshold;
         public readonly int SampleBlockSize;
         public readonly int SampleRate;

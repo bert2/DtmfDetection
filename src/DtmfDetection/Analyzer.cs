@@ -54,10 +54,10 @@
             IReadOnlyList<PhoneKey> currKeys,
             IReadOnlyList<PhoneKey> prevKeys,
             TimeSpan currPos,
-            int numChannels) {
-            var changes = new List<DtmfChange>(2 * numChannels);
+            int channels) {
+            var changes = new List<DtmfChange>(2 * channels);
 
-            for (var c = 0; c < numChannels; c++) {
+            for (var c = 0; c < channels; c++) {
                 switch (prevKeys[c], currKeys[c]) {
                     case (PhoneKey.None, PhoneKey.None):
                         break;
@@ -80,11 +80,11 @@
         private static List<DtmfChange> FindCutOff(
             IReadOnlyList<PhoneKey> prevKeys,
             TimeSpan stopPos,
-            int numChannels)
+            int channels)
             => FindDtmfChanges(
-                Enumerable.Repeat(PhoneKey.None, numChannels).ToArray(),
+                Enumerable.Repeat(PhoneKey.None, channels).ToArray(),
                 prevKeys,
                 stopPos,
-                numChannels);
+                channels);
     }
 }

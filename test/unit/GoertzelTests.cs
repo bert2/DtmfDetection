@@ -6,7 +6,7 @@ namespace Unit {
     using Shouldly;
     using Xunit;
 
-    using static TestToneGenerator;
+    using static DtmfDetection.DtmfGenerator;
 
     public class GoertzelTests {
         [Theory]
@@ -43,25 +43,25 @@ namespace Unit {
 
         [Fact]
         public void CanDetectFrequencyInNoisySignal() => Repeat(() =>
-            Sine(1336).Add(Noise(.1f)).Norm(1.1f)
+            Sine(1336).Add(Noise(.1f)).Normalize(1.1f)
             .MeasureFrequency(1336)
             .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold));
 
         [Fact]
         public void CanDetectFrequencyInVeryNoisySignal() => Repeat(() =>
-            Sine(941).Add(Noise(.5f)).Norm(1.5f)
+            Sine(941).Add(Noise(.5f)).Normalize(1.5f)
             .MeasureFrequency(941)
             .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold));
 
         [Fact]
         public void CanDetectFrequencyInOverlappingFrequency() =>
-            Sine(697).Add(Sine(1633)).Norm(2)
+            Sine(697).Add(Sine(1633)).Normalize(2)
             .MeasureFrequency(697)
             .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold);
 
         [Fact]
         public void CanDetectWeakFrequencyInOverlappingFrequencyAndNoisySignal() => Repeat(() =>
-            Sine(1477, .4f).Add(Sine(852, .4f)).Add(Noise(.1f))
+            Sine(1477, amplitude: .4f).Add(Sine(852, amplitude: .4f)).Add(Noise(.1f))
             .MeasureFrequency(1477)
             .GoertzelResponseShouldBeGreaterThan(Config.Default.Threshold));
 

@@ -14,8 +14,8 @@
 
         public Config Config { get; }
 
-        public Detector(int numChannels, in Config config) {
-            Channels = numChannels;
+        public Detector(int channels, in Config config) {
+            Channels = channels;
             Config = config;
 
             var sampleRate = config.SampleRate;
@@ -31,19 +31,19 @@
             return Detect(loGoertz, hiGoertz, Config.Threshold, Channels);
         }
 
-        private static Goertzel[][] CreateGoertzels(IReadOnlyList<Goertzel> initGoertz, int numChannels) {
-            var goertz = new Goertzel[numChannels][];
+        private static Goertzel[][] CreateGoertzels(IReadOnlyList<Goertzel> initGoertz, int channels) {
+            var goertz = new Goertzel[channels][];
 
-            for (var c = 0; c < numChannels; c++) {
+            for (var c = 0; c < channels; c++) {
                 goertz[c] = new[] { initGoertz[0], initGoertz[1], initGoertz[2], initGoertz[3] };
             }
 
             return goertz;
         }
 
-        private static void AddSamples(in ReadOnlySpan<float> sampleBlock, int numChannels, Goertzel[][] loGoertz, Goertzel[][] hiGoertz) {
+        private static void AddSamples(in ReadOnlySpan<float> sampleBlock, int channels, Goertzel[][] loGoertz, Goertzel[][] hiGoertz) {
             for (var i = 0; i < sampleBlock.Length; i++) {
-                var c = i % numChannels;
+                var c = i % channels;
 
                 loGoertz[c][0] = loGoertz[c][0].AddSample(sampleBlock[i]);
                 loGoertz[c][1] = loGoertz[c][1].AddSample(sampleBlock[i]);
@@ -61,10 +61,10 @@
             IReadOnlyList<IReadOnlyList<Goertzel>> loGoertz,
             IReadOnlyList<IReadOnlyList<Goertzel>> hiGoertz,
             double threshold,
-            int numChannels) {
-            var phoneKeys = new PhoneKey[numChannels];
+            int channels) {
+            var phoneKeys = new PhoneKey[channels];
 
-            for (var c = 0; c < numChannels; c++) {
+            for (var c = 0; c < channels; c++) {
                 phoneKeys[c] = Detect(loGoertz[c], hiGoertz[c], threshold);
             }
 
