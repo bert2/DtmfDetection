@@ -4,7 +4,6 @@
     using DtmfDetection;
     using DtmfDetection.NAudio;
     using System.Reflection;
-    using System.Diagnostics;
     using System.Runtime.InteropServices;
     using System.ComponentModel;
     using NAudio.CoreAudioApi;
@@ -31,11 +30,8 @@
         }
 
         private static void PrintHeader() {
-            var assembly = Assembly.GetExecutingAssembly();
-            var version = FileVersionInfo
-                .GetVersionInfo(assembly.Location)
-                .FileVersion;
-            Console.WriteLine($"dtmf-detector v{version} (https://github.com/bert2/DtmfDetection)\n");
+            var v = Assembly.GetExecutingAssembly().GetName().Version ?? new Version();
+            Console.WriteLine($"dtmf-detector {v.Major}.{v.Minor}.{v.Build} (https://github.com/bert2/DtmfDetection)\n");
         }
 
         private static void PrintHelp() {

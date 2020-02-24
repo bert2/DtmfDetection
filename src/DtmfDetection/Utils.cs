@@ -1,15 +1,20 @@
 ﻿namespace DtmfDetection {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
 
+    /// <summary>Provides helpers to convert between `PhoneKey`s and their corresponding frequency encodings.</summary>
     public static class Utils {
+        /// <summary>Enumerates all `PhoneKey`s except `PhoneKey.None`.</summary>
+        /// <returns>An enumeration of all valid `PhoneKey`s.</returns>
         public static IEnumerable<PhoneKey> PhoneKeys() => Enum
             .GetValues(typeof(PhoneKey))
             .Cast<PhoneKey>()
             .Where(k => k != PhoneKey.None);
 
+        /// <summary>Converts a frequency tuple to a `PhoneKey`.</summary>
+        /// <param name="dtmfTone">The high and low frequencies as a `ValueTuple`.</param>
+        /// <returns>The matching `PhoneKey` or `PhoneKey.None` in case the given frequencies don't encode a DTMF key.</returns>
         public static PhoneKey ToPhoneKey(this in (int high, int low) dtmfTone) => dtmfTone switch {
             (1336, 941) => PhoneKey.Zero,
             (1209, 697) => PhoneKey.One,
@@ -30,6 +35,9 @@
             _ => PhoneKey.None
         };
 
+        /// <summary>Converts a `PhoneKey` to the two frequencies it is encoded with in audio data.</summary>
+        /// <param name="key">The key to convert.</param>
+        /// <returns>A `ValueTuple` holding the key's high frequency in the first position and its low frequency in the second position.</returns>
         public static (int high, int low) ToDtmfTone(this PhoneKey key) => key switch {
             PhoneKey.Zero => (1336, 941),
             PhoneKey.One => (1209, 697),
@@ -51,6 +59,9 @@
             _ => throw new ArgumentOutOfRangeException(nameof(key), key, $"Unhandled {nameof(PhoneKey)}")
         };
 
+        /// <summary>Converts a `PhoneKey` to its UTF-8 symbol.</summary>
+        /// <param name="key">The key to convert.</param>
+        /// <returns>A `char` representing the `PhoneKey`.</returns>
         public static char ToSymbol(this PhoneKey key) => key switch
         {
             PhoneKey.Zero => '0',

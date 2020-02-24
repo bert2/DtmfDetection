@@ -194,6 +194,18 @@ class Program {
 
 ## Changelog
 
+### 1.2.0
+
+- add XML documentation
+- generate API reference
+
+### 1.1.0
+
+DtmfDetection:
+
+- add extension method for analyzing `float` arrays
+- add helpers for generating DTMF tones
+
 ### 1.0.1
 
 DtmfDetection:
@@ -247,6 +259,10 @@ DtmfDetection.NAudio:
 ## TODO
 
 - finish README
-- add XML documentation
 - implement continuous deployment of CLI tool to choco via AppVeyor
+- automate generation of API reference with mddox
+    - need to upgrade mddox to netcoreapp3.1
+    - fix issues with C# 8.0 features (nullable reference types, duplicated value types, tuples)
+    - fix issues with line breaks and backticks inside comments
+    - add parameter docs to mddox output
 - add config options to CLI tool

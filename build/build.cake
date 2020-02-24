@@ -177,6 +177,10 @@ Task("Default")
     .IsDependentOn("Build")
     .IsDependentOn("Test");
 
+Task("Pack")
+    .IsDependentOn("Pack-DtmfDetection")
+    .IsDependentOn("Pack-DtmfDetection.NAudio");
+
 Task("Release")
     .IsDependentOn("Release-DtmfDetection")
     .IsDependentOn("Release-DtmfDetection.NAudio");
