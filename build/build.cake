@@ -14,16 +14,18 @@ var lastCommitSha = EnvironmentVariable("APPVEYOR_REPO_COMMIT") ?? GitLogTip(roo
 var currBranch = GitBranchCurrent(rootDir).FriendlyName;
 GitVersion semVer = null;
 
-Task("SemVer").Does(() => {
-    semVer = GitVersion();
-    Information($"{semVer.FullSemVer} ({lastCommitMsg})");
-});
+Task("SemVer")
+    .Does(() => {
+        semVer = GitVersion();
+        Information($"{semVer.FullSemVer} ({lastCommitMsg})");
+    });
 
-Task("Clean").Does(() =>
-    DotNetCoreClean(rootDir, new DotNetCoreCleanSettings {
-        Configuration = config,
-        Verbosity = DotNetCoreVerbosity.Minimal
-    }));
+Task("Clean")
+    .Does(() =>
+        DotNetCoreClean(rootDir, new DotNetCoreCleanSettings {
+            Configuration = config,
+            Verbosity = DotNetCoreVerbosity.Minimal
+        }));
 
 Task("Build")
     .IsDependentOn("SemVer")
@@ -36,10 +38,11 @@ Task("Build")
 
 Task("Test")
     .IsDependentOn("Build")
-    .Does(() => DotNetCoreTest(rootDir, new DotNetCoreTestSettings {
-        Configuration = config,
-        NoBuild = true
-    }));
+    .Does(() =>
+        DotNetCoreTest(rootDir, new DotNetCoreTestSettings {
+            Configuration = config,
+            NoBuild = true
+        }));
 
 Task("Pack-DtmfDetection")
     .IsDependentOn("SemVer")

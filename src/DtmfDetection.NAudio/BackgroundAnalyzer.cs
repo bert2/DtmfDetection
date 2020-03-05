@@ -4,8 +4,7 @@
     using DtmfDetection.Interfaces;
     using global::NAudio.Wave;
 
-    /// <summary>Helper that does audio analysis in a background thread.
-    /// Useful when analyzing infinite inputs like mic-in our the current audio output.</summary>
+    /// <summary>Helper that does audio analysis in a background thread. Useful when analyzing infinite inputs like mic-in our the current audio output.</summary>
     public class BackgroundAnalyzer : IDisposable {
         private readonly IWaveIn source;
         private readonly AudioStream samples;
@@ -15,8 +14,7 @@
         /// <summary>Fired when a DTMF change (a DTMF tone started or stopped) has been detected.</summary>
         public event Action<DtmfChange>? OnDtmfDetected;
 
-        /// <summary>Creates a new `BackgroundAnalyzer` and immediately starts listening to the `IWaveIn`
-        /// input. `Dispose()` this instance to stop the background thread doing the analysis.</summary>
+        /// <summary>Creates a new `BackgroundAnalyzer` and immediately starts listening to the `IWaveIn` input. `Dispose()` this instance to stop the background thread doing the analysis.</summary>
         /// <param name="source">The input data. Must not be in recording state.</param>
         /// <param name="forceMono">Toggles conversion of multi-channel audio to mono before the analysis.</param>
         /// <param name="config">Optional detector configuration. Defaults to `Config.Default`.</param>

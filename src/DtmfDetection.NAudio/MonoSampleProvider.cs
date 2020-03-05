@@ -23,12 +23,10 @@
                 channels: 1);
         }
 
-        /// <summary>The `WaveFormat` of the decorated `ISampleProvider`.
-        /// Will match match the `WaveFormat` of the input `ISampleProvider` except that it will be mono (`WaveFormat.Channels` = 1).</summary>
+        /// <summary>The `WaveFormat` of the decorated `ISampleProvider`. Will match match the `WaveFormat` of the input `ISampleProvider` except that it will be mono (`WaveFormat.Channels` = 1).</summary>
         public WaveFormat WaveFormat { get; }
 
-        /// <summary>Tries to read `count` sample frames from the input `ISampleProvider`, averages the sample values across all channels
-        /// and writes one mixed sample value for each sample frame into `buffer`.</summary>
+        /// <summary>Tries to read `count` sample frames from the input `ISampleProvider`, averages the sample values across all channels and writes one mixed sample value for each sample frame into `buffer`.</summary>
         /// <param name="buffer">The buffer to fill with samples.</param>
         /// <param name="offset">The offset into `buffer`.</param>
         /// <param name="count">The number of sample frames to read.</param>

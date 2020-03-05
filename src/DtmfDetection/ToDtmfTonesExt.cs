@@ -5,11 +5,8 @@
 
     /// <summary>Provides helpers to generate a sequence of `DtmfTone`s from a list of `DtmfChange`s.</summary>
     public static class ToDtmfTonesExt {
-        /// <summary>Converts a list of `DtmfChange`s to a sequence of `DtmfTone`s by finding the matching stop of a DTMF tones
-        /// to each start of a DTMF tone and merging both into a single `DtmfTone` struct.</summary>
-        /// <param name="dtmfs">A list of `DtmfChange`s ordered by `DtmfChange.Position` in ascending order.
-        /// The list must be consistent (i.e. there must be a "DTMF stop" after every "DTMF start" somehwere in the list) otherwise
-        /// an `InvalidOperationException` will be thrown.</param>
+        /// <summary>Converts a list of `DtmfChange`s to a sequence of `DtmfTone`s by finding the matching stop of a DTMF tones to each start of a DTMF tone and merging both into a single `DtmfTone` struct.</summary>
+        /// <param name="dtmfs">A list of `DtmfChange`s ordered by `DtmfChange.Position` in ascending order. The list must be consistent (i.e. there must be a "DTMF stop" after every "DTMF start" somehwere in the list) otherwise an `InvalidOperationException` will be thrown.</param>
         /// <returns>A sequence of `DtmfTone`s orderd by `DtmfTone.Position` in ascending order.</returns>
         public static IEnumerable<DtmfTone> ToDtmfTones(this IList<DtmfChange> dtmfs) => dtmfs
             .Select((dtmf, idx) => (dtmf, idx))
@@ -17,12 +14,7 @@
             .Select(x => (start: x.dtmf, stop: dtmfs.FindMatchingStop(offset: x.idx + 1, x.dtmf)))
             .Select(x => DtmfTone.From(x.start, x.stop));
 
-        /// <summary>Finds the stop of a DTMF tone matching the given start of a DTMF tone in a list of `DtmfChange`s.
-        /// A `DtmfChange x` matches `start` when:
-        ///   `x.IsStop == true`,
-        ///   `x.Channel == start.Channel`,
-        ///   `x.Key == start.Key`,
-        ///   and `x.Position >= start.Position`.</summary>
+        /// <summary>Finds the stop of a DTMF tone matching the given start of a DTMF tone in a list of `DtmfChange`s. A `DtmfChange x` matches `start` when: `x.IsStop == true`, `x.Channel == start.Channel`,`x.Key == start.Key`, and `x.Position >= start.Position`.</summary>
         /// <param name="dtmfs">The list of `DtmfChange`s to search in. Should be ordered by `DtmfChange.Position` in ascending order.</param>
         /// <param name="offset">An offset into the list to start searching from. Useful for optimizing performance.</param>
         /// <param name="start">The DTMF start to find a matching stop for.</param>

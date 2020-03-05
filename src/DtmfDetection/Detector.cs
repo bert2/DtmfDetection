@@ -4,20 +4,14 @@
     using System.Linq;
     using DtmfDetection.Interfaces;
 
-    /// <summary>Creates a `Goertzel` accumulator for each of the DTMF tone low (697, 770, 852, and 941 Hz) and high
-    /// frequencies (1209, 1336, 1477, and 1633 Hz) and repeats that for each audio channel in the input data.
-    /// When `Detect()` is called, each sample of the input sample block is added to each `Goertzel` accumulator and
-    /// afterwards the Goertzel response of each frequency is retrieved. Reports a detected DTMF tone when
-    ///   exactly one of the four low frequency responses crosses the detection threshold, and
-    ///   exactly one of the four high frequency responses crosses the detection threshold.</summary>
+    /// <summary>Creates a `Goertzel` accumulator for each of the DTMF tone low (697, 770, 852, and 941 Hz) and high frequencies (1209, 1336, 1477, and 1633 Hz) and repeats that for each audio channel in the input data. When `Detect()` is called, each sample of the input sample block is added to each `Goertzel` accumulator and afterwards the Goertzel response of each frequency is retrieved. Reports a detected DTMF tone when exactly one of the four low frequency responses crosses the detection threshold, and exactly one of the four high frequency responses crosses the detection threshold.</summary>
     public class Detector : IDetector {
         private static readonly IReadOnlyList<int> lowTones = new[] { 697, 770, 852, 941 };
         private static readonly IReadOnlyList<int> highTones = new[] { 1209, 1336, 1477, 1633 };
         private readonly IReadOnlyList<Goertzel> initLoGoertz;
         private readonly IReadOnlyList<Goertzel> initHiGoertz;
 
-        /// <summary>The number of channels this detector has been created for. Used by the `Analyzer` to validate that
-        /// this detector supports the number of channels present int the source data (`ISamples.Channels`).</summary>
+        /// <summary>The number of channels this detector has been created for. Used by the `Analyzer` to validate that this detector supports the number of channels present int the source data (`ISamples.Channels`).</summary>
         public int Channels { get; }
 
         /// <summary>The `Config` this detector has been created with.</summary>
@@ -36,11 +30,8 @@
             initHiGoertz = highTones.Select(f => Goertzel.Init(f, sampleRate, numSamples)).ToArray();
         }
 
-        /// <summary>Runs the Goertzel algorithm on all samples in `sampleBlock` and returns the DTMF key detected in each
-        /// channel. `PhoneKey.None` is used in case no DTMF key has been detected in a channel.</summary>
-        /// <param name="sampleBlock">The block of samples to analyze. Its length should always
-        /// match `Config.SampleBlockSize * Detector.Channels` except when the end of the input has been reached, in which case
-        /// it might be smalller once.</param>
+        /// <summary>Runs the Goertzel algorithm on all samples in `sampleBlock` and returns the DTMF key detected in each channel. `PhoneKey.None` is used in case no DTMF key has been detected in a channel.</summary>
+        /// <param name="sampleBlock">The block of samples to analyze. Its length should always match `Config.SampleBlockSize * Detector.Channels` except when the end of the input has been reached, in which case it might be smalller once.</param>
         /// <returns>A list of DTMF keys, one for each channel. Hence its length will match the value of `Detector.Channels`.</returns>
         public IReadOnlyList<PhoneKey> Detect(in ReadOnlySpan<float> sampleBlock) {
             var loGoertz = CreateGoertzels(initLoGoertz, Channels);

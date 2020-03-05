@@ -192,6 +192,12 @@ class Program {
 
 ### Other configuration options
 
+## API reference
+
+DtmfDetection: [./src/DtmfDetection/README.md](./src/DtmfDetection/README.md)
+
+DtmfDetection.NAudio: [./src/DtmfDetection.NAudio/README.md](./src/DtmfDetection.NAudio/README.md)
+
 ## Changelog
 
 ### 1.2.0
@@ -259,10 +265,8 @@ DtmfDetection.NAudio:
 ## TODO
 
 - finish README
-- implement continuous deployment of CLI tool to choco via AppVeyor
-- automate generation of API reference with mddox
-    - need to upgrade mddox to netcoreapp3.1
-    - fix issues with C# 8.0 features (nullable reference types, duplicated value types, tuples)
-    - fix issues with line breaks and backticks inside comments
-    - add parameter docs to mddox output
+- check code coverage
+- implement continuous deployment of CLI tool to choco
+- add parameter docs to mddox output
 - add config options to CLI tool
+- automate generation of API reference with mddox

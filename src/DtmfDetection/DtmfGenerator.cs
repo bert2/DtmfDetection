@@ -13,8 +13,7 @@
         public static IEnumerable<float> Generate(PhoneKey key, int sampleRate = Config.DefaultSampleRate)
             => Generate(key.ToDtmfTone(), sampleRate);
 
-        /// <summary>Generates single-channel PCM data playing the dual tone comprised of the two frequencies `highFreq`
-        /// and `lowFreq` infinitely.</summary>
+        /// <summary>Generates single-channel PCM data playing the dual tone comprised of the two frequencies `highFreq` and `lowFreq` infinitely.</summary>
         /// <param name="highFreq">The high frequency part of the dual tone.</param>
         /// <param name="lowFreq">The low frequency part of the dual tone.</param>
         /// <param name="sampleRate">Optional sample rate of the PCM data. Defaults to `Config.DefaultSampleRate`.</param>
@@ -22,8 +21,7 @@
         public static IEnumerable<float> Generate(int highFreq, int lowFreq, int sampleRate = Config.DefaultSampleRate)
             => Sine(highFreq, sampleRate).Add(Sine(lowFreq, sampleRate)).Normalize(1);
 
-        /// <summary>Generates single-channel PCM data playing the dual tone comprised of the two frequencies `highFreq`
-        /// and `lowFreq` infinitely.</summary>
+        /// <summary>Generates single-channel PCM data playing the dual tone comprised of the two frequencies `highFreq` and `lowFreq` infinitely.</summary>
         /// <param name="dual">A tuple holding the high and low frequency.</param>
         /// <param name="sampleRate">Optional sample rate of the PCM data. Defaults to `Config.DefaultSampleRate`.</param>
         /// <returns>An infinite sequence of PCM data playing the specified dual tone.</returns>
@@ -45,8 +43,7 @@
         public static IEnumerable<float> Space(int ms = 20, int sampleRate = Config.DefaultSampleRate)
             => Constant(.0f).Take(NumSamples(ms, channels: 1, sampleRate));
 
-        /// <summary>Takes two sequences of single-channel PCM data and interleaves them to form a single sequence
-        /// of dual-channel PCM data.</summary>
+        /// <summary>Takes two sequences of single-channel PCM data and interleaves them to form a single sequence of dual-channel PCM data.</summary>
         /// <param name="left">The PCM data for the left channel.</param>
         /// <param name="right">The PCM data for the right channel.</param>
         /// <returns>A sequence of dual-channel PCM data.</returns>
@@ -93,8 +90,7 @@
             int sampleRate = Config.DefaultSampleRate)
             => new AudioData(source.ToArray(), channels, sampleRate);
 
-        /// <summary>Adds two sequences of PCM data together. Used to generate dual tones. The amplitude might exceed the
-        /// range `[-1..1]` after adding.</summary>
+        /// <summary>Adds two sequences of PCM data together. Used to generate dual tones. The amplitude might exceed the range `[-1..1]` after adding.</summary>
         /// <param name="xs">One of the two input signals to add.</param>
         /// <param name="ys">One of the two input signals to add.</param>
         /// <returns>The sum of both input signals.</returns>
@@ -110,15 +106,14 @@
 
         /// <summary>Concatenates multiple finite sequences of PCM data. Typically used with `Mark()` and `Space()`.</summary>
         /// <param name="xss">The sequences to concatenate.</param>
-        /// <returns>The single sequence that is the concatentation of the given sequences.</returns>
+        /// <returns>The single sequence that is the concatenation of the given sequences.</returns>
         public static IEnumerable<float> Concat(params IEnumerable<float>[] xss) => xss.SelectMany(xs => xs);
 
-        /// <summary>Converts a duration in milliseconds into the number of samples required to represent a signal of that
-        /// duration as PCM audio data.</summary>
+        /// <summary>Converts a duration in milliseconds into the number of samples required to represent a signal of that duration as PCM audio data.</summary>
         /// <param name="milliSeconds">The duration of the signal.</param>
         /// <param name="channels">Optional number of channels in the signal. Defaults to `1`.</param>
         /// <param name="sampleRate">Optional sample rate of the signal. Defaults to `Config.DefaultSampleRate`.</param>
-        /// <returns></returns>
+        /// <returns>The number of samples needed for the specified length, channels, and sample rate.</returns>
         public static int NumSamples(int milliSeconds, int channels = 1, int sampleRate = Config.DefaultSampleRate)
             => channels * (int)Math.Round(milliSeconds / (1.0 / sampleRate * 1000));
     }

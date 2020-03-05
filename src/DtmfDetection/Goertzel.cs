@@ -2,9 +2,7 @@
     using System;
     using System.Globalization;
 
-    /// <summary>The actual implementation of the Goertzel algorithm (https://en.wikipedia.org/wiki/Goertzel_algorithm) that estimates
-    /// the strength of a frequency in a signal.
-    /// It works similar to a Fourier transform except that it doesn't analyze the whole spectrum, but only a single frequency.</summary>
+    /// <summary>The actual implementation of the Goertzel algorithm (https://en.wikipedia.org/wiki/Goertzel_algorithm) that estimates the strength of a frequency in a signal. It works similar to a Fourier transform except that it doesn't analyze the whole spectrum, but only a single frequency.</summary>
     public readonly struct Goertzel : IEquatable<Goertzel> {
         /// <summary>Stores a pre-computed coefficient calculated from the parameters of `Init()`.</summary>
         public readonly double C;
@@ -25,8 +23,7 @@
         /// <summary>Initializes a `Goertzel` for a given target frequency.</summary>
         /// <param name="targetFreq">The target frequency to estimate the strength for in a signal.</param>
         /// <param name="sampleRate">The sample rate of the signal. A rate of `8000` (Hz) is recommended.</param>
-        /// <param name="numSamples">The number of samples that will be added to the `Goertzel` before `Response` or `NormResponse`
-        /// are queried. It is recommended to use a value of `205` as this minimizes errors.</param>
+        /// <param name="numSamples">The number of samples that will be added to the `Goertzel` before `Response` or `NormResponse` are queried. It is recommended to use a value of `205` as this minimizes errors.</param>
         /// <returns>A new `Goertzel` with a pre-computed coefficient.</returns>
         public static Goertzel Init(int targetFreq, int sampleRate, int numSamples) {
             var k = Math.Round((double)targetFreq / sampleRate * numSamples);
@@ -49,8 +46,7 @@
             s2: S1,
             e: E + sample * sample);
 
-        /// <summary>Creates a new `Goertzel` from this one's coefficient `C`, but resets the state (`S1`, `S2`) and the total signal
-        /// energy (`E`) to `0`. Useful to save the computation of `C` when the parameters of `Init()` were to stay the same.</summary>
+        /// <summary>Creates a new `Goertzel` from this one's coefficient `C`, but resets the state (`S1`, `S2`) and the total signal energy (`E`) to `0`. Useful to save the computation of `C` when the parameters of `Init()` were to stay the same.</summary>
         /// <returns>A new `Goertzel` with this one's value of `C`.</returns>
         public Goertzel Reset() => new Goertzel(c: C, s1: 0, s2: 0, e: 0);
 

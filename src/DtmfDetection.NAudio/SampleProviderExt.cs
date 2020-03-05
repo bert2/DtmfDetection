@@ -4,8 +4,7 @@
 
     /// <summary>Provides extensions methods for `ISampleProvider`s.</summary>
     public static class SampleProviderExt {
-        /// <summary>Resamples the input data to the specified target sample rate using the `WdlResamplingSampleProvider`.
-        /// Does nothing in case the sample rate already matches.</summary>
+        /// <summary>Resamples the input data to the specified target sample rate using the `WdlResamplingSampleProvider`. Does nothing in case the sample rate already matches.</summary>
         /// <param name="source">The `ISampleProvider` providing the source samples.</param>
         /// <param name="targetSampleRate">The sample rate to convert the provided samples to.</param>
         /// <returns>A new `ISampleProvider` having the specified target sample rate.</returns>
