@@ -6,7 +6,7 @@ Implementation of the [Goertzel algorithm](https://en.wikipedia.org/wiki/Goertze
 
 | package | use case |
 |---|---|
-| [DtmfDetection](https://www.nuget.org/packages/DtmfDetection) | Use this package of you are only working with raw [PCM](https://en.wikipedia.org/wiki/Pulse-code_modulation) data (i.e. arrays of `float`s). |
+| [DtmfDetection](https://www.nuget.org/packages/DtmfDetection) | Use this package if you are only working with raw [PCM](https://en.wikipedia.org/wiki/Pulse-code_modulation) data (i.e. arrays of `float`s). |
 | [DtmfDetection.NAudio](https://www.nuget.org/packages/DtmfDetection.NAudio) | Integrates with [NAudio](https://github.com/naudio/NAudio) to detect DTMF tones in audio files and audio streams (e.g. mic-in or the current audio output). |
 
 ## Quick start
