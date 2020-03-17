@@ -1,5 +1,7 @@
-#addin Cake.Git
 #tool GitVersion.CommandLine
+#tool Codecov
+#addin Cake.Codecov
+#addin Cake.Git
 #load prompt.cake
 #load format-rel-notes.cake
 
@@ -8,6 +10,7 @@ var config = Argument("configuration", "Release");
 var nugetKey = Argument<string>("nugetKey", null) ?? EnvironmentVariable("nuget_key");
 
 var rootDir = Directory("..");
+var testDir = rootDir + Directory("test");
 
 var lastCommitMsg = EnvironmentVariable("APPVEYOR_REPO_COMMIT_MESSAGE") ?? GitLogTip(rootDir).MessageShort;
 var lastCommitSha = EnvironmentVariable("APPVEYOR_REPO_COMMIT") ?? GitLogTip(rootDir).Sha;
@@ -41,8 +44,21 @@ Task("Test")
     .Does(() =>
         DotNetCoreTest(rootDir, new DotNetCoreTestSettings {
             Configuration = config,
-            NoBuild = true
+            NoBuild = true,
+            ArgumentCustomization = args => {
+                var msbuildSettings = new DotNetCoreMSBuildSettings()
+                    .WithProperty("CollectCoverage", new[] { "true" })
+                    .WithProperty("CoverletOutputFormat", new[] { "opencover" });
+                args.AppendMSBuildSettings(msbuildSettings, environment: null);
+                return args;
+            }
         }));
+
+Task("UploadCoverage")
+    .Does(() => {
+        Codecov(testDir + File("unit/coverage.opencover.xml"));
+        Codecov(testDir + File("integration/coverage.opencover.xml"));
+    });
 
 Task("Pack-DtmfDetection")
     .IsDependentOn("SemVer")
@@ -185,6 +201,7 @@ Task("Pack")
     .IsDependentOn("Pack-DtmfDetection.NAudio");
 
 Task("Release")
+    .IsDependentOn("UploadCoverage")
     .IsDependentOn("Release-DtmfDetection")
     .IsDependentOn("Release-DtmfDetection.NAudio");
 

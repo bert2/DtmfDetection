@@ -1,8 +1,13 @@
 # DtmfDetection & DtmfDetection.NAudio
 
-[![Build status](https://ci.appveyor.com/api/projects/status/yxidl32tv632lagv/branch/master?svg=true)](https://ci.appveyor.com/project/bert2/dtmfdetection/branch/master) [![NuGet](https://img.shields.io/nuget/v/DtmfDetection.NAudio.svg)](https://www.nuget.org/packages/DtmfDetection.NAudio)
+[![build](https://img.shields.io/appveyor/build/bert2/dtmf-detection/master?logo=appveyor)](https://ci.appveyor.com/project/bert2/dtmf-detection/branch/master) [![tests](https://img.shields.io/appveyor/tests/bert2/dtmf-detection/master?compact_message&logo=appveyor)](https://ci.appveyor.com/project/bert2/dtmf-detection/branch/master) [![coverage](https://img.shields.io/codecov/c/github/bert2/DtmfDetection/master?logo=codecov)](https://codecov.io/gh/bert2/DtmfDetection) [![nuget package](https://img.shields.io/nuget/v/DtmfDetection.NAudio.svg?logo=nuget)](https://www.nuget.org/packages/DtmfDetection.NAudio) [![nuget downloads](https://img.shields.io/nuget/dt/DtmfDetection.NAudio?color=blue&logo=nuget)](https://www.nuget.org/packages/DtmfDetection.NAudio) ![last commit](https://img.shields.io/github/last-commit/bert2/DtmfDetection/master?logo=github)
 
-Implementation of the [Goertzel algorithm](https://en.wikipedia.org/wiki/Goertzel_algorithm) for the detection of [DTMF tones](https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling) (aka touch tones) in audio data. Install the package [DtmfDetection.NAudio](https://www.nuget.org/packages/DtmfDetection.NAudio) for integration with [NAudio](https://github.com/naudio/NAudio).
+Implementation of the [Goertzel algorithm](https://en.wikipedia.org/wiki/Goertzel_algorithm) for the detection of [DTMF tones](https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling) (aka touch tones) in audio data.
+
+| package | use case |
+|---|---|
+| [DtmfDetection](https://www.nuget.org/packages/DtmfDetection) | Use this package of you are only working with raw [PCM](https://en.wikipedia.org/wiki/Pulse-code_modulation) data (i.e. arrays of `float`s). |
+| [DtmfDetection.NAudio](https://www.nuget.org/packages/DtmfDetection.NAudio) | Integrates with [NAudio](https://github.com/naudio/NAudio) to detect DTMF tones in audio files and audio streams (e.g. mic-in or the current audio output). |
 
 ## Quick start
 
@@ -180,6 +185,8 @@ class Program {
 
 ### Pre-built example tool
 
+## DTMF tone localization accuracy
+
 ## Configure the detector
 
 ### Adjust detection threshold
@@ -265,8 +272,5 @@ DtmfDetection.NAudio:
 ## TODO
 
 - finish README
-- check code coverage
-- implement continuous deployment of CLI tool to choco
-- add parameter docs to mddox output
+- continuous deployment of CLI tool to choco
 - add config options to CLI tool
-- automate generation of API reference with mddox
