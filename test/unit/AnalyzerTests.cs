@@ -46,6 +46,17 @@
             });
 
         [Fact]
+        public void ReturnsStartAndStopOfMultipleTonesAlignedWithSampleFrameSize() =>
+            Concat(Mark(PhoneKey.A, ms: 26), Mark(PhoneKey.C, ms: 26), Mark(PhoneKey.A, ms: 26), Mark(PhoneKey.B, ms: 26))
+            .Process().AndIgnorePositions()
+            .ShouldBe(new[] {
+                Start(PhoneKey.A), Stop(PhoneKey.A),
+                Start(PhoneKey.C), Stop(PhoneKey.C),
+                Start(PhoneKey.A), Stop(PhoneKey.A),
+                Start(PhoneKey.B), Stop(PhoneKey.B)
+            });
+
+        [Fact]
         public void ReturnsStartAndStopOfMultipleOverlappingStereoTones() =>
             Stereo(
                 left:  Concat(Mark(PhoneKey.A, ms: 80), Space(ms: 40), Mark(PhoneKey.C, ms: 80), Space(ms: 60)),
@@ -59,6 +70,36 @@
                                         Start(PhoneKey.D, 1),
                 Stop(PhoneKey.C, 0),    Stop(PhoneKey.D, 1)
             });
+
+        [Fact]
+        public void ThrowsWhenCreatedWithValidConfigButNullSamples() => new Action(() =>
+            Analyzer.Create(samples: null!, Config.Default))
+            .ShouldThrow<ArgumentNullException>();
+
+        [Fact]
+        public void ThrowsWhenCreatedWithValidDetectorButNullSamples() => new Action(() =>
+            Analyzer.Create(samples: null!, new Detector(1, Config.Default)))
+            .ShouldThrow<ArgumentNullException>();
+
+        [Fact]
+        public void ThrowsWhenCreatedWithNullDetector() => new Action(() =>
+            Analyzer.Create(new AudioData(Array.Empty<float>(), 1, 8000), detector: null!))
+            .ShouldThrow<ArgumentNullException>();
+
+        [Fact]
+        public void ThrowsWhenCreatedWithMismatchingSampleRateOfConfig() => new Action(() =>
+            Analyzer.Create(new AudioData(Array.Empty<float>(), 1, 8000), Config.Default.WithSampleRate(16000)))
+            .ShouldThrow<InvalidOperationException>();
+
+        [Fact]
+        public void ThrowsWhenCreatedWithMismatchingSampleRateOfDetector() => new Action(() =>
+            Analyzer.Create(new AudioData(Array.Empty<float>(), 1, 8000), new Detector(1, Config.Default.WithSampleRate(16000))))
+            .ShouldThrow<InvalidOperationException>();
+
+        [Fact]
+        public void ThrowsWhenCreatedWithMismatchingChannelsOfDetector() => new Action(() =>
+            Analyzer.Create(new AudioData(Array.Empty<float>(), 1, 8000), new Detector(2, Config.Default)))
+            .ShouldThrow<InvalidOperationException>();
     }
 
     public static class AnalyzerTestsExt {
