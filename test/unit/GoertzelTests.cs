@@ -84,7 +84,7 @@ namespace Unit {
             .ShouldBe(double.NaN);
 
         [Fact]
-        public void ToStringPrintNormalizedResponse() =>
+        public void ToStringPrintsNormalizedResponse() =>
             new Goertzel(1, 2, 3, 4)
             .ToString()
             .ShouldBe("1.75");
