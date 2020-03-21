@@ -5,6 +5,30 @@
     using Xunit;
 
     public class ConfigTests {
+        [Fact]
+        public void CanConfigureThreshold() =>
+            new Config(1, 2, 3, true)
+            .WithThreshold(4)
+            .ShouldBe(new Config(4, 2, 3, true));
+
+        [Fact]
+        public void CanConfigureSampleBlockSize() =>
+            new Config(1, 2, 3, true)
+            .WithSampleBlockSize(4)
+            .ShouldBe(new Config(1, 4, 3, true));
+
+        [Fact]
+        public void CanConfigureSampleRate() =>
+            new Config(1, 2, 3, true)
+            .WithSampleRate(4)
+            .ShouldBe(new Config(1, 2, 4, true));
+
+        [Fact]
+        public void CanConfigureResponseNormalization() =>
+            new Config(1, 2, 3, true)
+            .WithNormalizeResponse(false)
+            .ShouldBe(new Config(1, 2, 3, false));
+
         #region Equality implementations
 
         [Fact]
