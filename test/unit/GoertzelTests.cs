@@ -83,6 +83,43 @@ namespace Unit {
             .NormResponse
             .ShouldBe(double.NaN);
 
+        [Fact]
+        public void ToStringPrintNormalizedResponse() =>
+            new Goertzel(1, 2, 3, 4)
+            .ToString()
+            .ShouldBe("1.75");
+
+        #region Equality implementations
+
+        [Fact]
+        public void ImplementsIEquatable() =>
+            new HashSet<Goertzel> { new Goertzel(1, 2, 3, 4) }
+            .Contains(new Goertzel(1, 2, 3, 4))
+            .ShouldBeTrue();
+
+        [Fact]
+        public void OverridesGetHashCode() =>
+            new Goertzel(1, 2, 3, 4).GetHashCode()
+            .ShouldNotBe(new Goertzel(5, 6, 7, 8).GetHashCode());
+
+        [Fact]
+        public void OverridesEquals() =>
+            new Goertzel(1, 2, 3, 4)
+            .Equals((object)new Goertzel(1, 2, 3, 4))
+            .ShouldBeTrue();
+
+        [Fact]
+        public void OverridesEqualsOperator() =>
+            (new Goertzel(1, 2, 3, 4) == new Goertzel(1, 2, 3, 4))
+            .ShouldBeTrue();
+
+        [Fact]
+        public void OverridesNotEqualsOperator() =>
+            (new Goertzel(1, 2, 3, 4) != new Goertzel(5, 6, 7, 8))
+            .ShouldBeTrue();
+
+        #endregion Equality implementations
+
         private static void Repeat(Action test, int count = 1000) {
             for (var i = 1; i <= count; i++) {
                 try {
