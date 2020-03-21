@@ -8,7 +8,7 @@
         /// <returns>The `BufferedWaveProvider` buffering the input stream.</returns>
         public static BufferedWaveProvider ToBufferedWaveProvider(this IWaveIn source) {
             var buffer = new BufferedWaveProvider(source.WaveFormat) { DiscardOnBufferOverflow = true };
-            source.DataAvailable += (sender, e) => buffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
+            source.DataAvailable += (_, e) => buffer.AddSamples(e.Buffer, 0, e.BytesRecorded);
             return buffer;
         }
     }

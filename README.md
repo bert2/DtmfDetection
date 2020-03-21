@@ -207,6 +207,10 @@ DtmfDetection.NAudio: [./src/DtmfDetection.NAudio/README.md](./src/DtmfDetection
 
 ## Changelog
 
+### 1.2.1
+
+- `BackgroundAnalyzer` ctor now also takes a handler for the `OnDtmfDetected` event
+
 ### 1.2.0
 
 - add XML documentation

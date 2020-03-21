@@ -2,11 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-
+    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-
     <RootNamespace>Integration</RootNamespace>
-
     <AssemblyName>test.integration</AssemblyName>
   </PropertyGroup>
 
@@ -31,15 +29,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="testdata\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\DtmfDetection.NAudio\DtmfDetection.NAudio.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="testdata\long_dtmf_tones.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="testdata\short_dtmf_sequence.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="testdata\stereo_dtmf_tones.wav">

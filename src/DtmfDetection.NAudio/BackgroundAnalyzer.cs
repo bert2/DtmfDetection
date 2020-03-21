@@ -17,10 +17,17 @@
         /// <summary>Creates a new `BackgroundAnalyzer` and immediately starts listening to the `IWaveIn` input. `Dispose()` this instance to stop the background thread doing the analysis.</summary>
         /// <param name="source">The input data. Must not be in recording state.</param>
         /// <param name="forceMono">Toggles conversion of multi-channel audio to mono before the analysis.</param>
+        /// <param name="onDtmfDetected">Optional handler for the `OnDtmfDetected` event.</param>
         /// <param name="config">Optional detector configuration. Defaults to `Config.Default`.</param>
         /// <param name="analyzer">Optional; can be used to inject a custom analyzer implementation. Defaults to `Analyzer`.</param>
-        public BackgroundAnalyzer(IWaveIn source, bool forceMono = true, in Config? config = null, IAnalyzer? analyzer = null) {
+        public BackgroundAnalyzer(
+            IWaveIn source,
+            bool forceMono = true,
+            Action<DtmfChange>? onDtmfDetected = null,
+            Config? config = null,
+            IAnalyzer? analyzer = null) {
             this.source = source;
+            OnDtmfDetected += onDtmfDetected;
             var cfg = config ?? Config.Default;
             samples = new AudioStream(source, cfg.SampleRate, forceMono);
             this.analyzer = analyzer ?? Analyzer.Create(samples, cfg);

@@ -66,7 +66,7 @@ Helper that does audio analysis in a background thread. Useful when analyzing in
 
 | Name | Summary |
 |---|---|
-| **BackgroundAnalyzer(IWaveIn source, bool forceMono, in Config? config, IAnalyzer analyzer)** | Creates a new `BackgroundAnalyzer` and immediately starts listening to the `IWaveIn` input. `Dispose()` this instance to stop the background thread doing the analysis. |
+| **BackgroundAnalyzer(IWaveIn source, bool forceMono, Config? config, IAnalyzer analyzer)** | Creates a new `BackgroundAnalyzer` and immediately starts listening to the `IWaveIn` input. `Dispose()` this instance to stop the background thread doing the analysis. |
 ## Methods
 
 | Name | Returns | Summary |
@@ -137,4 +137,4 @@ Provides an extension method to detect DTMF tones in a `WaveStream`.
 
 | Name | Returns | Summary |
 |---|---|---|
-| **DtmfChanges(WaveStream waveStream, bool forceMono, in Config? config)** | List\<DtmfChange\> | Detects DTMF tones in a `WaveStream`. |
+| **DtmfChanges(WaveStream waveStream, bool forceMono, Config? config)** | List\<DtmfChange\> | Detects DTMF tones in a `WaveStream`. |

@@ -13,7 +13,7 @@
             this float[] samples,
             int channels = 1,
             int sampleRate = Config.DefaultSampleRate,
-            in Config? config = null) {
+            Config? config = null) {
             var cfg = config ?? Config.Default;
             var audio = new AudioData(samples, channels, sampleRate);
             var analyzer = Analyzer.Create(audio, cfg);
