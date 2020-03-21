@@ -33,12 +33,14 @@
 
         [Fact]
         public void OverridesEqualsOperator() =>
-            (DtmfChange.Start(PhoneKey.B, TimeSpan.FromSeconds(5), 3) == DtmfChange.Start(PhoneKey.B, TimeSpan.FromSeconds(5), 3))
+            (DtmfChange.Start(PhoneKey.B, TimeSpan.FromSeconds(5), 3)
+            == DtmfChange.Start(PhoneKey.B, TimeSpan.FromSeconds(5), 3))
             .ShouldBeTrue();
 
         [Fact]
         public void OverridesNotEqualsOperator() =>
-            (DtmfChange.Start(PhoneKey.B, TimeSpan.FromSeconds(5), 3) != DtmfChange.Stop(PhoneKey.C, TimeSpan.FromSeconds(2), 4))
+            (DtmfChange.Start(PhoneKey.B, TimeSpan.FromSeconds(5), 3)
+            != DtmfChange.Stop(PhoneKey.C, TimeSpan.FromSeconds(2), 4))
             .ShouldBeTrue();
 
         #endregion Equality implementations
