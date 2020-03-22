@@ -207,6 +207,10 @@ DtmfDetection.NAudio: [./src/DtmfDetection.NAudio/README.md](./src/DtmfDetection
 
 ## Changelog
 
+### 1.2.2
+
+- refactor wait time estimation of the `BackgroundAnalyzer` to a less handcrafted solution
+
 ### 1.2.1
 
 - `BackgroundAnalyzer` ctor now also takes a handler for the `OnDtmfDetected` event

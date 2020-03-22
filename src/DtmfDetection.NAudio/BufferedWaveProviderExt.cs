@@ -10,13 +10,10 @@
         /// <param name="count">The requested number of samples frames. Used to calculate the number of requested bytes.</param>
         /// <returns>Returns `false` when the estimated wait time was sufficient to fill the buffer, or `true` when more waiting is needed.</returns>
         public static bool WaitForSamples(this BufferedWaveProvider source, int count) {
-            var bytesPerSample = source.WaveFormat.BitsPerSample / 8 * source.WaveFormat.Channels;
-            var bytesPerSampleBlock = bytesPerSample * count;
-            var missingBytes = bytesPerSampleBlock - source.BufferedBytes;
+            var missingBytes = source.WaveFormat.BlockAlign * count - source.BufferedBytes;
 
             if (missingBytes > 0) {
-                var missingSamples = (double)missingBytes / bytesPerSample;
-                var waitTime = (int)Math.Round(missingSamples / source.WaveFormat.SampleRate * 1000);
+                var waitTime = source.WaveFormat.ConvertByteSizeToLatency(missingBytes);
                 Thread.Sleep(Math.Max(waitTime, 1));
             }
 
