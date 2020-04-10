@@ -187,6 +187,12 @@ class Program {
 
 ## DTMF tone localization accuracy
 
+Be aware that this library cannot locate DTMF tones with 100% accuracy, because the detector analyzes the data in blocks of length ~26 ms with the default configuration. This block size determines the resolution of the localization and every DTMF tone starting position will be "rounded off" to the start of the nearest block.
+
+For instance, if a DTMF tone starts at 35 ms into the audio, its calculated starting position will be around 26 ms, i.e. at the beginning the second block.
+
+A resolution of 26 ms might seem rather inaccurate relative to the typical duration of a DTMF tone (40 ms). However, keep in mind that DTMF analysis typically is about correctly _detecting_ DTMF tones and not about accurately _locating_ them_.
+
 ## Configure the detector
 
 ### Adjust detection threshold
