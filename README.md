@@ -191,13 +191,71 @@ Be aware that this library cannot locate DTMF tones with 100% accuracy, because 
 
 For instance, if a DTMF tone starts at 35 ms into the audio, its calculated starting position will be around 26 ms, i.e. at the beginning the second block.
 
-A resolution of 26 ms might seem rather inaccurate relative to the typical duration of a DTMF tone (40 ms). However, keep in mind that DTMF analysis typically is about correctly _detecting_ DTMF tones and not about accurately _locating_ them_.
+A resolution of 26 ms might seem rather inaccurate relative to the typical duration of a DTMF tone (40 ms). However, keep in mind that DTMF analysis typically is about correctly _detecting_ DTMF tones and not about accurately _locating_ them.
 
 ## Configure the detector
 
+The library is designed to be very configurable. Of course, each setting of the detector configuration can be changed. Additionally it is possible to replace any part of its logic with a custom implementation.
+
 ### Adjust detection threshold
 
+The detector's threshold value is probably the setting that needs to be tweaked most often. Depending on the audio source and quality, the threshold might have to be increased to reduce false positives or decreased to reduce false negatives.
+
+Typical values are between `30` and `35` with enabled [Goertzel response normalization](#disable-goertzel-response-normalization) and `100` to `115` without it. Its default value is `30`.
+
+Changing the threshold value is easy, because each of the three main entry points take an optional `Config` argument (defaulting to `Config.Default`):
+
+- `List<DtmfChange> float[].DtmfChanges(int, int, Config?)`
+- `List<DtmfChange> WaveStream.DtmfChanges(bool, Config?)`
+- `BackgroundAnalyzer(IWaveIn, bool, Action<DtmfChange>?, Config?, IAnalyzer?)`
+
+Now, simply create your own `Config` instance and pass it to the entry point you want to use:
+
+```csharp
+var mycfg = Config(threshold: 20, sampleBlockSize: ..., ...);
+var dmtfs = waveStream.DtmfChanges(config: mycfg);
+```
+
+Or you start of with the default config and adjust it with one of its builder methods:
+
+```csharp
+var mycfg = Config.Default.WithThreshold(20);
+```
+
 ### Disable Goertzel response normalization
+
+As of version 1.0.0 the frequency response calculated with Goertzel algorithm will be normalized with the total energy of the input signal. This effectively makes the detector invariant against changes in the loudness of the signal with very little additional computational costs.
+
+You can test this yourself with a simple example program that detects DTMF tones in your system's current audio output, but with disabled response normalization:
+
+```csharp
+using System;
+using DtmfDetection.NAudio;
+using NAudio.CoreAudioApi;
+using NAudio.Wave;
+
+class Program {
+    static void Main() {
+        using var audioSource = new WasapiLoopbackCapture {
+            ShareMode = AudioClientShareMode.Shared
+        };
+
+        using var analyzer = new BackgroundAnalyzer(
+            audioSource,
+            config: Config.Default.WithNormalizeResponse(false));
+
+        analyzer.OnDtmfDetected += dtmf => Console.WriteLine(dtmf);
+
+        _ = Console.ReadKey(intercept: true);
+    }
+}
+```
+
+Now play any of the [test files](./test/integration/testdata) and observe the program's output. If your playback volume is high enough, DTMF tones should be detected. Try to gradually decrease the volume and see that no more DTMF tones will be detected as soon as the Goertzel responses fall below the detection threshold. With enabled response normalization all DTMF tones should be detected regardless of the volume level.
+
+I generally recommend to leave response normalization enabled, because loudness invariance ensures that DTMF tones are detected correctly in a wider range of scenarios. However, if you are analyzing audio signals that feature strong background noises, you might accomplish better detection results by disabling response normalization.
+
+Just note that without response normalization the detection threshold has to be significantly increased. A good starting point is a value of `100`.
 
 ### Provide custom source of sample data
 
