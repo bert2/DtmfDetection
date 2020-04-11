@@ -267,7 +267,7 @@ Different kinds of sample data are fed to the analysis in a unified way using th
 | [`AudioFile`](./src/DtmfDetection.NAudio/AudioFile.cs) | `DtmfDetection.NAudio` | created from an NAudio `WaveStream` |
 | [`AudioStream`](./src/DtmfDetection.NAudio/AudioStream.cs) | `DtmfDetection.NAudio` | created from an NAudio `IWaveIn` |
 
-In case none of the above implementations suit your needs, you can implement the interface yourself and pass it directly to the [`Analyzer`](./src/DtmfDetection/Analyzer.cs):
+In case none of the above implementations suits your needs, you can implement the interface yourself and pass it directly to the [`Analyzer`](./src/DtmfDetection/Analyzer.cs):
 
 ```csharp
 // Untested `ISamples` implementation for `System.IO.Stream`s.
