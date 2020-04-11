@@ -193,17 +193,17 @@ For instance, if a DTMF tone starts at 35 ms into the audio, its calculated star
 
 A resolution of 26 ms might seem rather inaccurate relative to the typical duration of a DTMF tone (40 ms). However, keep in mind that DTMF analysis typically is about correctly _detecting_ DTMF tones and not about accurately _locating_ them.
 
-## Configure the detector
+## Configuring the detector
 
 The library is designed to be very configurable. Of course, each setting of the detector configuration can be changed. Additionally it is possible to replace any part of its logic with a custom implementation.
 
-### Adjust detection threshold
+### Adjusting the detection threshold
 
 The detector's threshold value is probably the setting that needs to be tweaked most often. Depending on the audio source and quality, the threshold might have to be increased to reduce false positives or decreased to reduce false negatives.
 
 Typical values are between `30` and `35` with enabled [Goertzel response normalization](#disable-goertzel-response-normalization) and `100` to `115` without it. Its default value is `30`.
 
-Changing the threshold value is easy, because each of the three main entry points take an optional `Config` argument (defaulting to `Config.Default`):
+Changing the threshold value is easy, because each of the three main entry points take an optional [`Config`](./src/DtmfDetection/Config.cs) argument (defaulting to `Config.Default`):
 
 - `List<DtmfChange> float[].DtmfChanges(int, int, Config?)`
 - `List<DtmfChange> WaveStream.DtmfChanges(bool, Config?)`
@@ -222,7 +222,7 @@ Or you start of with the default config and adjust it with one of its builder me
 var mycfg = Config.Default.WithThreshold(20);
 ```
 
-### Disable Goertzel response normalization
+### Disabling Goertzel response normalization
 
 As of version 1.0.0 the frequency response calculated with Goertzel algorithm will be normalized with the total energy of the input signal. This effectively makes the detector invariant against changes in the loudness of the signal with very little additional computational costs.
 
@@ -255,11 +255,52 @@ Now play any of the [test files](./test/integration/testdata) and observe the pr
 
 I generally recommend to leave response normalization enabled, because loudness invariance ensures that DTMF tones are detected correctly in a wider range of scenarios. However, if you are analyzing audio signals that feature strong background noises, you might accomplish better detection results by disabling response normalization.
 
-Just note that without response normalization the detection threshold has to be significantly increased. A good starting point is a value of `100`.
+Just note that without response normalization the detection threshold has to be significantly increased and depends on the loudness of your signal. A good starting point is a value of `100`.
 
-### Provide custom source of sample data
+### Providing a custom source of sample data
 
-### Inject custom detector implementation
+Different kinds of sample data are fed to the analysis in a unified way using the [`ISamples`](./src/DtmfDetection/Interfaces/ISamples.cs) interface. Currently there are three implementations of `ISamples`:
+
+| implementation | package | usage |
+|---|---|---|
+| [`AudioData`](./src/DtmfDetection/AudioData.cs) | `DtmfDetection` | created from a `float[]` |
+| [`AudioFile`](./src/DtmfDetection.NAudio/AudioFile.cs) | `DtmfDetection.NAudio` | created from an NAudio `WaveStream` |
+| [`AudioStream`](./src/DtmfDetection.NAudio/AudioStream.cs) | `DtmfDetection.NAudio` | created from an NAudio `IWaveIn` |
+
+In case none of the above implementations suit your needs, you can implement the interface yourself and pass it directly to the [`Analyzer`](./src/DtmfDetection/Analyzer):
+
+```csharp
+// Untested `ISamples` implementation for `System.IO.Stream`s.
+public class MySamples : ISamples, IDisposable {
+    private readonly BinaryReader reader;
+    private long position;
+    public int Channels => 1;
+    public int SampleRate => 8000;
+    public TimeSpan Position => new TimeSpan((long)Math.Round(position * 1000.0 / SampleRate));
+    public MySamples(Stream samples) => this.reader = new BinaryReader(samples);
+    public int Read(float[] buffer, int count) {
+        var safeCount = Math.Min(count, reader.BaseStream.Length / sizeof(float) - position);
+        for (var i = 0; i < safeCount; i++, position++)
+            buffer[i] = reader.ReadSingle();
+        return (int)safeCount;
+    }
+    public void Dispose() => reader.Dispose();
+}
+
+// ...
+
+var mySamples = new MySamples(myStream);
+var analyzer = Analyzer.Create(mySamples, Config.Default);
+var dtmfs = new List<DtmfChange>();
+
+while (analyzer.MoreSamplesAvailable)
+    dtmfs.AddRange(analyzer.AnalyzeNextBlock());
+```
+
+Refer to the [API reference](src/DtmfDetection/README.md#isamples-class) of the `ISamples` interface for more details on how to implement it correctly.
+
+
+### Injecting a custom detector implementation
 
 ### Other configuration options
 
