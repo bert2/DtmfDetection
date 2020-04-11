@@ -201,7 +201,7 @@ The library is designed to be very configurable. Of course, each setting of the 
 
 The detector's threshold value is probably the setting that needs to be tweaked most often. Depending on the audio source and quality, the threshold might have to be increased to reduce false positives or decreased to reduce false negatives.
 
-Typical values are between `30` and `35` with enabled [Goertzel response normalization](#disable-goertzel-response-normalization) and `100` to `115` without it. Its default value is `30`.
+Typical values are between `30` and `35` with enabled [Goertzel response normalization](#disabling-goertzel-response-normalization) and `100` to `115` without it. Its default value is `30`.
 
 Changing the threshold value is easy, because each of the three main entry points take an optional [`Config`](./src/DtmfDetection/Config.cs) argument (defaulting to `Config.Default`):
 
