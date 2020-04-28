@@ -212,7 +212,7 @@ Changing the threshold value is easy, because each of the three main entry point
 Now, simply create your own `Config` instance and pass it to the entry point you want to use:
 
 ```csharp
-var mycfg = Config(threshold: 20, sampleBlockSize: ..., ...);
+var mycfg = new Config(threshold: 20, sampleBlockSize: ..., ...);
 var dmtfs = waveStream.DtmfChanges(config: mycfg);
 ```
 
