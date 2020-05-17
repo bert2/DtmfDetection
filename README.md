@@ -187,7 +187,7 @@ class Program {
 
 ## DTMF tone localization accuracy
 
-Be aware that this library cannot locate DTMF tones with 100% accuracy, because the detector analyzes the data in blocks of length ~26 ms with the default configuration. This block size determines the resolution of the localization and every DTMF tone starting position will be "rounded off" to the start of the nearest block.
+Be aware that this library cannot locate DTMF tones with 100% accuracy, because the detector analyzes the data in ~26 ms blocks with the default configuration. This block size determines the resolution of the localization and every DTMF tone starting position will be "rounded off" to the start of the nearest block.
 
 For instance, if a DTMF tone starts at 35 ms into the audio, its calculated starting position will be around 26 ms, i.e. at the beginning the second block.
 
@@ -267,7 +267,7 @@ Different kinds of sample data are fed to the analysis in a unified way using th
 | [`AudioFile`](./src/DtmfDetection.NAudio/AudioFile.cs) | `DtmfDetection.NAudio` | created from an NAudio `WaveStream` |
 | [`AudioStream`](./src/DtmfDetection.NAudio/AudioStream.cs) | `DtmfDetection.NAudio` | created from an NAudio `IWaveIn` |
 
-In case none of the above implementations suits your needs, you can implement the interface yourself and pass it directly to the [`Analyzer`](./src/DtmfDetection/Analyzer.cs):
+In case none of the above implementations suit your needs, you can implement the interface yourself and pass it directly to the [`Analyzer`](./src/DtmfDetection/Analyzer.cs):
 
 ```csharp
 // Untested `ISamples` implementation for `System.IO.Stream`s.

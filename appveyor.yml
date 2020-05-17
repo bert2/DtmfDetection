@@ -5,7 +5,7 @@ skip_tags: true
 image: Visual Studio 2019
 environment:
   nuget_key:
-    secure: DviconFZ6G3ZX9Q9XktXy0SRmOXmd//stfYVnzYvniBP/JBzZ6y2gjJjEZhALyk4
+    secure: xKXJVMt+HIIZYdc4vhBbJRN2DvLa7OMt4u2twNXyho3iv0etB7dSCnTYZG1wY7Xm
 build_script:
 - ps: ./build
 test: off
