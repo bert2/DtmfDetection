@@ -2,3 +2,6 @@ mode: Mainline
 branches:
   master:
     increment: Minor
+ignore:
+  sha:
+    - 06d6f983f3dab9565a9b9ec203577170f493d3fd
