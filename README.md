@@ -11,6 +11,8 @@ Implementation of the [Goertzel algorithm](https://en.wikipedia.org/wiki/Goertze
 
 ## Quick start
 
+In case DtmfDetection is not detecting any or only some of the DTMF tones in your audio data, have look at the [troubleshooting](#troubleshooting) section first.
+
 ### With NAudio
 
 How to detect and print DTMF changes (DTMF tone starting or stopping) in an [mp3 file](https://raw.githubusercontent.com/bert2/DtmfDetection/master/test/integration/testdata/long_dtmf_tones.mp3):
@@ -185,6 +187,8 @@ class Program {
 
 ### Pre-built example tool
 
+TODO: deploy example tool to choco
+
 ## DTMF tone localization accuracy
 
 Be aware that this library cannot locate DTMF tones with 100% accuracy, because the detector analyzes the data in ~26 ms blocks with the default configuration. This block size determines the resolution of the localization and every DTMF tone starting position will be "rounded off" to the start of the nearest block.
@@ -302,7 +306,19 @@ Refer to the [API reference](src/DtmfDetection/README.md#isamples-class) of the 
 
 ### Injecting a custom detector implementation
 
+TODO: document how to
+
 ### Other configuration options
+
+TODO: document other options
+
+## Troubleshooting
+
+### None or not all expected DTMF tones are detected
+
+You should first try to [lower the detection threshold](#adjusting-the-detection-threshold). The default config uses a value of `30` which might be too high for your audio data. In case you get false positives afterwards, try increasing the threshold again to find the "sweet spot". If possible try to de-noise the audio data.
+
+You can also try to [disable the Goertzel response normalization](#disabling-Goertzel-response-normalization). Generally this is not recommended, but it might give better results in certain cases. Be aware that without normalization you need to ensure that the threshold is tuned to the loudness of your audio data. I.e. when your audio becomes louder, you should also increase the threshold and when it becomes quieter, you have to decrease it. You should also use a higher starting value for the threshold (around `100`). 
 
 ## API reference
 
