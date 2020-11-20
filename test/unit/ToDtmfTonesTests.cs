@@ -61,7 +61,7 @@
             });
 
         [Fact]
-        public void ThrowsWhenStopIsMissing() => new Action(() =>
+        public void ThrowsWhenStopIsMissing() => new Action(() => _ =
             new List<DtmfChange> {
                 DtmfChange.Start(PhoneKey.A, TimeSpan.FromSeconds(1), 0)
             }
